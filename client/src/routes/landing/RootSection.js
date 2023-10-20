@@ -1,11 +1,11 @@
 import React, { useEffect } from "react"
 import ResetLocation from "../../helpers/ResetLocation"
-import WelcomeSection from "./WelcomSection";
+import WelcomeSection from "./WelcomeSection";
 
 const RootSection = () => {
   useEffect(() => {
     document.title = "Pizza Time"
-    ResetLocation()
+    // ResetLocation()
   }, []);
   return (
     <React.Fragment>
