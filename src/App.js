@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from 'react';
-import { BrowserRouter } from 'react-router-dom';
+import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import './App.css';
 import Footer from './components/footer/Footer';
 import Header from './routes/landing/Header';
 import ResetLocation from './helpers/ResetLocation';
 import LoginModal from './components/login/LoginModal';
+import RootSection from './routes/landing/RootSection';
 
 function App() {
   const [productQuantity, setProductQuantity] = useState(0);
@@ -59,13 +60,13 @@ function App() {
       <Header
         loginModal={
           <LoginModal
-          validLogin={validLogin}
-          setValidLogin={setValidLogin}
-          setLoginModalWindow={setLoginModelWindow}
-          loginModalWindow={loginModalWindow}
-          hideMenu={hideMenu}
-          getUser={getUser}
-          setCurrentUser={setCurrentUser}/>
+            validLogin={validLogin}
+            setValidLogin={setValidLogin}
+            setLoginModalWindow={setLoginModelWindow}
+            loginModalWindow={loginModalWindow}
+            hideMenu={hideMenu}
+            getUser={getUser}
+            setCurrentUser={setCurrentUser} />
         }
         activeLoginModal={activeLoginModal}
         showModal={showModal}
@@ -74,6 +75,9 @@ function App() {
         handleLogout={handleLogout}
         validLogin={validLogin}
         productQuantity={productQuantity} />
+      <Routes>
+        <Route path='/' element={<RootSection />} />
+      </Routes>
       <Footer />
     </BrowserRouter>
   );
