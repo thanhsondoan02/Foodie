@@ -4,6 +4,7 @@ import WelcomeSection from "./WelcomeSection";
 import ContactUsLanding from "./ContactUsLanding";
 import Hero from "./Hero";
 import OurServices from "./OurServices";
+import PizzaMenuPreview from "./PizzaMenuPreview";
 
 const RootSection = () => {
   useEffect(() => {
@@ -16,6 +17,7 @@ const RootSection = () => {
       <WelcomeSection />
       <ContactUsLanding />
       <OurServices />
+      <PizzaMenuPreview />
     </React.Fragment>
   )
 }
