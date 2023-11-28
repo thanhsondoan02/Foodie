@@ -14,10 +14,20 @@ function App() {
   const [loginModalWindow, setLoginModelWindow] = useState(false);
   const [currentUser, setCurrentUser] = useState({});
   const [cartItems, setCartItems] = useState([]);
+  // const [state, setState] = useState({
+  //   productQuantity: 0,
+  //   validLogin: false,
+  //   isModalActive: false,
+  //   loginModalWindow: false,
+  //   currentUser: {},
+  //   cartItems: []
+  // })
+
 
   const activeLoginModal = () => {
     hideMenu();
-    setLoginModelWindow(!loginModalWindow);
+    // setLoginModelWindow(!loginModalWindow);
+    
   };
 
   const hideMenu = () => {

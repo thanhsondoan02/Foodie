@@ -7,6 +7,8 @@ import OurServices from "./OurServices";
 import PizzaMenuPreview from "./PizzaMenuPreview";
 import Gallery from "./Gallery";
 import MenuPricingPreview from "./MenuPricingPreview";
+import StatsPreview from "./StatsPreview";
+import MenuSlider from "./MenuSlider";
 
 const RootSection = () => {
   useEffect(() => {
@@ -22,6 +24,8 @@ const RootSection = () => {
       <PizzaMenuPreview />
       <MenuPricingPreview />
       <Gallery />
+      <StatsPreview />
+      <MenuSlider />
     </React.Fragment>
   )
 }
