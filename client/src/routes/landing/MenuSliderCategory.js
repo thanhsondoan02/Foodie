@@ -4,7 +4,6 @@ function MenuSliderCategory(props) {
   return (
     <li>
       <button onClick={() => {
-        console.log(props.category.id)
         props.changeCategory(props.category.id)
       }}>
         {props.category.name}

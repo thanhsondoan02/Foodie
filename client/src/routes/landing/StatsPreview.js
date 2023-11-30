@@ -1,12 +1,11 @@
 import React from 'react'
 import { motion } from "framer-motion";
-import statsPreview from '../../data/statsPreview';
 
-const StatsPreview = () => {
+function StatsPreview(props) {
   return (
     <article className="section-7 flex-container flex-column txt-center">
       <section className="highlights flex-container flex-column">
-        {statsPreview.map((stats) => (
+        {props.statsPreview.map((stats) => (
           <div key={stats.id} className="highligh-container">
             <motion.img
               initial={{ opacity: 0, translateX: -100 }}

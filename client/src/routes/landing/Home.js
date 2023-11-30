@@ -15,7 +15,8 @@ function Home() {
   const baseUrl = "https://29201796-3b03-452f-abee-635c05c2d9cb.mock.pstmn.io"
 
   const [homeData, setHomeData] = useState({
-    menu_slider: {
+    statsPreview: [],
+    menuSlider: {
       thumbnail: {},
       products: [],
       categories: []
@@ -26,8 +27,6 @@ function Home() {
     axios.get(`${baseUrl}/home`)
       .then(res => {
         setHomeData(res.data)
-        // console.log("before")
-        // console.log(homeData)
       })
       .catch(err => console.log(err))
   }, [])
@@ -41,13 +40,11 @@ function Home() {
       <PizzaMenuPreview />
       <MenuPricingPreview />
       <Gallery />
-      <StatsPreview />
+      <StatsPreview statsPreview = {homeData.statsPreview}/>
       <MenuSlider
-        temp0 = {console.log("INIT")}
-        temp2={console.log(homeData.menu_slider)}
-        thumbnail={homeData.menu_slider.thumbnail}
-        categories={homeData.menu_slider.categories}
-        products={homeData.menu_slider.products} />
+        thumbnail={homeData.menuSlider.thumbnail}
+        categories={homeData.menuSlider.categories}
+        products={homeData.menuSlider.products} />
     </React.Fragment>
   )
 }

@@ -42,9 +42,6 @@ function MenuSlider(props) {
   return (
     <article className='section-8'>
       <motion.div
-        temp={console.log("INSIDE")}
-        temp0={console.log(props)}
-        temp1={console.log(state)}
         className='section-8'
         initial={{ opacity: 0, translateX: -300 }}
         whileInView={{ opacity: 1, translateX: 0 }}
