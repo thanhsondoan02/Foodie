@@ -8,13 +8,17 @@ import PizzaMenuPreview from "./PizzaMenuPreview";
 import Gallery from "./Gallery";
 import MenuPricingPreview from "./MenuPricingPreview";
 import StatsPreview from "./StatsPreview";
-import MenuSlider from "./MenuSlider";
+import MenuSlider from "./menu-slider/MenuSlider";
 import axios from "axios";
 
 function Home() {
   const baseUrl = "https://29201796-3b03-452f-abee-635c05c2d9cb.mock.pstmn.io"
 
   const [homeData, setHomeData] = useState({
+    gallery: {
+      img375: [],
+      img700: []
+    },
     statsPreview: [],
     menuSlider: {
       thumbnail: {},
@@ -39,12 +43,18 @@ function Home() {
       <OurServices />
       <PizzaMenuPreview />
       <MenuPricingPreview />
-      <Gallery />
-      <StatsPreview statsPreview = {homeData.statsPreview}/>
+      <Gallery
+        img375={homeData.gallery.img375}
+        img700={homeData.gallery.img700}
+      />
+      <StatsPreview
+        statsPreview={homeData.statsPreview}
+      />
       <MenuSlider
         thumbnail={homeData.menuSlider.thumbnail}
         categories={homeData.menuSlider.categories}
-        products={homeData.menuSlider.products} />
+        products={homeData.menuSlider.products}
+      />
     </React.Fragment>
   )
 }
