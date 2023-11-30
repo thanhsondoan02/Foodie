@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from "react"
 // import ResetLocation from "../../helpers/ResetLocation";
 import WelcomeSection from "./WelcomeSection";
-import ContactUsLanding from "./ContactUsLanding";
+import Contact from "./ContactUsLanding";
 import Hero from "./Hero";
 import OurServices from "./OurServices";
-import PizzaMenuPreview from "./PizzaMenuPreview";
+import Hot from "./Hot";
 import Gallery from "./Gallery";
 import StatsPreview from "./StatsPreview";
 import MenuSlider from "./menu-slider/MenuSlider";
@@ -15,6 +15,12 @@ function Home() {
   const baseUrl = "https://29201796-3b03-452f-abee-635c05c2d9cb.mock.pstmn.io"
 
   const [homeData, setHomeData] = useState({
+    contact: {
+      img: "",
+      lines: []
+    },
+    service: [],
+    hot: [],
     menu: [],
     gallery: {
       img375: [],
@@ -40,10 +46,16 @@ function Home() {
     <React.Fragment>
       <Hero />
       <WelcomeSection />
-      <ContactUsLanding />
-      <OurServices />
-      <PizzaMenuPreview />
-      <Menu 
+      <Contact 
+        img={homeData.contact.img}
+        lines={homeData.contact.lines}
+      />
+      <OurServices
+        service={homeData.service} />
+      <Hot 
+        hot={homeData.hot}
+      />
+      <Menu
         menu={homeData.menu}
       />
       <Gallery

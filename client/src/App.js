@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
-import './App.css';
 import Footer from './components/footer/Footer';
 import Header from './routes/landing/Header';
 import ResetLocation from './helpers/ResetLocation';
