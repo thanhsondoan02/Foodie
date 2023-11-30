@@ -3,10 +3,8 @@ import { Link } from 'react-router-dom'
 import ResetLocation from '../../helpers/ResetLocation'
 import Tilt from 'react-parallax-tilt';
 import { motion } from "framer-motion";
-import menuPricing from '../../data/menuPricing';
 
-export default class MenuPricingPreview extends React.Component {
-  render() {
+function Menu(props) {
     return (
       <motion.article
         className="section-5 flex-container "
@@ -23,8 +21,8 @@ export default class MenuPricingPreview extends React.Component {
           offer
         </p>
         <section className="pricing-grid flex-container flex-column">
-          {menuPricing.map((menu) => (
-            <Tilt key={menu.id}>
+          {props.menu.map((item) => (
+            <Tilt key={item.id}>
               <Link
                 onClick={ResetLocation}
                 to="/menu"
@@ -32,18 +30,18 @@ export default class MenuPricingPreview extends React.Component {
               >
                 <img
                   className="pricing-img"
-                  alt={menu.name}
-                  src={menu.img375}
+                  alt={item.name}
+                  src={item.img375}
                 />
                 <section className="pricing-details flex-container flex-column">
                   <section className="name-and-price flex-container flex-row txt-center">
-                    <h3 className="pop-font">{menu.name}</h3>
+                    <h3 className="pop-font">{item.name}</h3>
                     <p>
-                      <span>{menu.currency}</span>
-                      {menu.price}
+                      <span>{item.currency}</span>
+                      {item.price}
                     </p>
                   </section>
-                  <p>{menu.description}</p>
+                  <p>{item.description}</p>
                 </section>
               </Link>
             </Tilt>
@@ -51,5 +49,6 @@ export default class MenuPricingPreview extends React.Component {
         </section>
       </motion.article>
     )
-  }
 }
+
+export default Menu
