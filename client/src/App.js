@@ -5,7 +5,7 @@ import Footer from './components/footer/Footer';
 import Header from './routes/landing/Header';
 import ResetLocation from './helpers/ResetLocation';
 import LoginModal from './components/login/LoginModal';
-import RootSection from './routes/landing/RootSection';
+import Home from './routes/landing/Home';
 
 function App() {
   const [productQuantity, setProductQuantity] = useState(0);
@@ -14,20 +14,10 @@ function App() {
   const [loginModalWindow, setLoginModelWindow] = useState(false);
   const [currentUser, setCurrentUser] = useState({});
   const [cartItems, setCartItems] = useState([]);
-  // const [state, setState] = useState({
-  //   productQuantity: 0,
-  //   validLogin: false,
-  //   isModalActive: false,
-  //   loginModalWindow: false,
-  //   currentUser: {},
-  //   cartItems: []
-  // })
-
 
   const activeLoginModal = () => {
     hideMenu();
-    // setLoginModelWindow(!loginModalWindow);
-    
+    setLoginModelWindow(!loginModalWindow);
   };
 
   const hideMenu = () => {
@@ -86,7 +76,7 @@ function App() {
         validLogin={validLogin}
         productQuantity={productQuantity} />
       <Routes>
-        <Route path='/' element={<RootSection />} />
+        <Route path='/' element={<Home />} />
       </Routes>
       <Footer />
     </BrowserRouter>
