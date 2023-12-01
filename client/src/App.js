@@ -1,11 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
-import './App.css';
 import Footer from './components/footer/Footer';
 import Header from './routes/landing/Header';
 import ResetLocation from './helpers/ResetLocation';
 import LoginModal from './components/login/LoginModal';
-import RootSection from './routes/landing/RootSection';
+import Home from './routes/landing/Home';
 
 function App() {
   const [productQuantity, setProductQuantity] = useState(0);
@@ -76,7 +75,7 @@ function App() {
         validLogin={validLogin}
         productQuantity={productQuantity} />
       <Routes>
-        <Route path='/' element={<RootSection />} />
+        <Route path='/' element={<Home />} />
       </Routes>
       <Footer />
     </BrowserRouter>
