@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react"
 // import ResetLocation from "../../helpers/ResetLocation";
 import Welcome from "./Welcome";
-import Contact from "./ContactUsLanding";
+import DetailContact from "./DetailContact";
 import AdVideo from "./AdVideo";
 import OurServices from "./OurServices";
 import Hot from "./Hot";
@@ -11,9 +11,11 @@ import MenuSlider from "./menu-slider/MenuSlider";
 import axios from "axios";
 import Menu from "./Menu";
 import Subscribe from "./Subscribe";
+import Blog from "./Blog";
+import SimpleContact from "./SimpleContact";
 
 function Home() {
-  const baseUrl = "https://29201796-3b03-452f-abee-635c05c2d9cb.mock.pstmn.io"
+  const baseUrl = "https://2e577fbb-d06d-412f-b4ea-3ef3d13a77e5.mock.pstmn.io"
 
   const [homeData, setHomeData] = useState({
     adVideo: {
@@ -53,6 +55,16 @@ function Home() {
       thumbnail: {},
       products: [],
       categories: []
+    },
+    blog: {
+      title: "",
+      description: "",
+      posts: []
+    },
+    detailContact: {
+      position: [],
+      zoomLevel: 1,
+      info: []
     }
   })
 
@@ -80,7 +92,7 @@ function Home() {
         pizzaTwo={homeData.welcome.pizzaTwo}
         thumbnail={homeData.welcome.thumbnail}
       />
-      <Contact
+      <SimpleContact
         img={homeData.contact.img}
         lines={homeData.contact.lines}
       />
@@ -105,6 +117,18 @@ function Home() {
         products={homeData.menuSlider.products}
       />
       <Subscribe />
+      <Blog
+        title={homeData.blog.title}
+        description={homeData.blog.description}
+        posts={homeData.blog.posts}
+      />
+      <DetailContact
+        position={homeData.detailContact.position}
+        zoomLevel={homeData.detailContact.zoomLevel}
+        title={homeData.detailContact.title}
+        description={homeData.detailContact.description}
+        info={homeData.detailContact.info}
+      />
     </React.Fragment>
   )
 }

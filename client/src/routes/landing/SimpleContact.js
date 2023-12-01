@@ -1,7 +1,7 @@
 import React from 'react'
 import { motion } from "framer-motion";
 
-function Contact(props) {
+function SimpleContact(props) {
   const motionImgClassList = [
     "parallax company-details-image",
     "parallax company-details-image-two",
@@ -36,4 +36,4 @@ function Contact(props) {
   );
 }
 
-export default Contact;
+export default SimpleContact;

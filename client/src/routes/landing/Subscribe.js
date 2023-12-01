@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import React, { useState } from "react";
 import { motion } from "framer-motion";
 import validateForm from "../../components/validateForm";
 import axios from "axios";
@@ -43,10 +43,6 @@ function Subscribe() {
   const onEmailInputChange = (e) => {
     const { name, value } = e.target;
     setFormValue({ ...formValue, [name]: value })
-  }
-
-  const isSuccessful = () => {
-    return Object.keys(formError).length === 0
   }
 
   return (
