@@ -15,8 +15,8 @@ function AdVideo(props) {
       </video>
       <section className='header-info flex-container flex-column txt-center pop-font txt-white'>
         <motion.div
-          initial={{ opacity: 0, translateY: 300 }}
-          animate={{ opacity: 1, translateY: 0 }}
+          initial={{ opacity: 0, translateX: 300 }}
+          whileInView={{ opacity: 1, translateX: 0 }}
           exit={{ opacity: 0 }}
           transition={{ duration: 2 }}
         >

@@ -10,6 +10,7 @@ import StatsPreview from "./StatsPreview";
 import MenuSlider from "./menu-slider/MenuSlider";
 import axios from "axios";
 import Menu from "./Menu";
+import Subscribe from "./Subscribe";
 
 function Home() {
   const baseUrl = "https://29201796-3b03-452f-abee-635c05c2d9cb.mock.pstmn.io"
@@ -103,6 +104,7 @@ function Home() {
         categories={homeData.menuSlider.categories}
         products={homeData.menuSlider.products}
       />
+      <Subscribe />
     </React.Fragment>
   )
 }
