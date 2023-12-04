@@ -3,6 +3,7 @@ require("dotenv").config();
 
 const nonSecurePaths = ["/register", "/login", "/logout", "/food/getAll"];
 
+// Create token
 const createToken = (payload) => {
   let key = process.env.JWT_SECRET;
   let token = null;
