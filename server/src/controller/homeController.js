@@ -12,7 +12,8 @@ const handleHelloHien = (req, res) => {
 
 const handleUser = async (req, res) => {
   let usersList = await getUserList();
-  // console.log("List users: ", usersList);
+  // return res.json(usersList);
+  console.log("List users: ", usersList);
   return res.render("user.ejs", { usersList });
 };
 

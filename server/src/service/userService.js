@@ -9,13 +9,13 @@ const hashPassword = (password) => {
   return bcrypt.hashSync(password, salt);
 };
 
-const createNewUser = async (email, password, username) => {
+const createNewUser = async (email, password, fullName) => {
   let hashPass = hashPassword(password);
   try {
     await db.User.create({
       email: email,
       password: password,
-      username: username,
+      fullName: fullName,
     });
   } catch (err) {
     console.log("Error: ", err);
@@ -23,9 +23,24 @@ const createNewUser = async (email, password, username) => {
 };
 
 const getUserList = async () => {
+  // User -> group -> role
+  // let data = await db.User.findAll({
+  //   where: { id: 1 },
+  //   include: [
+  //     {
+  //       model: db.Group,
+  //       include: [db.Role],
+  //     },
+  //   ],
+  // });
+  // return data;
+
   try {
     let users = [];
-    users = await db.User.findAll();
+    users = await db.User.findAll({
+      raw: true,
+      nest: true,
+    });
     return users;
   } catch (err) {
     console.log("Error: ", err);
@@ -46,10 +61,10 @@ const getUserById = async (id) => {
   }
 };
 
-const updateUser = async (email, username, id) => {
+const updateUser = async (email, fullName, id) => {
   try {
     await db.User.update(
-      { email: email, username: username },
+      { email: email, fullName: fullName },
       {
         where: {
           id: id,

@@ -5,6 +5,9 @@
     "database": "foodShop",
     "host": "127.0.0.1",
     "dialect": "mysql",
+    "define": {
+      "freezeTableName": true
+    },
     "logging": false
   },
   "test": {
