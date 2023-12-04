@@ -6,6 +6,7 @@ import {
   getUserByPagination,
 } from "../service/userApiService";
 
+// get all user
 const getAllUsers = async (req, res) => {
   try {
     if (req.query.page && req.query.limit) {
