@@ -1,0 +1,28 @@
+{
+  "files": {
+    "main.css": "/static/css/main.7fa4b702.css",
+    "main.js": "/static/js/main.ad012bfc.js",
+    "static/js/787.1632bac7.chunk.js": "/static/js/787.1632bac7.chunk.js",
+    "static/media/landing-bg.webp": "/static/media/landing-bg.270db7f8775652679ffe.webp",
+    "static/media/section-7-bg.webp": "/static/media/section-7-bg.c0773bbae1be2e469a6e.webp",
+    "static/media/img-one.jpeg": "/static/media/img-one.583ad93aaeacf77c70eb.jpeg",
+    "static/media/applepay-icon.svg": "/static/media/applepay-icon.f864abf42f82c130c340b0d7c17ba692.svg",
+    "static/media/googlepay-icon.svg": "/static/media/googlepay-icon.a4e5b6564b80a012651f27b147d723f9.svg",
+    "static/media/visa-icon.svg": "/static/media/visa-icon.2a2de0f6ffb5dac7dea47b8594642fd6.svg",
+    "static/media/github.svg": "/static/media/github.39e547580f4926192b709df97850dd39.svg",
+    "static/media/close-btn.svg": "/static/media/close-btn.9406173a1f5f73ca99f3.svg",
+    "static/media/mastercard-icon.svg": "/static/media/mastercard-icon.c66dbbec26938c040843d4706a1965e1.svg",
+    "index.html": "/index.html",
+    "static/media/open-menu.svg": "/static/media/open-menu.3fd5cfb7747ba533b53ac919f3de692f.svg",
+    "static/media/linkedin.svg": "/static/media/linkedin.274ed23e113a52196919f4fb634c2959.svg",
+    "static/media/close-menu.svg": "/static/media/close-menu.494cc16154e95b6ff5adcf65648b1cad.svg",
+    "static/media/ResetLocation": "/static/media/ResetLocation.f0535ec009ca98026401",
+    "main.7fa4b702.css.map": "/static/css/main.7fa4b702.css.map",
+    "main.ad012bfc.js.map": "/static/js/main.ad012bfc.js.map",
+    "787.1632bac7.chunk.js.map": "/static/js/787.1632bac7.chunk.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.7fa4b702.css",
+    "static/js/main.ad012bfc.js"
+  ]
+}
