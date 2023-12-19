@@ -1,5 +1,8 @@
 import { addOrder } from "../service/orderService";
 
+// Cart: Đang trong giỏ hàng
+// Ordered: Đã đặt hàng, đang trong quá trình giao hàng
+// Done: Đã nhận hàng
 const newOrder = async (req, res) => {
   let listFood = req.body;
   try {

@@ -67,8 +67,6 @@ const checkUserJWT = (req, res, next) => {
         DT: "",
       });
     }
-
-    console.log(">>>>>> Cookies user is: ", cookies.jwt);
   } else {
     return res.status(401).json({
       EM: "User not authentication",

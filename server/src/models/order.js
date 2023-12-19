@@ -10,8 +10,13 @@ module.exports = (sequelize, DataTypes) => {
     static associate(models) {
       // define association here
       // Order.belongsToMany(models.Food, { through: models.Order_Food });
-      Order.hasMany(models.Order_Food);
-      Order.belongsTo(models.User);
+      // Order.hasMany(models.Order_Food);
+      Order.belongsToMany(models.Food, {
+        through: models.Order_Food,
+        foreignKey: "order_id",
+      });
+
+      Order.belongsTo(models.User, { foreignKey: "user_id" });
     }
   }
   Order.init(

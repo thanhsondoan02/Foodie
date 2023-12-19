@@ -2,8 +2,8 @@
   "development": {
     "username": "root",
     "password": null,
-    "database": "foodShop",
-    "host": "127.0.0.1",
+    "database": "fall2324w20g2",
+    "host": "10.96.210.203",
     "dialect": "mysql",
     "define": {
       "freezeTableName": true

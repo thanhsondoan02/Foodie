@@ -14,13 +14,18 @@ import {
   deleteUser,
 } from "../controller/userController";
 
-import { newOrder } from "../controller/orderController";
-
 import { checkUserJWT, checkUserPermission } from "../middleware/utils";
 
 import { getAllGroups } from "../controller/groupController";
 
-import { getAllFood } from "../controller/foodController";
+import {
+  getAllFood,
+  getOrderFromUser,
+  deleteFoodFromOrderByUser,
+  updateQuantityInCart,
+} from "../controller/foodController";
+
+import { newOrder } from "../controller/orderController";
 
 const router = express.Router();
 
@@ -44,6 +49,15 @@ const initApiRoutes = (app) => {
 
   // Order
   router.post("/food/order", newOrder);
+
+  // Show all order shopping cart of user
+  router.get("/food/getAllOrder", getOrderFromUser);
+
+  // delete food in shopping cart of user
+  router.delete("/food/delete", deleteFoodFromOrderByUser);
+
+  // update quantity in shopping cart
+  router.put("/food/updateOrder", updateQuantityInCart);
 
   //group router
   router.get("/group/getAll", getAllGroups);
