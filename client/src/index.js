@@ -7,6 +7,7 @@ import "./core-ui/app.css"
 import "./core-ui/responsive.css"
 import "./core-ui/leaflet.css"
 import './routes/contact/contact.css'
+import './routes/about/About.css'
 
 // Components
 import App from './App';

@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import { motion } from "framer-motion";
 //Components
-import ScrollBtn from "../../helpers/ScrollBtn";
+// import ScrollBtn from "../../helpers/ScrollBtn";
 import AboutCollaboration from "./AboutCollaboration";
 import AboutCareers from "./AboutCareers";
 import AboutUs from "./AboutUs";
@@ -24,7 +24,7 @@ const About = () => {
       <AboutCustomers />
       <AboutCareers />
       <AboutCollaboration />
-      <ScrollBtn />
+      {/* <ScrollBtn /> */}
     </motion.main>
   );
 }
