@@ -3,7 +3,7 @@ import configViewEngine from "./config/viewEngine";
 import initWebRoutes from "./routes/web";
 import initApiRoutes from "./routes/api";
 import configCors from "./config/cors";
-require("dotenv").config();
+require("dotenv").config({ path: "./config.env" });
 import bodyParser from "body-parser";
 import connection_DB from "./config/connectDB";
 import cookieParser from "cookie-parser";
@@ -12,7 +12,7 @@ const app = express();
 const PORT = process.env.PORT || 8080;
 
 // config cors
-configCors(app);
+// configCors(app);
 
 // config view engine
 configViewEngine(app);

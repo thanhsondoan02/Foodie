@@ -3,7 +3,7 @@
     "username": "root",
     "password": null,
     "database": "fall2324w20g2",
-    "host": "10.96.210.203",
+    "host": "127.0.0.1",
     "dialect": "mysql",
     "define": {
       "freezeTableName": true

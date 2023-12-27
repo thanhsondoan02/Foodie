@@ -1,5 +1,6 @@
 import jwt, { decode } from "jsonwebtoken";
-require("dotenv").config();
+// require("dotenv").config();
+require("dotenv").config({ path: "./config.env" });
 
 const nonSecurePaths = ["/register", "/login", "/logout", "/food/getAll"];
 
