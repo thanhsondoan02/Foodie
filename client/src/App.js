@@ -5,6 +5,7 @@ import Header from './routes/landing/Header';
 import ResetLocation from './helpers/ResetLocation';
 import LoginModal from './components/login/LoginModal';
 import Home from './routes/landing/Home';
+import Blog from './routes/blog/Blog';
 import Contact from './routes/contact/Contact';
 import About from './routes/about/About';
 
@@ -78,6 +79,7 @@ function App() {
         productQuantity={productQuantity} />
       <Routes>
         <Route path='/' element={<Home />} />
+        <Route path='/blog' element={<Blog />} />
         <Route path='/contact' element={<Contact />} />
         <Route path='/about' element={<About />} />
       </Routes>
