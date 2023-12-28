@@ -1,22 +1,42 @@
-import React from "react";
+import React from 'react'
 import logo from '../../assets/images/logo.png'
 import openMenu from '../../assets/images/open-menu.svg'
 import closeMenu from '../../assets/images/close-menu.svg'
-import { NavLink, Link } from "react-router-dom";
+import { Link, NavLink } from 'react-router-dom'
 import Cart from '../../assets/images/cart-icon.png'
 import SuccessMsg from '../../components/SuccessMsg'
 import ResetLocation from '../../helpers/ResetLocation'
 
-const Header = ({
-  loginModal,
+const Header = ({ loginModal,
   productQuantity,
   handleLogout,
   showModal,
   isModalActive,
   hideMenu,
-  validLogin,
-  activeLoginModal
-}) => {
+  validLogin, activateLoginModal }) => {
+  const location = [
+    {
+      path: '/',
+      name: 'Home',
+    },
+    {
+      path: '/menu',
+      name: 'Menu',
+    },
+    {
+      path: '/blog',
+      name: 'Blog',
+    },
+    {
+      path: '/about',
+      name: 'About',
+    },
+    {
+      path: '/contact',
+      name: 'Contact',
+    },
+  ]
+
   return (
     <header>
       {loginModal}
@@ -27,158 +47,54 @@ const Header = ({
             hideMenu()
           }}
           to="/"
-          className='logo-styling flex-container flex-row txt-center txt-white'>
+          className="logo-styling flex-container flex-row txt-center txt-white"
+        >
           <img
             width="50"
             height="50"
             className="logo"
             src={logo}
-            alt="Foodie Pizza Logo" />
+            alt="Pizza Time logo"
+          />
           <h1>
             Pizza <span>Time</span>
           </h1>
         </NavLink>
-        <ul className={`navigation-menu flex-row pop-front ${isModalActive ? "active" : ""}`}>
-          <li>
-            <NavLink
-              style={({ isActive }) =>
-                isActive ? { textDecoration: "none", color: "#ff6240" } : {}}
-              onClick={() => {
-                ResetLocation()
-                hideMenu()
-              }}
-              className="txt-white"
-              to="/">
-              Home
-            </NavLink>
-          </li>
+        <ul className={`navigation-menu flex-row pop-font ${isModalActive ? 'active' : ''}`}>
 
-          <li>
-            <NavLink
-              style={({ isActive }) =>
-                isActive ? { textDecoration: "none", color: "#ff6240" } : {}}
-              onClick={() => {
-                ResetLocation()
-                hideMenu()
-              }}
-              className="txt-white"
-              to="/menu">
-              Menu
-            </NavLink>
-          </li>
-
-          <li>
-            <NavLink
-              style={({ isActive }) =>
-                isActive ? { textDecoration: "none", color: "#ff6240" } : {}}
-              onClick={() => {
-                ResetLocation()
-                hideMenu()
-              }}
-              className="txt-white"
-              to="/blog">
-              Blog
-            </NavLink>
-          </li>
-
-          <li>
-            <NavLink
-              style={({ isActive }) =>
-                isActive ? { textDecoration: "none", color: "#ff6240" } : {}}
-              onClick={() => {
-                ResetLocation()
-                hideMenu()
-              }}
-              className="txt-white"
-              to="/about">
-              About
-            </NavLink>
-          </li>
-
-          <li>
-            <NavLink
-              style={({ isActive }) =>
-                isActive ? { textDecoration: "none", color: "#ff6240" } : {}}
-              onClick={() => {
-                ResetLocation()
-                hideMenu()
-              }}
-              className="txt-white"
-              to="/contact">
-              Contact
-            </NavLink>
-          </li>
-
-          <li>
-            <NavLink
-              style={({ isActive }) =>
-                isActive ? { textDecoration: "none", color: "#ff6240" } : {}}
-              onClick={() => {
-                ResetLocation()
-                hideMenu()
-              }}
-              className="txt-white"
-              to="/menu">
-              Menu
-            </NavLink>
-          </li>
-
-          <li>
-            <NavLink
-              style={({ isActive }) =>
-                isActive ? { textDecoration: "none", color: "#ff6240" } : {}}
-              onClick={() => {
-                ResetLocation()
-                hideMenu()
-              }}
-              className="txt-white"
-              to="/blog">
-              Blog
-            </NavLink>
-          </li>
-
-          <li>
-            <NavLink
-              style={({ isActive }) =>
-                isActive ? { textDecoration: "none", color: "#ff6240" } : {}}
-              onClick={() => {
-                ResetLocation()
-                hideMenu()
-              }}
-              className="txt-white"
-              to="/about">
-              About
-            </NavLink>
-          </li>
-
-          <li>
-            <NavLink
-              style={({ isActive }) =>
-                isActive ? { textDecoration: "none", color: "#ff6240" } : {}}
-              onClick={() => {
-                ResetLocation()
-                hideMenu()
-              }}
-              className="txt-white"
-              to="/contact">
-              Contact
-            </NavLink>
-          </li>
+          {location.map((item, index) => {
+            return (
+              <li key={index}>
+                <NavLink
+                  onClick={() => {
+                    ResetLocation()
+                    hideMenu()
+                  }}
+                  style={({ isActive }) =>
+                    isActive ? { textDecoration: 'none', color: '#ff6240', } : {}}
+                  className="txt-white"
+                  to={item.path}
+                >
+                  {item.name}
+                </NavLink>
+              </li>
+            )
+          })}
 
           {validLogin ? <li>
             <NavLink
-              style={({ isActive }) =>
-                isActive ? { textDecoration: "none", color: "#ff6240" } : {}}
               onClick={() => {
                 ResetLocation()
                 hideMenu()
               }}
+              style={({ isActive }) =>
+                isActive ? { textDecoration: 'none', color: '#ff6240', } : {}}
               className="txt-white"
-              to="/contact">
-              Contact
+              to="/profile"
+            >
+              Profile
             </NavLink>
           </li> : null}
-
           <li>
             <div className="login-and-cart">
               {validLogin ? (
@@ -188,14 +104,20 @@ const Header = ({
                   onClick={() => {
                     ResetLocation()
                     handleLogout()
-                  }}>Log out</Link>
+                  }}
+                >
+                  Log out
+                </Link>
               ) : (
                 <div
                   className="passive-button-style txt-white"
                   onClick={() => {
                     ResetLocation()
-                    activeLoginModal()
-                  }}>Login</div>
+                    activateLoginModal()
+                  }}
+                >
+                  Log in
+                </div>
               )}
               <NavLink
                 className="cart-btn active-button-style txt-white"
@@ -203,7 +125,8 @@ const Header = ({
                 onClick={() => {
                   ResetLocation()
                   hideMenu()
-                }}>
+                }}
+              >
                 <img src={Cart} alt="" aria-hidden="true" />
                 <p>Cart</p>
                 <p>({productQuantity})</p>
@@ -214,13 +137,17 @@ const Header = ({
         <img
           width="50"
           height="50"
-          className="burgers-bars"
+          className="burger-bars"
           src={isModalActive ? closeMenu : openMenu}
-          alt={isModalActive ? "Close Menu" : "Open Menu"}
-          onClick={showModal} />
+          alt={isModalActive ? "Close menu" : "Open menu"}
+          onClick={showModal}
+        />
       </nav>
+      <SuccessMsg />
     </header>
   )
 }
+// }
+
 
 export default Header;

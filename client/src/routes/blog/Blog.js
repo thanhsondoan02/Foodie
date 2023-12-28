@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import ReactPaginate from "react-paginate";
 import allBlogPosts from "../../data/allBlogPosts";
-import ScrollBtn from "../../helpers/ScrollBtn";
+import ScrollBtn from "../../helpers/ScrollButton";
 import ResetLocation from "../../helpers/ResetLocation";
 import BlogPosts from "./BlogPosts";
 
