@@ -8,6 +8,8 @@ import "./core-ui/responsive.css"
 import "./core-ui/leaflet.css"
 import './routes/contact/contact.css'
 import './routes/menu/menu.css'
+import './routes/about/About.css'
+import './routes/blog/blog.css'
 
 // Components
 import App from './App';

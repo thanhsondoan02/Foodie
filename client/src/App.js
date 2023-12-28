@@ -6,6 +6,9 @@ import ResetLocation from './helpers/ResetLocation';
 import LoginModal from './components/login/LoginModal';
 import Home from './routes/landing/Home';
 import Menu from './routes/menu/Menu';
+import Blog from './routes/blog/Blog';
+import Contact from './routes/contact/Contact';
+import About from './routes/about/About';
 
 function App() {
   const [productQuantity, setProductQuantity] = useState(0);
@@ -78,6 +81,9 @@ function App() {
       <Routes>
         <Route path='/' element={<Home />} />
         <Route exact path="/menu" element={<Menu />} />
+        <Route path='/blog' element={<Blog />} />
+        <Route path='/contact' element={<Contact />} />
+        <Route path='/about' element={<About />} />
       </Routes>
       <Footer />
     </BrowserRouter>
