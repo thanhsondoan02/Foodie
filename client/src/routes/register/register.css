@@ -55,7 +55,7 @@
 }
 
 .register-main input::placeholder {
-  color: var(--white);
+  color: gray;
   font-family: var(--poppins-font);
   font-size: 1rem;
   font-weight: 400;
@@ -67,7 +67,9 @@
 }
 
 .register-main input[type="text"],
-.register-main input[type="password"] {
+.register-main input[type="password"],
+.register-main input[type="number"],
+.register-main input[type="tel"] {
   color: var(--white);
   font-family: var(--poppins-font);
   font-size: 1rem;
@@ -88,6 +90,19 @@
 .register-main input[type="radio" i]:checked {
   background-color: var(--yellow);
   border: 1px solid var(--yellow);
+}
+
+/* Hide arrow on number input */
+/* Chrome, Safari, Edge, Opera */
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* Firefox */
+input[type=number] {
+  -moz-appearance: textfield;
 }
 
 .birthday {

@@ -44,21 +44,22 @@ function Menu() {
       .catch(err => { console.log(err) })
   }
 
-  const getCategoriesFromServer = () => {
+  const getCategoriesFromServer = async () => {
     if (categories.length > 1) return;
-    axios.get(`${baseUrl}/api/v1/food/category`)
-      .then(res => {
-        let addCategories = res.data.DT.map((category, _) => category.Category)
-        console.log(addCategories)
-        setCategories(categories.concat(addCategories))
-      })
-      .catch(err => { console.log(err) })
+    try {
+      const response = await axios.get(`${baseUrl}/api/v1/food/category`);
+      let addCategories = response.data.DT.map((category, _) => category.Category)
+      setCategories(categories.concat(addCategories))
+    } catch (err) {
+      console.log(err.message);
+    }
   }
 
   useEffect(() => {
     document.title = `Menu of ${currentCategory} | Pizza Time`;
     getCategoriesFromServer();
     getProductsFromServer(currentPage, currentCategory);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (

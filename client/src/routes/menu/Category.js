@@ -2,7 +2,6 @@ import React from "react";
 import { NavLink } from "react-router-dom";
 import SearchIcon from "../../assets/images/search-icon.png";
 import ResetLocation from "../../helpers/ResetLocation";
-import { color } from "framer-motion";
 
 function Category({ currentCategory, allCategories, changeCategory, resetPagination }) {
   return (
