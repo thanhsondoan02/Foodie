@@ -23,6 +23,7 @@ import {
   getOrderFromUser,
   deleteFoodFromOrderByUser,
   updateQuantityInCart,
+  uniqueCategoryFood,
 } from "../controller/foodController";
 
 import { newOrder } from "../controller/orderController";
@@ -46,6 +47,9 @@ const initApiRoutes = (app) => {
 
   // food router
   router.get("/food/getAll", getAllFood);
+
+  // unique category food
+  router.get("/food/category", uniqueCategoryFood);
 
   // Order
   router.post("/food/order", newOrder);

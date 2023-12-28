@@ -8,6 +8,7 @@ import {
   getAllOrder,
   deleteFoodFromOrder,
   updateOrder,
+  getAllCategoryFood,
 } from "../service/foodService";
 
 const getAllFood = async (req, res) => {
@@ -121,9 +122,56 @@ const updateQuantityInCart = async (req, res) => {
   }
 };
 
+const uniqueCategoryFood = async (req, res) => {
+  try {
+    let unique_category = await getAllCategoryFood();
+
+    return res.status(200).json({
+      EM: unique_category.EM,
+      EC: 0, // -1 -> error, 0 -> success,
+      DT: unique_category.DT,
+    });
+  } catch (e) {
+    return res.status(500).json({
+      EM: "Error From Server",
+      EC: "-1", // -1 -> error, 0 -> success,
+      DT: "",
+    });
+  }
+};
+
+const searchFood = async (req, res) => {
+  try {
+    const { orderId, foodId, quantity } = req.query;
+
+    console.log(
+      ">>>>>>> check orderId, foodId, quantity: ",
+      orderId,
+      foodId,
+      quantity
+    );
+
+    let update_order = await updateOrder(orderId, foodId, quantity);
+
+    return res.status(200).json({
+      EM: update_order.EM,
+      EC: 0, // -1 -> error, 0 -> success,
+      DT: update_order.DT,
+    });
+  } catch (e) {
+    return res.status(500).json({
+      EM: "Error From Server",
+      EC: "-1", // -1 -> error, 0 -> success,
+      DT: "",
+    });
+  }
+};
+
 module.exports = {
   getAllFood,
   getOrderFromUser,
   deleteFoodFromOrderByUser,
   updateQuantityInCart,
+  searchFood,
+  uniqueCategoryFood,
 };

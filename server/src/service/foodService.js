@@ -348,6 +348,28 @@ const updateOrder = async (orderId, foodId, quantity) => {
   }
 };
 
+const getAllCategoryFood = async () => {
+  try {
+    const uniqueCategories = await db.Food.findAll({
+      attributes: ["Category"],
+      group: ["Category"],
+    });
+
+    return {
+      EM: "Success with unique Category of Food",
+      EC: 0,
+      DT: uniqueCategories,
+    };
+  } catch (err) {
+    console.log("Error: ", err);
+    return {
+      EM: "Error in service",
+      EC: -2,
+      DT: [],
+    };
+  }
+};
+
 module.exports = {
   getFoodList,
   deleteFoodById,
@@ -358,4 +380,5 @@ module.exports = {
   getAllOrder,
   deleteFoodFromOrder,
   updateOrder,
+  getAllCategoryFood,
 };
