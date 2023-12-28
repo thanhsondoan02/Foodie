@@ -7,7 +7,7 @@ import ResetLocation from "../../helpers/ResetLocation";
 import BlogPosts from "./BlogPosts";
 
 const Blog = () => {
-  const itemsPerPage = 5;
+  const itemsPerPage = 10;
 
   const [currentPage, setCurrentPage] = useState(0);
   const [currentBlogPosts, setCurrentBlogPosts] = useState([]);
