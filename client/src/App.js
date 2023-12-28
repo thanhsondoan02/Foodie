@@ -5,6 +5,7 @@ import Header from './routes/landing/Header';
 import ResetLocation from './helpers/ResetLocation';
 import LoginModal from './components/login/LoginModal';
 import Home from './routes/landing/Home';
+import Menu from './routes/menu/Menu';
 
 function App() {
   const [productQuantity, setProductQuantity] = useState(0);
@@ -76,6 +77,7 @@ function App() {
         productQuantity={productQuantity} />
       <Routes>
         <Route path='/' element={<Home />} />
+        <Route exact path="/menu" element={<Menu />} />
       </Routes>
       <Footer />
     </BrowserRouter>
