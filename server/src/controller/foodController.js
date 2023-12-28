@@ -9,6 +9,9 @@ import {
   deleteFoodFromOrder,
   updateOrder,
   getAllCategoryFood,
+  searchFoodByItemName,
+  searchFoodByItemNameWithPagination,
+  appendFoodToCart,
 } from "../service/foodService";
 
 const getAllFood = async (req, res) => {
@@ -122,6 +125,33 @@ const updateQuantityInCart = async (req, res) => {
   }
 };
 
+const addFoodToCart = async (req, res) => {
+  let listFood = req.body;
+  try {
+    if (listFood) {
+      let idUser = req.user.id;
+      let order = await appendFoodToCart(listFood, idUser);
+      return res.status(200).json({
+        EM: order.EM,
+        EC: 0, // -1 -> error, 0 -> success,
+        DT: order.DT,
+      });
+    } else {
+      return res.status(200).json({
+        EM: "Error listFood (maybe)",
+        EC: -1, // -1 -> error, 0 -> success,
+        DT: "",
+      });
+    }
+  } catch (e) {
+    return res.status(500).json({
+      EM: "Error From Server",
+      EC: "-1", // -1 -> error, 0 -> success,
+      DT: "",
+    });
+  }
+};
+
 const uniqueCategoryFood = async (req, res) => {
   try {
     let unique_category = await getAllCategoryFood();
@@ -142,21 +172,25 @@ const uniqueCategoryFood = async (req, res) => {
 
 const searchFood = async (req, res) => {
   try {
-    const { orderId, foodId, quantity } = req.query;
+    let food_name = req.query.foodName;
 
-    console.log(
-      ">>>>>>> check orderId, foodId, quantity: ",
-      orderId,
-      foodId,
-      quantity
-    );
-
-    let update_order = await updateOrder(orderId, foodId, quantity);
+    let foodItem;
+    if (req.query.page && req.query.limit) {
+      let page = req.query.page;
+      let limit = req.query.limit;
+      foodItem = await searchFoodByItemNameWithPagination(
+        food_name,
+        +page,
+        +limit
+      );
+    } else {
+      foodItem = await searchFoodByItemName(food_name);
+    }
 
     return res.status(200).json({
-      EM: update_order.EM,
+      EM: foodItem.EM,
       EC: 0, // -1 -> error, 0 -> success,
-      DT: update_order.DT,
+      DT: foodItem.DT,
     });
   } catch (e) {
     return res.status(500).json({
@@ -174,4 +208,5 @@ module.exports = {
   updateQuantityInCart,
   searchFood,
   uniqueCategoryFood,
+  addFoodToCart,
 };

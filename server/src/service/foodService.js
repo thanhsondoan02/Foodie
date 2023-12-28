@@ -1,4 +1,5 @@
 import db from "../models/index";
+const { Op } = require("sequelize");
 
 const getFoodList = async () => {
   try {
@@ -188,7 +189,31 @@ const deleteFoodById = async (id) => {
 const getAllOrder = async (idUser) => {
   try {
     // console.log(">>>>>>. CHECK ID USER IN SERVICE: ", idUser);
-    let orders = await db.Order.findAll({
+    // let orders = await db.Order.findAll({
+    //   where: {
+    //     user_id: idUser,
+    //     status_payment: "Cart",
+    //     // id: {
+    //     //   [db.Sequelize.Op.in]: db.Sequelize.literal(
+    //     //     `(SELECT order_id FROM Order_Food WHERE order_id = Order.id)`
+    //     //   ),
+    //     // },
+    //   }, // Lọc đơn hàng theo id người dùng
+    //   include: [
+    //     {
+    //       // model: db.Order_Food,
+    //       // include: [
+    //       //   {
+    //       //     model: db.Food,
+    //       //   },
+    //       // ],
+    //       model: db.Food,
+    //       // required: true,
+    //     },
+    //   ],
+    // });
+
+    const { count, rows } = await db.Order.findAndCountAll({
       where: {
         user_id: idUser,
         status_payment: "Cart",
@@ -211,10 +236,16 @@ const getAllOrder = async (idUser) => {
         },
       ],
     });
+
+    let data = {
+      totalFoodInCart: count,
+      foods: rows,
+    };
+
     return {
-      EM: "Success with get by pagination",
+      EM: "Get All Order of User",
       EC: 0,
-      DT: orders,
+      DT: data,
     };
   } catch (err) {
     console.log("Error: ", err);
@@ -370,6 +401,164 @@ const getAllCategoryFood = async () => {
   }
 };
 
+const searchFoodByItemName = async (foodName) => {
+  try {
+    console.log(">>>>> Food name is: ", foodName);
+    const foods = await db.Food.findAll({
+      where: {
+        ItemName: {
+          [Op.substring]: foodName,
+        },
+      },
+    });
+
+    return {
+      EM: "Success with search Food",
+      EC: 0,
+      DT: foods,
+    };
+  } catch (err) {
+    // console.log("Error: ", err);
+    return {
+      EM: "Error in service",
+      EC: -2,
+      DT: [],
+    };
+  }
+};
+
+const searchFoodByItemNameWithPagination = async (foodName, page, limit) => {
+  try {
+    console.log(">>>>> Food name is: ", foodName, page, limit);
+    const offset = (page - 1) * limit;
+    console.log(">>>>>>>>> limit, offset: ", limit, offset);
+    const { count, rows } = await db.Food.findAndCountAll({
+      where: {
+        ItemName: {
+          [Op.substring]: foodName,
+        },
+      },
+      limit: limit,
+      offset: offset,
+      order: [["id", "ASC"]],
+    });
+
+    let totalPages = Math.ceil(count / limit);
+    let data = {
+      totalRows: count,
+      totalPages: totalPages,
+      foods: rows,
+    };
+
+    return {
+      EM: "Success with search Food with Paginate",
+      EC: 0,
+      DT: data,
+    };
+  } catch (err) {
+    return {
+      EM: "Error in service",
+      EC: -2,
+      DT: [],
+    };
+  }
+};
+
+const appendFoodToCart = async (listFood, idUser) => {
+  try {
+    const orders = await db.Order.findAll({
+      where: {
+        user_id: idUser,
+        status_payment: "Cart",
+      },
+    });
+
+    if (orders.length === 0) {
+      let currentDate = new Date();
+      var randomTime =
+        Math.random() * (2 * 60 * 60 * 1000 - 30 * 60 * 1000) + 30 * 60 * 1000;
+
+      const newOrder = await db.Order.create({
+        order_time: currentDate.getTime(),
+        delivery_time: currentDate.getTime() + randomTime,
+        total_money: 0, // Sẽ được tính toán sau
+        user_id: idUser,
+        status_payment: "Cart",
+        shipper_id: 5, // ID của shipper
+      });
+
+      let total_money = 0;
+
+      for (const food of listFood) {
+        total_money += parseFloat(food.ItemPrice) * food.quantity;
+
+        await db.Order_Food.create({
+          order_id: newOrder.id,
+          food_id: food.id,
+          quantity: food.quantity,
+        });
+      }
+
+      const updatedOrder = await newOrder.update({
+        total_money: total_money,
+      });
+
+      return {
+        EM: "Success in creating order with food",
+        EC: 0,
+        DT: updatedOrder,
+      };
+    } else {
+      const existingOrder = orders[0];
+
+      for (const food of listFood) {
+        // Kiểm tra xem món ăn đã tồn tại trong đơn hàng chưa
+        const existingFood = await db.Order_Food.findOne({
+          where: {
+            order_id: existingOrder.id,
+            food_id: food.id,
+          },
+        });
+
+        if (existingFood) {
+          // Cập nhật số lượng của món ăn đã tồn tại
+          existingFood.quantity += food.quantity;
+          await existingFood.save();
+
+          // Tính lại total_money của đơn hàng
+          existingOrder.total_money +=
+            parseFloat(food.ItemPrice) * food.quantity;
+        } else {
+          // Tạo món ăn mới trong đơn hàng
+          await db.Order_Food.create({
+            order_id: existingOrder.id,
+            food_id: food.id,
+            quantity: food.quantity,
+          });
+
+          // Tính lại total_money của đơn hàng
+          existingOrder.total_money +=
+            parseFloat(food.ItemPrice) * food.quantity;
+        }
+      }
+
+      await existingOrder.save();
+
+      return {
+        EM: "Success in adding food to existing order",
+        EC: 0,
+        DT: existingOrder,
+      };
+    }
+  } catch (err) {
+    return {
+      EM: "Error in service",
+      EC: -2,
+      DT: null,
+    };
+  }
+};
+
 module.exports = {
   getFoodList,
   deleteFoodById,
@@ -381,4 +570,7 @@ module.exports = {
   deleteFoodFromOrder,
   updateOrder,
   getAllCategoryFood,
+  searchFoodByItemName,
+  searchFoodByItemNameWithPagination,
+  appendFoodToCart,
 };

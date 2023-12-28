@@ -24,6 +24,8 @@ import {
   deleteFoodFromOrderByUser,
   updateQuantityInCart,
   uniqueCategoryFood,
+  searchFood,
+  addFoodToCart,
 } from "../controller/foodController";
 
 import { newOrder } from "../controller/orderController";
@@ -51,6 +53,9 @@ const initApiRoutes = (app) => {
   // unique category food
   router.get("/food/category", uniqueCategoryFood);
 
+  // search Food
+  router.get("/food/search", searchFood);
+
   // Order
   router.post("/food/order", newOrder);
 
@@ -62,6 +67,9 @@ const initApiRoutes = (app) => {
 
   // update quantity in shopping cart
   router.put("/food/updateOrder", updateQuantityInCart);
+
+  // append food to cart
+  router.post("/food/appendOrder", addFoodToCart);
 
   //group router
   router.get("/group/getAll", getAllGroups);
