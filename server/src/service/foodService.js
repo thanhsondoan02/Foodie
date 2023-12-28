@@ -29,6 +29,37 @@ const getFoodList = async () => {
   }
 };
 
+const getFoodByPaginationAndCategory = async (page, limit, category) => {
+  try {
+    let offset = (page - 1) * limit;
+    const { count, rows } = await db.Food.findAndCountAll({
+      offset: offset,
+      limit: limit,
+      where: { Category: category },
+      order: [["id", "DESC"]],
+    });
+
+    let totalPages = Math.ceil(count / limit);
+    let data = {
+      totalRows: count,
+      totalPages: totalPages,
+      foods: rows,
+    };
+    return {
+      EM: "Success with get by pagination",
+      EC: 0,
+      DT: data,
+    };
+  } catch (err) {
+    console.log("Error: ", err);
+    return {
+      EM: "Error in service",
+      EC: -2,
+      DT: [],
+    };
+  }
+};
+
 const getFoodByPagination = async (page, limit) => {
   try {
     let offset = (page - 1) * limit;
@@ -323,6 +354,7 @@ module.exports = {
   getFoodByName,
   updateFoodById,
   getFoodByPagination,
+  getFoodByPaginationAndCategory,
   getAllOrder,
   deleteFoodFromOrder,
   updateOrder,

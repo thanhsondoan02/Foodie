@@ -32,7 +32,7 @@ module.exports = {
       sale: {
         type: Sequelize.BOOLEAN,
       },
-      attributes: {
+      Attributes: {
         type: Sequelize.STRING,
       },
       createdAt: {

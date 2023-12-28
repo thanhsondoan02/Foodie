@@ -4,6 +4,7 @@ import {
   getFoodByName,
   updateFoodById,
   getFoodByPagination,
+  getFoodByPaginationAndCategory,
   getAllOrder,
   deleteFoodFromOrder,
   updateOrder,
@@ -12,15 +13,32 @@ import {
 const getAllFood = async (req, res) => {
   try {
     if (req.query.page && req.query.limit) {
-      let page = req.query.page;
-      let limit = req.query.limit;
+      if (req.query.category) {
+        let page = req.query.page;
+        let limit = req.query.limit;
+        let category = req.query.category;
 
-      let data = await getFoodByPagination(+page, +limit);
-      return res.status(200).json({
-        EM: data.EM,
-        EC: data.EC, // -1 -> error, 0 -> success,
-        DT: data.DT,
-      });
+        let data = await getFoodByPaginationAndCategory(
+          +page,
+          +limit,
+          category
+        );
+        return res.status(200).json({
+          EM: data.EM,
+          EC: data.EC, // -1 -> error, 0 -> success,
+          DT: data.DT,
+        });
+      } else {
+        let page = req.query.page;
+        let limit = req.query.limit;
+
+        let data = await getFoodByPagination(+page, +limit);
+        return res.status(200).json({
+          EM: data.EM,
+          EC: data.EC, // -1 -> error, 0 -> success,
+          DT: data.DT,
+        });
+      }
     } else {
       let data = await getFoodList();
       return res.status(200).json({
