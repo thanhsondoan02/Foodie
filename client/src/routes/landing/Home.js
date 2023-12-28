@@ -15,7 +15,7 @@ import Blog from "./Blog";
 import SimpleContact from "./SimpleContact";
 
 function Home() {
-  const baseUrl = "https://2e577fbb-d06d-412f-b4ea-3ef3d13a77e5.mock.pstmn.io"
+  const baseUrl = "https://mocki.io"
 
   const [homeData, setHomeData] = useState({
     adVideo: {
@@ -69,7 +69,7 @@ function Home() {
   })
 
   useEffect(() => {
-    axios.get(`${baseUrl}/home`)
+    axios.get(`${baseUrl}/v1/2a449ed7-c93e-4e22-bd93-bea0e51cbc34`)
       .then(res => {
         setHomeData(res.data)
       })
