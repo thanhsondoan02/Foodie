@@ -9,39 +9,14 @@ import GridItem from "./GridItem";
 import axios from "axios";
 
 function Menu() {
-  const categories = [
-    {
-      name: "Menu",
-      id: 0,
-    },
-    {
-      name: "Pizza",
-      id: 1,
-    },
-    {
-      name: "Pasta",
-      id: 2,
-    },
-    {
-      name: "Sushi",
-      id: 3,
-    },
-    {
-      name: "Drinks",
-      id: 4,
-    },
-    {
-      name: "Sale",
-      id: 5,
-    },
-  ]
   const baseUrl = "http://fall2324w20g2.int3306.freeddns.org"
   const limit = 5;
 
   const [currentProducts, setCurrentProducts] = useState([]);
   const [totalPages, setTotalPages] = useState(0);
-  const [currentCategory, setCurrentCategory] = useState(0);
+  const [currentCategory, setCurrentCategory] = useState("All");
   const [currentPage, setCurrentPage] = useState(1);
+  const [categories, setCategories] = useState(["All"]);
 
   const onPageChange = (event) => {
     getProductsFromServer(event.selected + 1, currentCategory);
@@ -51,19 +26,17 @@ function Menu() {
   const resetPagination = () => {
   }
 
-  const onCategoryChange = (newCategoryId) => {
-    getProductsFromServer(1, newCategoryId);
+  const onCategoryChange = (newCategory) => {
+    getProductsFromServer(1, newCategory);
   };
-
-  const getCategoryName = (id) => {
-    const category = categories.find(category => category.id === id);
-    return category.name;
-  }
 
   const getProductsFromServer = (page, category) => {
     setCurrentPage(page);
     setCurrentCategory(category);
-    axios.get(`${baseUrl}/api/v1/food/getAll?page=${page}&limit=${limit}`)
+    let url = category === "All"
+      ? `${baseUrl}/api/v1/food/getAll?page=${page}&limit=${limit}`
+      : `${baseUrl}/api/v1/food/getAll?page=${page}&limit=${limit}&category=${category}`
+    axios.get(url)
       .then(res => {
         setTotalPages(res.data.DT.totalPages)
         setCurrentProducts(res.data.DT.foods)
@@ -71,8 +44,20 @@ function Menu() {
       .catch(err => { console.log(err) })
   }
 
+  const getCategoriesFromServer = () => {
+    if (categories.length > 1) return;
+    axios.get(`${baseUrl}/api/v1/food/category`)
+      .then(res => {
+        let addCategories = res.data.DT.map((category, _) => category.Category)
+        console.log(addCategories)
+        setCategories(categories.concat(addCategories))
+      })
+      .catch(err => { console.log(err) })
+  }
+
   useEffect(() => {
-    document.title = `${getCategoryName(currentCategory)} | Pizza Time`;
+    document.title = `Menu of ${currentCategory} | Pizza Time`;
+    getCategoriesFromServer();
     getProductsFromServer(currentPage, currentCategory);
   }, []);
 
@@ -111,7 +96,7 @@ function Menu() {
           pageCount={totalPages}
           previousLabel="&#60;"
           renderOnZeroPageCount={null}
-          forcePage={currentPage-1}
+          forcePage={currentPage - 1}
         />
       </motion.main>
   );

@@ -10,6 +10,7 @@ import './routes/contact/contact.css'
 import './routes/menu/menu.css'
 import './routes/about/About.css'
 import './routes/blog/blog.css'
+import './routes/register/register.css'
 
 // Components
 import App from './App';

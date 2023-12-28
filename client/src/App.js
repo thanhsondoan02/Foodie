@@ -9,6 +9,7 @@ import Menu from './routes/menu/Menu';
 import Blog from './routes/blog/Blog';
 import Contact from './routes/contact/Contact';
 import About from './routes/about/About';
+import Register from './routes/register/Register';
 
 function App() {
   const [productQuantity, setProductQuantity] = useState(0);
@@ -80,10 +81,11 @@ function App() {
         productQuantity={productQuantity} />
       <Routes>
         <Route path='/' element={<Home />} />
-        <Route exact path="/menu" element={<Menu />} />
+        <Route path="/menu" element={<Menu />} />
         <Route path='/blog' element={<Blog />} />
         <Route path='/contact' element={<Contact />} />
         <Route path='/about' element={<About />} />
+        <Route path='/register' element={<Register activateLoginModal={activeLoginModal} />} />
       </Routes>
       <Footer />
     </BrowserRouter>

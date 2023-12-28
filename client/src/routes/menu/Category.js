@@ -17,18 +17,18 @@ function Category({ currentCategory, allCategories, changeCategory, resetPaginat
         <img src={SearchIcon} alt="" aria-hidden="true" className="menu-search-icon" />
       </section>
       <ul>
-        {allCategories.map((category) => (
-          <li key={category.id}>
+        {allCategories.map((category, index) => (
+          <li key={index}>
             <NavLink
               to="/menu"
               onClick={() => {
-                changeCategory(category.id);
+                changeCategory(category);
                 ResetLocation();
                 resetPagination();
               }}
-              style={{color: currentCategory === category.id ? "#F8B703" : "#fff"}}
+              style={{color: currentCategory === category ? "#F8B703" : "#fff"}}
             >
-              {category.name}
+              {category}
             </NavLink>
           </li>
         ))}
