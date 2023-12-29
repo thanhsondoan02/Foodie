@@ -41,7 +41,7 @@ const initApiRoutes = (app) => {
 
   //login-register router
   router.post("/register", handleRegister);
-  router.get("/login", handleLogin);
+  router.post("/login", handleLogin);
   router.get("/logout", handleLogout);
 
   //user router
