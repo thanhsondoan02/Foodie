@@ -59,4 +59,26 @@ const getBlogByPagination = async (page, limit) => {
   }
 };
 
-module.exports = { getBlogList, getBlogByPagination };
+const getBlogById = async (id) => {
+  try {
+    let blog = {};
+    blog = await db.Blog.findOne({
+      where: {
+        id: id,
+      },
+    });
+    return {
+      EM: "Blog by id",
+      EC: 0,
+      DT: blog,
+    };
+  } catch (err) {
+    console.log("Error: ", err);
+    return {
+      EM: "Error in service",
+      EC: -2,
+      DT: [],
+    };
+  }
+};
+module.exports = { getBlogList, getBlogByPagination, getBlogById };

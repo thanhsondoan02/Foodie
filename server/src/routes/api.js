@@ -83,7 +83,7 @@ const initApiRoutes = (app) => {
 
   //get all blog
 
-  router.get("/blog/getAll", getAllBlog);
+  router.get("/blog/get", getAllBlog);
 
   return app.use("/api/v1/", router);
 };

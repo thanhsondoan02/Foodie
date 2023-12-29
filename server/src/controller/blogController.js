@@ -1,4 +1,8 @@
-import { getBlogList, getBlogByPagination } from "../service/blogService";
+import {
+  getBlogList,
+  getBlogByPagination,
+  getBlogById,
+} from "../service/blogService";
 
 const getAllBlog = async (req, res) => {
   try {
@@ -7,6 +11,14 @@ const getAllBlog = async (req, res) => {
       let limit = req.query.limit;
 
       let data = await getBlogByPagination(+page, +limit);
+      return res.status(200).json({
+        EM: data.EM,
+        EC: data.EC, // -1 -> error, 0 -> success,
+        DT: data.DT,
+      });
+    } else if (req.query.id) {
+      let id = req.query.id;
+      let data = await getBlogById(id);
       return res.status(200).json({
         EM: data.EM,
         EC: data.EC, // -1 -> error, 0 -> success,
