@@ -3,10 +3,9 @@ import LinkButton from "../LinkButton";
 import { useNavigate } from "react-router-dom";
 import { checkValueLoginError, checkPasswordError } from "../../helpers/checkInput";
 import { apiLogin } from "../../services/RegisterService";
-import axios from 'axios'
 
-const LoginFragment = ({ closeLoginFragment, setValidLogin,
-  isLoginBoxOpen, hideMenuBox, validLogin, getUser }) => {
+const LoginFragment = ({ closeLoginFragment, isLoginBoxOpen, hideMenuBox,
+  validateToken }) => {
   const navigate = useNavigate();
   const [formValue, setFormValue] = useState({ valueLogin: '', password: '' });
   const [isLoading, setIsLoading] = useState(false);
@@ -62,17 +61,17 @@ const LoginFragment = ({ closeLoginFragment, setValidLogin,
           closeLoginFragment();
           resetFragment();
           navigate('/');
-          console.log(response.data.DT);
           localStorage.setItem('token', response.data.DT.access_token);
-          sessionStorage.setItem('info', {
-            id: response.data.DT.id,
-            email: response.data.DT.email,
-            fullName: response.data.DT.fullName,
-            age: response.data.DT.age,
-            address: response.data.DT.address,
-            phone: response.data.DT.phone,
-            gender: response.data.DT.gender
-          });
+          validateToken()
+          // sessionStorage.setItem('info', {
+          //   id: response.data.DT.id,
+          //   email: response.data.DT.email,
+          //   fullName: response.data.DT.fullName,
+          //   age: response.data.DT.age,
+          //   address: response.data.DT.address,
+          //   phone: response.data.DT.phone,
+          //   gender: response.data.DT.gender
+          // });
         } else {
           console.log(response.data.EM);
           setIsLoading(false);

@@ -20,15 +20,24 @@ const apiRegister = (email, password, fullName, address, age, phone, gender) => 
 }
 
 const apiLogin = (valueLogin, password) => {
-  return axios.get(`${baseUrl}/api/v1/login`,{
-    headers: {
-      'Content-Type': 'application/json'
-    },
-    data: {
+  return axios.post(`${baseUrl}/api/v1/login`,
+    {
       'valueLogin': valueLogin,
       'password': password
+    },
+    {
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    });
+}
+
+const apiLogout = () => {
+  return axios.get(`${baseUrl}/api/v1/logout`, {
+    headers: {
+      'Content-Type': 'application/json'
     }
   });
 }
 
-export { apiRegister, apiLogin }
+export { apiRegister, apiLogin, apiLogout }

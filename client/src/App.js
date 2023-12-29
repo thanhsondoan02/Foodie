@@ -10,14 +10,15 @@ import Blog from './routes/blog/Blog';
 import Contact from './routes/contact/Contact';
 import About from './routes/about/About';
 import Register from './routes/register/Register';
+import Cart from './routes/cart/Cart';
+import { apiLogout } from './services/RegisterService';
+import { apiGetCart } from './services/CartService';
 
 function App() {
-  const [productQuantity, setProductQuantity] = useState(0);
-  const [validLogin, setValidLogin] = useState(false);
   const [isMenuBoxOpen, setIsMenuBoxOpen] = useState(false);
   const [isLoginBoxOpen, setIsLoginBoxOpen] = useState(false);
-  const [currentUser, setCurrentUser] = useState({});
-  const [cartItems, setCartItems] = useState([]);
+  const [isValidLogin, setIsValidLogin] = useState(false);
+  const [cartCount, setCartCount] = useState(0);
 
   const closeLoginFragment = () => {
     setIsLoginBoxOpen(false);
@@ -36,32 +37,42 @@ function App() {
     setIsMenuBoxOpen(!isMenuBoxOpen);
   }
 
-  const handleLogout = () => {
-    setValidLogin(false);
+  const onLogoutClick = async () => {
     setIsMenuBoxOpen(false);
-    setCurrentUser({});
     ResetLocation();
-    setCartItems([]);
-    setProductQuantity(0);
-    sessionStorage.clear();
-  }
-
-  const getUser = async (id) => {
+    localStorage.removeItem('token');
+    setIsValidLogin(false);
+    setCartCount(0);
     try {
-      const response = await fetch(`${process.env.REACT_APP_USERS_URL}/${id}`);
-      const body = await response.json();
-      setCurrentUser(body.data[0]);
-      const jsonUser = JSON.stringify(body.data[0]);
-      sessionStorage.setItem('currentUser', jsonUser);
-      if (response.status === 200) {
-        return true;
-      }
+      await apiLogout();
     } catch (err) {
-      console.log(err.message);
-      return false;
+      console.log(err);
     }
   }
 
+  const validateToken = async () => {
+    try {
+      const response = await apiGetCart();
+      if (response.data.EC === 0) {
+        setIsValidLogin(true);
+        setCartCount(response.data.DT.totalFoodInCart);
+      } else {
+        console.log(response.data.EM);
+        localStorage.removeItem('token');
+        setIsValidLogin(false);
+      }
+    } catch (err) {
+      console.log(err);
+      localStorage.removeItem('token');
+      setIsValidLogin(false);
+    }
+  }
+
+  useEffect(() => {
+    if (localStorage.getItem('token') !== null) {
+      validateToken();
+    }
+  }, []);
 
   return (
     <BrowserRouter>
@@ -69,20 +80,18 @@ function App() {
         loginModal={
           <LoginFragment
             closeLoginFragment={closeLoginFragment}
-            setValidLogin={setValidLogin}
             isLoginBoxOpen={isLoginBoxOpen}
             hideMenuBox={hideMenuBox}
-            validLogin={validLogin}
-            getUser={getUser} />
+            validateToken={validateToken} />
         }
-        productQuantity={productQuantity}
-        handleLogout={handleLogout}
+        onLogoutClick={onLogoutClick}
         showModal={showModal}
         isMenuBoxOpen={isMenuBoxOpen}
         hideMenuBox={hideMenuBox}
-        validLogin={validLogin}
         openLoginFragment={openLoginFragment}
-         />
+        isValidLogin={isValidLogin}
+        cartCount={cartCount}
+      />
       <Routes>
         <Route path='/' element={<Home />} />
         <Route path="/menu" element={<Menu />} />
@@ -90,6 +99,7 @@ function App() {
         <Route path='/contact' element={<Contact />} />
         <Route path='/about' element={<About />} />
         <Route path='/register' element={<Register openLoginFragment={openLoginFragment} />} />
+        {/* <Route path='/cart' element={<Cart openLoginFragment={openLoginFragment} />} /> */}
       </Routes>
       <Footer />
     </BrowserRouter>

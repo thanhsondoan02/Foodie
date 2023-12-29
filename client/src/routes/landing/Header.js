@@ -7,9 +7,8 @@ import Cart from '../../assets/images/cart-icon.png'
 import SuccessMsg from '../../components/SuccessMsg'
 import ResetLocation from '../../helpers/ResetLocation'
 
-const Header = ({ loginModal, productQuantity, handleLogout,
-  showModal, isMenuBoxOpen, hideMenuBox,
-  validLogin, openLoginFragment }) => {
+const Header = ({ loginModal, onLogoutClick ,showModal, isMenuBoxOpen,
+   hideMenuBox, openLoginFragment, isValidLogin, cartCount }) => {
   const location = [
     {
       path: '/',
@@ -77,7 +76,7 @@ const Header = ({ loginModal, productQuantity, handleLogout,
             )
           })}
 
-          {validLogin ? <li>
+          {isValidLogin ? <li>
             <NavLink
               onClick={() => {
                 ResetLocation()
@@ -93,13 +92,13 @@ const Header = ({ loginModal, productQuantity, handleLogout,
           </li> : null}
           <li>
             <div className="login-and-cart">
-              {validLogin ? (
+              {isValidLogin ? (
                 <Link
                   to="/"
                   className="passive-button-style txt-white"
                   onClick={() => {
                     ResetLocation()
-                    handleLogout()
+                    onLogoutClick()
                   }}
                 >
                   Log out
@@ -125,7 +124,7 @@ const Header = ({ loginModal, productQuantity, handleLogout,
               >
                 <img src={Cart} alt="" aria-hidden="true" />
                 <p>Cart</p>
-                <p>({productQuantity})</p>
+                <p>({cartCount})</p>
               </NavLink>
             </div>
           </li>
