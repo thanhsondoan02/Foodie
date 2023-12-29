@@ -1,7 +1,5 @@
 import jwt, { decode } from "jsonwebtoken";
-// require("dotenv").config();
-// require("dotenv").config({ path: "./config.env" });
-require("dotenv").config({ path: "/../../config.env" });
+require("dotenv").config({ path: "./config.env" });
 
 const nonSecurePaths = [
   "/register",
@@ -10,6 +8,7 @@ const nonSecurePaths = [
   "/food/getAll",
   "/food/category",
   "/food/search",
+  "/sendMail",
 ];
 
 // Create token

@@ -1,7 +1,4 @@
-// require("dotenv").config();
-// require("dotenv").config({ path: "./config.env" });
-require("dotenv").config({ path: "/../../config.env" });
-
+require("dotenv").config({ path: "./config.env" });
 const configCors = (app) => {
   // Add headers
   app.use(function (req, res, next) {

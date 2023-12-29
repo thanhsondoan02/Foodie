@@ -30,6 +30,8 @@ import {
 
 import { newOrder } from "../controller/orderController";
 
+import { sendMail } from "../controller/mailController";
+
 const router = express.Router();
 
 const initApiRoutes = (app) => {
@@ -73,6 +75,9 @@ const initApiRoutes = (app) => {
 
   //group router
   router.get("/group/getAll", getAllGroups);
+
+  //send mail to server
+  router.post("/sendMail", sendMail);
 
   return app.use("/api/v1/", router);
 };
