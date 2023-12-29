@@ -32,6 +32,8 @@ import { newOrder } from "../controller/orderController";
 
 import { sendMail } from "../controller/mailController";
 
+import { getAllBlog } from "../controller/blogController";
+
 const router = express.Router();
 
 const initApiRoutes = (app) => {
@@ -78,6 +80,10 @@ const initApiRoutes = (app) => {
 
   //send mail to server
   router.post("/sendMail", sendMail);
+
+  //get all blog
+
+  router.get("/blog/getAll", getAllBlog);
 
   return app.use("/api/v1/", router);
 };
