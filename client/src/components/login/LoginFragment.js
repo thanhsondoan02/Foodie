@@ -2,6 +2,8 @@ import React, { useState } from "react";
 import LinkButton from "../LinkButton";
 import { useNavigate } from "react-router-dom";
 import { checkValueLoginError, checkPasswordError } from "../../helpers/checkInput";
+import { apiLogin } from "../../services/RegisterService";
+import axios from 'axios'
 
 const LoginFragment = ({ closeLoginFragment, setValidLogin,
   isLoginBoxOpen, hideMenuBox, validLogin, getUser }) => {
@@ -37,9 +39,51 @@ const LoginFragment = ({ closeLoginFragment, setValidLogin,
     resetFragment()
   }
 
-  const onSubmitClick = () => {
-    // setIsLoading(true);
-    console.log("");
+  const submitCheck = (value, check, setError) => {
+    let error = check(value);
+    if (error !== '') {
+      setError(error);
+      setIsLoading(false);
+      return false;
+    }
+    return true;
+  }
+
+  const onSubmitClick = async (e) => {
+    e.preventDefault();
+    setIsLoading(true);
+    setServerError('');
+
+    if (submitCheck(formValue.valueLogin, checkValueLoginError, setValueLoginError)
+      && submitCheck(formValue.password, checkPasswordError, setPasswordError)) {
+      try {
+        const response = await apiLogin(formValue.valueLogin, formValue.password);
+        if (response.data.EC === 0) {
+          closeLoginFragment();
+          resetFragment();
+          navigate('/');
+          console.log(response.data.DT);
+          localStorage.setItem('token', response.data.DT.access_token);
+          sessionStorage.setItem('info', {
+            id: response.data.DT.id,
+            email: response.data.DT.email,
+            fullName: response.data.DT.fullName,
+            age: response.data.DT.age,
+            address: response.data.DT.address,
+            phone: response.data.DT.phone,
+            gender: response.data.DT.gender
+          });
+        } else {
+          console.log(response.data.EM);
+          setIsLoading(false);
+          setServerError(response.data.EM);
+        }
+      } catch (err) {
+        console.log(err);
+        setIsLoading(false);
+        setServerError(err);
+      }
+    }
   }
 
   return (
@@ -62,7 +106,7 @@ const LoginFragment = ({ closeLoginFragment, setValidLogin,
               <img alt="Processing request" src="https://media0.giphy.com/media/L05HgB2h6qICDs5Sms/giphy.gif?cid=ecf05e472hf2wk1f2jou3s5fcnx1vek6ggnfcvhsjbeh7v5u&ep=v1_stickers_search&rid=giphy.gif&ct=s" />
             </div> :
 
-            <form onSubmit={onSubmitClick()}>
+            <form onSubmit={onSubmitClick}>
               <input onChange={validateValueLogin} value={formValue.valueLogin} name="valueLogin" type="text" placeholder="Email or phone number" />
               <span className="login-input-err">{valueLoginError}</span>
 

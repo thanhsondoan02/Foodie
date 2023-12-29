@@ -46,7 +46,6 @@ const Register = ({ openLoginFragment }) => {
         const response = await apiRegister(
           formValue.email, formValue.password, formValue.fullName,
           formValue.address, formValue.age, formValue.phone, formValue.gender)
-        console.log(response.data);
         if (response.data.EC === 0) {
           setLoading(false);
           setRegisterSuccess(true);
@@ -63,6 +62,7 @@ const Register = ({ openLoginFragment }) => {
         setLoading(false);
         setRegistrationFail(true);
         window.scrollTo(0, 0);
+        setServerError(err.message);
       }
     }
   }

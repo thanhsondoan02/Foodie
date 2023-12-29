@@ -3,7 +3,6 @@ import axios from "axios";
 const baseUrl = "http://fall2324w20g2.int3306.freeddns.org"
 
 const apiRegister = (email, password, fullName, address, age, phone, gender) => {
-  
   const formData = new URLSearchParams();
   formData.append('email', email);
   formData.append('password', password);
@@ -20,4 +19,16 @@ const apiRegister = (email, password, fullName, address, age, phone, gender) => 
   });
 }
 
-export { apiRegister }
+const apiLogin = (valueLogin, password) => {
+  return axios.get(`${baseUrl}/api/v1/login`,{
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    data: {
+      'valueLogin': valueLogin,
+      'password': password
+    }
+  });
+}
+
+export { apiRegister, apiLogin }

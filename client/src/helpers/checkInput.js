@@ -83,7 +83,6 @@ export const checkGenderError = (gender) => {
 }
 
 export const checkValueLoginError = (valueLogin) => {
-  console.log(valueLogin)
   if (!valueLogin) {
     return ('Please enter your email address or phone number');
   } else if (!emailRegex.test(valueLogin) && !phoneRegex.test(valueLogin)) {
