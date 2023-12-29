@@ -3,7 +3,7 @@ import { NavLink } from "react-router-dom";
 import SearchIcon from "../../assets/images/search-icon.png";
 import ResetLocation from "../../helpers/ResetLocation";
 
-function Category({ currentCategory, allCategories, changeCategory, resetPagination }) {
+function Category({ currentCategory, allCategories, changeCategory }) {
   return (
     <article className="side-menu">
       <section className="menu-search-section">
@@ -23,7 +23,6 @@ function Category({ currentCategory, allCategories, changeCategory, resetPaginat
               onClick={() => {
                 changeCategory(category);
                 ResetLocation();
-                resetPagination();
               }}
               style={{color: currentCategory === category ? "#F8B703" : "#fff"}}
             >

@@ -7,13 +7,15 @@ import {
   checkRepeatPasswordError,
   checkAddressError,
   checkAgeError,
-  checkPhoneError
+  checkPhoneError,
+  checkGenderError
 } from "../../components/checkInput";
-import { color } from "framer-motion";
+import axios from "axios";
+import { apiRegister } from "../../services/RegisterService";
 
 const Register = ({ activateLoginModal }) => {
 
-  const [formValue, setFormValue] = useState({ id: '', email: '', password: '', repeatPassword: '', fullName: '', address: '', age: '', phone: '', gender: '' });
+  const [formValue, setFormValue] = useState({ email: '', password: '', repeatPassword: '', fullName: '', address: '', age: '', phone: '', gender: '' });
   const [fullNameError, setFullNameError] = useState('');
   const [emailError, setEmailError] = useState('');
   const [passwordError, setPasswordError] = useState('');
@@ -21,31 +23,54 @@ const Register = ({ activateLoginModal }) => {
   const [addressError, setAddressError] = useState('');
   const [phoneError, setPhoneError] = useState('');
   const [ageError, setAgeError] = useState('');
+  const [genderError, setGenderError] = useState('');
   const [registrationFail, setRegistrationFail] = useState(false);
   const [loading, setLoading] = useState(false);
   const [registerSuccess, setRegisterSuccess] = useState(false);
+  const [serverError, setServerError] = useState('');
 
   const onSubmitClick = async (e) => {
     setLoading(true);
     e.preventDefault();
-    window.scrollTo(0, 0)
 
-    if (submitCheck(formValue.fullName, checkFullNameError, setFullNameError)
-      && submitCheck(formValue.email, checkEmailError, setEmailError)
-      && submitCheck(formValue.password, checkPasswordError, setPasswordError)
+    if (submitCheck(formValue.fullName, checkFullNameError, setFullNameError, document.querySelector('.name-section'))
+      && submitCheck(formValue.email, checkEmailError, setEmailError, document.querySelector('.email-section'))
+      && submitCheck(formValue.password, checkPasswordError, setPasswordError, document.querySelector('.password-section'))
       && submitCheckRepeatPassword(formValue.password, formValue.repeatPassword, checkRepeatPasswordError, setRepeatPasswordError)
-      && submitCheck(formValue.phone, checkPhoneError, setPhoneError)
-      && submitCheck(formValue.age, checkAgeError, setAgeError)
-      && submitCheck(formValue.address, checkAddressError, setAddressError)) {
-      alert('success')
+      && submitCheck(formValue.phone, checkPhoneError, setPhoneError, document.querySelector('.phone-section'))
+      && submitCheck(formValue.age, checkAgeError, setAgeError, document.querySelector('.age-section'))
+      && submitCheck(formValue.gender, checkGenderError, setGenderError, document.querySelector('.gender-section'))
+      && submitCheck(formValue.address, checkAddressError, setAddressError, document.querySelector('.address-section'))) {
+      try {
+        const response = await apiRegister(
+          formValue.email, formValue.password, formValue.fullName,
+          formValue.address, formValue.age, formValue.phone, formValue.gender)
+        console.log(response.data);
+        if (response.data.EC === 0) {
+          setLoading(false);
+          setRegisterSuccess(true);
+          window.scrollTo(0, 0);
+        } else {
+          console.log(response.data.EM);
+          setLoading(false);
+          setRegistrationFail(true);
+          window.scrollTo(0, 0);
+          setServerError(response.data.EM);
+        }
+      } catch (err) {
+        console.log(err.message);
+        setLoading(false);
+        setRegistrationFail(true);
+      }
     }
   }
 
-  const submitCheck = (value, check, setError) => {
+  const submitCheck = (value, check, setError, element) => {
     let error = check(value);
     if (error !== '') {
       setError(error);
       setLoading(false);
+      element.scrollIntoView({ behavior: "smooth", block: "center" });
       return false;
     }
     return true;
@@ -56,6 +81,8 @@ const Register = ({ activateLoginModal }) => {
     if (error !== '') {
       setError(error);
       setLoading(false);
+      document.querySelector('.password-section')
+        .scrollIntoView({ behavior: "smooth", block: "center" });
       return false;
     }
     return true;
@@ -97,15 +124,16 @@ const Register = ({ activateLoginModal }) => {
     setAgeError(checkAgeError(age));
   }
 
+  const validateGender = (e) => {
+    let gender = e.target.value;
+    setFormValue({ ...formValue, gender: gender })
+    setGenderError(checkGenderError(gender))
+  }
+
   const validatePhone = (e) => {
     let phone = e.target.value.toString();
     setFormValue({ ...formValue, phone: phone })
     setPhoneError(checkPhoneError(phone));
-  }
-
-  const handleGenderChange = (e) => {
-    let gender = e.target.value;
-    setFormValue({ ...formValue, gender: gender })
   }
 
   useEffect(() => {
@@ -114,14 +142,18 @@ const Register = ({ activateLoginModal }) => {
 
   return (
     <main className="register-main">
-      <h2>{registerSuccess ? 'Success!' : 'Registration'}</h2>
+      <h2 className="normal-header">{registerSuccess ? null : 'Registration'}</h2>
       {loading ?
         <div role="status" className="loader">
           <p>Almost there...</p>
           <img alt="Processing request" src="https://media0.giphy.com/media/L05HgB2h6qICDs5Sms/giphy.gif?cid=ecf05e472hf2wk1f2jou3s5fcnx1vek6ggnfcvhsjbeh7v5u&ep=v1_stickers_search&rid=giphy.gif&ct=s" />
         </div>
         : registerSuccess ?
-          <section className="registration-success">
+          <div className="registration-success">
+            <div>
+              <i class="check-mark">✓</i>
+            </div>
+            <h2 className="success-header">Success</h2>
             <p className="form-submit-msg">You can now log in and make an order!</p>
             <button
               className="passive-button-style txt-white"
@@ -132,10 +164,10 @@ const Register = ({ activateLoginModal }) => {
             >
               Log in
             </button>
-          </section>
+          </div>
           :
           <form className="registration-form" onSubmit={onSubmitClick}>
-            {registrationFail ? <p className="registration-input-err">Seems like this email has already been registered!</p> : null}
+            {registrationFail ? <p className="registration-input-err">Error: {serverError}</p> : null}
 
             <section className="name-section">
               <input type="text" placeholder="Full name" name="fullname" value={formValue.fullName} onChange={validateFullName} />
@@ -157,23 +189,27 @@ const Register = ({ activateLoginModal }) => {
 
             </section>
 
-            <section className="birthday">
+            <section className="phone-section">
               <input type="tel" placeholder="Phone number" name="number" value={formValue.phone} onChange={validatePhone} />
               <span className="registration-input-err">{phoneError}</span>
             </section>
 
-            <section className="age-and-gender-section">
+            <section className="age-section">
               <input type="number" placeholder="Age" name="age" value={formValue.age} onChange={validateAge} maxLength={2} />
               <span className="registration-input-err">{ageError}</span>
+            </section>
+
+            <section className="gender-section">
               <select style={formValue.gender === '' ? { color: 'gray' } : { color: 'white' }}
-                value={formValue.gender} onChange={handleGenderChange}>
+                value={formValue.gender} onChange={validateGender}>
                 <option value="">Gender</option>
                 <option value="Male">Male</option>
                 <option value="Female">Female</option>
               </select>
+              <span className="registration-input-err">{genderError}</span>
             </section>
 
-            <section className="birthday">
+            <section className="address-section">
               <input type="text" placeholder="Address" name="address" value={formValue.address} onChange={validateAddress} />
               <span className="registration-input-err">{addressError}</span>
             </section>

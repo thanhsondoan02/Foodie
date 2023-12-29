@@ -72,7 +72,7 @@ function App() {
             getUser={getUser}
             setCurrentUser={setCurrentUser} />
         }
-        activeLoginModal={activeLoginModal}
+        activateLoginModal={activeLoginModal}
         showModal={showModal}
         isModalActive={isModalActive}
         hideMenu={hideMenu}

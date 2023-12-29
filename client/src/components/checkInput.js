@@ -72,3 +72,10 @@ export const checkPhoneError = (phone) => {
   }
 }
 
+export const checkGenderError = (gender) => {
+  if (!gender) {
+    return ('Please choose gender')
+  } else {
+    return ('');
+  }
+}

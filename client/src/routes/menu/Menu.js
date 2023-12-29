@@ -6,12 +6,9 @@ import ResetLocation from "../../helpers/ResetLocation";
 import { motion } from "framer-motion";
 import Category from "./Category";
 import GridItem from "./GridItem";
-import axios from "axios";
+import { apiGetCategories, apiGetProducts } from "../../services/MenuService";
 
 function Menu() {
-  const baseUrl = "http://fall2324w20g2.int3306.freeddns.org"
-  const limit = 5;
-
   const [currentProducts, setCurrentProducts] = useState([]);
   const [totalPages, setTotalPages] = useState(0);
   const [currentCategory, setCurrentCategory] = useState("All");
@@ -23,33 +20,37 @@ function Menu() {
     ResetLocation();
   };
 
-  const resetPagination = () => {
-  }
-
   const onCategoryChange = (newCategory) => {
     getProductsFromServer(1, newCategory);
   };
 
-  const getProductsFromServer = (page, category) => {
+  const getProductsFromServer = async (page, category) => {
     setCurrentPage(page);
     setCurrentCategory(category);
-    let url = category === "All"
-      ? `${baseUrl}/api/v1/food/getAll?page=${page}&limit=${limit}`
-      : `${baseUrl}/api/v1/food/getAll?page=${page}&limit=${limit}&category=${category}`
-    axios.get(url)
-      .then(res => {
-        setTotalPages(res.data.DT.totalPages)
-        setCurrentProducts(res.data.DT.foods)
-      })
-      .catch(err => { console.log(err) })
+    try {
+      const response = await apiGetProducts(page, category);
+      if (response.data.EC === 0) {
+        setTotalPages(response.data.DT.totalPages)
+        setCurrentProducts(response.data.DT.foods)
+      } else {
+        console.log(response.data.EM);
+      }
+    } catch (err) {
+      console.log(err);
+    }
   }
 
   const getCategoriesFromServer = async () => {
     if (categories.length > 1) return;
     try {
-      const response = await axios.get(`${baseUrl}/api/v1/food/category`);
-      let addCategories = response.data.DT.map((category, _) => category.Category)
-      setCategories(categories.concat(addCategories))
+      const response = await apiGetCategories();
+      if (response.data.EC === 0) {
+        let addCategories = response.data.DT.map((category, _) => category.Category)
+        setCategories(categories.concat(addCategories))
+      } else {
+        console.log(response.data.EM);
+        return;
+      }
     } catch (err) {
       console.log(err.message);
     }
@@ -59,7 +60,7 @@ function Menu() {
     document.title = `Menu of ${currentCategory} | Pizza Time`;
     getCategoriesFromServer();
     getProductsFromServer(currentPage, currentCategory);
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (
@@ -75,7 +76,6 @@ function Menu() {
           currentCategory={currentCategory}
           allCategories={categories}
           changeCategory={onCategoryChange}
-          resetPagination={resetPagination}
         />
 
         <article className="menu-grid">
