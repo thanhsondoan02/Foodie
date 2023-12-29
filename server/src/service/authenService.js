@@ -6,7 +6,7 @@ import { getGroupWithRoles } from "./jwtService";
 import { createToken } from "../middleware/utils";
 const { Op } = require("sequelize");
 // require("dotenv").config();
-require("dotenv").config({ path: "../../config.env" });
+require("dotenv").config({ path: "/../../config.env" });
 
 const salt = bcrypt.genSaltSync(10);
 
