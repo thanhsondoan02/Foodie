@@ -158,7 +158,7 @@
   text-align: left;
 }
 
-.loader {
+.login-loader {
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -166,13 +166,13 @@
   padding-bottom: 3rem;
 }
 
-.loader p {
+.login-loader p {
   color: var(--light-black);
   font-family: var(--poppins-font);
   letter-spacing: 1px;
 }
 
-.loader img {
+.login-loader img {
   width: 10rem;
   height: 10rem;
   object-fit: cover;

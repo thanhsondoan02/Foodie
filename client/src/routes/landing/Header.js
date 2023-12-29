@@ -7,13 +7,9 @@ import Cart from '../../assets/images/cart-icon.png'
 import SuccessMsg from '../../components/SuccessMsg'
 import ResetLocation from '../../helpers/ResetLocation'
 
-const Header = ({ loginModal,
-  productQuantity,
-  handleLogout,
-  showModal,
-  isModalActive,
-  hideMenu,
-  validLogin, activateLoginModal }) => {
+const Header = ({ loginModal, productQuantity, handleLogout,
+  showModal, isMenuBoxOpen, hideMenuBox,
+  validLogin, openLoginFragment }) => {
   const location = [
     {
       path: '/',
@@ -44,7 +40,7 @@ const Header = ({ loginModal,
         <NavLink
           onClick={() => {
             ResetLocation()
-            hideMenu()
+            hideMenuBox()
           }}
           to="/"
           className="logo-styling flex-container flex-row txt-center txt-white"
@@ -60,7 +56,7 @@ const Header = ({ loginModal,
             Pizza <span>Time</span>
           </h1>
         </NavLink>
-        <ul className={`navigation-menu flex-row pop-font ${isModalActive ? 'active' : ''}`}>
+        <ul className={`navigation-menu flex-row pop-font ${isMenuBoxOpen ? 'active' : ''}`}>
 
           {location.map((item, index) => {
             return (
@@ -68,7 +64,7 @@ const Header = ({ loginModal,
                 <NavLink
                   onClick={() => {
                     ResetLocation()
-                    hideMenu()
+                    hideMenuBox()
                   }}
                   style={({ isActive }) =>
                     isActive ? { textDecoration: 'none', color: '#ff6240', } : {}}
@@ -85,7 +81,7 @@ const Header = ({ loginModal,
             <NavLink
               onClick={() => {
                 ResetLocation()
-                hideMenu()
+                hideMenuBox()
               }}
               style={({ isActive }) =>
                 isActive ? { textDecoration: 'none', color: '#ff6240', } : {}}
@@ -113,7 +109,7 @@ const Header = ({ loginModal,
                   className="passive-button-style txt-white"
                   onClick={() => {
                     ResetLocation()
-                    activateLoginModal()
+                    openLoginFragment()
                   }}
                 >
                   Log in
@@ -124,7 +120,7 @@ const Header = ({ loginModal,
                 to="/cart"
                 onClick={() => {
                   ResetLocation()
-                  hideMenu()
+                  hideMenuBox()
                 }}
               >
                 <img src={Cart} alt="" aria-hidden="true" />
@@ -138,8 +134,8 @@ const Header = ({ loginModal,
           width="50"
           height="50"
           className="burger-bars"
-          src={isModalActive ? closeMenu : openMenu}
-          alt={isModalActive ? "Close menu" : "Open menu"}
+          src={isMenuBoxOpen ? closeMenu : openMenu}
+          alt={isMenuBoxOpen ? "Close menu" : "Open menu"}
           onClick={showModal}
         />
       </nav>

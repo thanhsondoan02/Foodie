@@ -255,6 +255,7 @@ select {
   align-items: center;
   gap: 3rem;
   padding-bottom: 3rem;
+  height: 100vh;
 }
 
 .loader p {

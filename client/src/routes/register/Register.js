@@ -9,11 +9,10 @@ import {
   checkAgeError,
   checkPhoneError,
   checkGenderError
-} from "../../components/checkInput";
-import axios from "axios";
+} from "../../helpers/checkInput";
 import { apiRegister } from "../../services/RegisterService";
 
-const Register = ({ activateLoginModal }) => {
+const Register = ({ openLoginFragment }) => {
 
   const [formValue, setFormValue] = useState({ email: '', password: '', repeatPassword: '', fullName: '', address: '', age: '', phone: '', gender: '' });
   const [fullNameError, setFullNameError] = useState('');
@@ -30,6 +29,8 @@ const Register = ({ activateLoginModal }) => {
   const [serverError, setServerError] = useState('');
 
   const onSubmitClick = async (e) => {
+    window.scrollTo(0, 0);
+    setRegistrationFail(false);
     setLoading(true);
     e.preventDefault();
 
@@ -61,6 +62,7 @@ const Register = ({ activateLoginModal }) => {
         console.log(err.message);
         setLoading(false);
         setRegistrationFail(true);
+        window.scrollTo(0, 0);
       }
     }
   }
@@ -159,7 +161,7 @@ const Register = ({ activateLoginModal }) => {
               className="passive-button-style txt-white"
               onClick={() => {
                 ResetLocation()
-                activateLoginModal()
+                openLoginFragment()
               }}
             >
               Log in

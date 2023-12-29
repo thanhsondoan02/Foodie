@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { motion } from "framer-motion";
-import validateForm from "../../components/validateForm";
+import validateForm from "../../helpers/validateForm";
 import axios from "axios";
 
 function Subscribe() {

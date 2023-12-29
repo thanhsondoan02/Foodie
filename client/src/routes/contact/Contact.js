@@ -3,7 +3,7 @@ import { useState } from "react";
 import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
 
-import validateForm from "../../components/validateForm";
+import validateForm from "../../helpers/validateForm";
 import ResetLocation from "../../helpers/ResetLocation";
 
 const Contact = () => {

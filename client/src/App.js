@@ -3,7 +3,7 @@ import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import Footer from './components/footer/Footer';
 import Header from './routes/landing/Header';
 import ResetLocation from './helpers/ResetLocation';
-import LoginModal from './components/login/LoginModal';
+import LoginFragment from './components/login/LoginFragment';
 import Home from './routes/landing/Home';
 import Menu from './routes/menu/Menu';
 import Blog from './routes/blog/Blog';
@@ -14,27 +14,31 @@ import Register from './routes/register/Register';
 function App() {
   const [productQuantity, setProductQuantity] = useState(0);
   const [validLogin, setValidLogin] = useState(false);
-  const [isModalActive, setIsModalActive] = useState(false);
-  const [loginModalWindow, setLoginModelWindow] = useState(false);
+  const [isMenuBoxOpen, setIsMenuBoxOpen] = useState(false);
+  const [isLoginBoxOpen, setIsLoginBoxOpen] = useState(false);
   const [currentUser, setCurrentUser] = useState({});
   const [cartItems, setCartItems] = useState([]);
 
-  const activeLoginModal = () => {
-    hideMenu();
-    setLoginModelWindow(!loginModalWindow);
-  };
+  const closeLoginFragment = () => {
+    setIsLoginBoxOpen(false);
+  }
 
-  const hideMenu = () => {
-    setIsModalActive(false);
+  const hideMenuBox = () => {
+    setIsMenuBoxOpen(false);
+  }
+
+  const openLoginFragment = () => {
+    hideMenuBox();
+    setIsLoginBoxOpen(true);
   };
 
   const showModal = () => {
-    setIsModalActive(!isModalActive);
+    setIsMenuBoxOpen(!isMenuBoxOpen);
   }
 
   const handleLogout = () => {
     setValidLogin(false);
-    hideMenu();
+    setIsMenuBoxOpen(false);
     setCurrentUser({});
     ResetLocation();
     setCartItems([]);
@@ -63,29 +67,29 @@ function App() {
     <BrowserRouter>
       <Header
         loginModal={
-          <LoginModal
-            validLogin={validLogin}
+          <LoginFragment
+            closeLoginFragment={closeLoginFragment}
             setValidLogin={setValidLogin}
-            setLoginModalWindow={setLoginModelWindow}
-            loginModalWindow={loginModalWindow}
-            hideMenu={hideMenu}
-            getUser={getUser}
-            setCurrentUser={setCurrentUser} />
+            isLoginBoxOpen={isLoginBoxOpen}
+            hideMenuBox={hideMenuBox}
+            validLogin={validLogin}
+            getUser={getUser} />
         }
-        activateLoginModal={activeLoginModal}
-        showModal={showModal}
-        isModalActive={isModalActive}
-        hideMenu={hideMenu}
+        productQuantity={productQuantity}
         handleLogout={handleLogout}
+        showModal={showModal}
+        isMenuBoxOpen={isMenuBoxOpen}
+        hideMenuBox={hideMenuBox}
         validLogin={validLogin}
-        productQuantity={productQuantity} />
+        openLoginFragment={openLoginFragment}
+         />
       <Routes>
         <Route path='/' element={<Home />} />
         <Route path="/menu" element={<Menu />} />
         <Route path='/blog' element={<Blog />} />
         <Route path='/contact' element={<Contact />} />
         <Route path='/about' element={<About />} />
-        <Route path='/register' element={<Register activateLoginModal={activeLoginModal} />} />
+        <Route path='/register' element={<Register openLoginFragment={openLoginFragment} />} />
       </Routes>
       <Footer />
     </BrowserRouter>

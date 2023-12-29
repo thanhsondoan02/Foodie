@@ -11,6 +11,7 @@ import './routes/menu/menu.css'
 import './routes/about/About.css'
 import './routes/blog/blog.css'
 import './routes/register/register.css'
+import './components/login/loginFragment.css'
 
 // Components
 import App from './App';

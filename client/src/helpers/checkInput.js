@@ -1,3 +1,8 @@
+const emailRegex = /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/;
+const phoneRegex = /(0[3|5|7|8|9])+([0-9]{8})\b/g;
+const ageRegex = /^(100|[1-9][0-9]?)$/;
+
+
 export const checkFullNameError = (fullName) => {
   if (!fullName) {
     return "Please enter your full name"
@@ -9,7 +14,6 @@ export const checkFullNameError = (fullName) => {
 }
 
 export const checkEmailError = (email) => {
-  let emailRegex = /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/;
   if (!email) {
     return ('Please enter your email address');
   } else if (!emailRegex.test(email)) {
@@ -51,7 +55,6 @@ export const checkAddressError = (address) => {
 }
 
 export const checkAgeError = (age) => {
-  let ageRegex = /^(100|[1-9][0-9]?)$/;
   if (!age) {
     return ('Please enter your age');
   } else if (!ageRegex.test(age)) {
@@ -62,7 +65,6 @@ export const checkAgeError = (age) => {
 }
 
 export const checkPhoneError = (phone) => {
-  let phoneRegex = /(0[3|5|7|8|9])+([0-9]{8})\b/g;
   if (!phone) {
     return ('Please enter your phone number');
   } else if (!phoneRegex.test(phone)) {
@@ -75,6 +77,17 @@ export const checkPhoneError = (phone) => {
 export const checkGenderError = (gender) => {
   if (!gender) {
     return ('Please choose gender')
+  } else {
+    return ('');
+  }
+}
+
+export const checkValueLoginError = (valueLogin) => {
+  console.log(valueLogin)
+  if (!valueLogin) {
+    return ('Please enter your email address or phone number');
+  } else if (!emailRegex.test(valueLogin) && !phoneRegex.test(valueLogin)) {
+    return ('Please enter a valid email address or phone number');
   } else {
     return ('');
   }
