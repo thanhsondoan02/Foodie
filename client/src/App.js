@@ -17,6 +17,7 @@ import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import BlogPost from './routes/blog-post/BlogPost';
 import Profile from './routes/profile/Profile';
+import Careers from './routes/careers/Careers';
 
 function App() {
   const [isMenuBoxOpen, setIsMenuBoxOpen] = useState(false);
@@ -112,6 +113,7 @@ function App() {
         />
         <Route path='/blog/:blogId' element={<BlogPost />} />
         <Route path='/profile' element={<Profile isValidLogin={isValidLogin}/>} />
+        <Route path="/careers" element={<Careers />} />
       </Routes>
       <Footer />
       <ToastContainer />

@@ -35,4 +35,15 @@ const apiAddToCart = (productId, price, quantity) => {
   )
 }
 
+const apiSendContact = (fullName, email, message) => {
+  return axios.post(`${baseUrl}/api/v1/contact/send`,
+    new URLSearchParams({
+      'fullName': fullName,
+      'email': email,
+      'message': message
+    }),
+  );
+
+}
+
 export { apiGetCategories, apiGetProducts, apiSearchProducts, apiAddToCart }
