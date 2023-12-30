@@ -86,7 +86,7 @@ const initApiRoutes = (app) => {
   //group router
   router.get("/group/getAll", getAllGroups);
 
-  //send mail to server
+  //server send mail
   router.post("/sendMail", sendMail);
 
   //get all blog

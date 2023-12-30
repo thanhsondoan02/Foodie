@@ -108,8 +108,22 @@ const getUserById = async (id) => {
       where: {
         id: id,
       },
+      attributes: [
+        "id",
+        "fullName",
+        "email",
+        "age",
+        "address",
+        "gender",
+        "phone",
+      ],
     });
-    return user.get({ plain: true });
+    return {
+      EM: "Success with get by pagination",
+      EC: 0,
+      DT: user,
+    };
+    // return user.get({ plain: true });
   } catch (err) {
     console.log("Error: ", err);
     return {

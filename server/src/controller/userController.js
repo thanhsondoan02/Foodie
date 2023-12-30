@@ -39,21 +39,36 @@ const getAllUsers = async (req, res) => {
 const createUser = async (req, res) => {};
 
 const getUser = async (req, res) => {
-  return res.status(200).json({
-    EM: "Get User Info",
-    EC: 0, // -1 -> error, 0 -> success,
-    DT: {
-      access_token: req.token,
-      groupWithRoles: req.user.groupWithRoles,
-      id: req.user.id,
-      email: req.user.email,
-      fullName: req.user.fullName,
-      age: req.user.age,
-      phone: req.user.phone,
-      address: req.user.address,
-      gender: req.user.gender,
-    },
-  });
+  try {
+    let data = await getUserById(req.user.id);
+    return res.status(200).json({
+      EM: data.EM,
+      EC: data.EC, // -1 -> error, 0 -> success,
+      DT: data.DT,
+    });
+    return;
+  } catch (e) {
+    return res.status(500).json({
+      EM: "Error From Server",
+      EC: "-1", // -1 -> error, 0 -> success,
+      DT: "",
+    });
+  }
+  // return res.status(200).json({
+  //   EM: "Get User Info",
+  //   EC: 0, // -1 -> error, 0 -> success,
+  //   DT: {
+  //     access_token: req.token,
+  //     groupWithRoles: req.user.groupWithRoles,
+  //     id: req.user.id,
+  //     email: req.user.email,
+  //     fullName: req.user.fullName,
+  //     age: req.user.age,
+  //     phone: req.user.phone,
+  //     address: req.user.address,
+  //     gender: req.user.gender,
+  //   },
+  // });
 };
 
 const updateUser = async (req, res) => {
