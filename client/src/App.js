@@ -3,89 +3,120 @@ import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import Footer from './components/footer/Footer';
 import Header from './routes/landing/Header';
 import ResetLocation from './helpers/ResetLocation';
-import LoginModal from './components/login/LoginModal';
+import LoginFragment from './components/login/LoginFragment';
 import Home from './routes/landing/Home';
 import Menu from './routes/menu/Menu';
 import Blog from './routes/blog/Blog';
 import Contact from './routes/contact/Contact';
 import About from './routes/about/About';
+import Register from './routes/register/Register';
+import Cart from './routes/cart/Cart';
+import { apiLogout } from './services/AccountService';
+import { apiGetCart } from './services/CartService';
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import BlogPost from './routes/blog-post/BlogPost';
+import Profile from './routes/profile/Profile';
+import Careers from './routes/careers/Careers';
 
 function App() {
-  const [productQuantity, setProductQuantity] = useState(0);
-  const [validLogin, setValidLogin] = useState(false);
-  const [isModalActive, setIsModalActive] = useState(false);
-  const [loginModalWindow, setLoginModelWindow] = useState(false);
-  const [currentUser, setCurrentUser] = useState({});
-  const [cartItems, setCartItems] = useState([]);
+  const [isMenuBoxOpen, setIsMenuBoxOpen] = useState(false);
+  const [isLoginBoxOpen, setIsLoginBoxOpen] = useState(false);
+  const [isValidLogin, setIsValidLogin] = useState(false);
+  const [cartCount, setCartCount] = useState(0);
 
-  const activeLoginModal = () => {
-    hideMenu();
-    setLoginModelWindow(!loginModalWindow);
-  };
+  const closeLoginFragment = () => {
+    setIsLoginBoxOpen(false);
+  }
 
-  const hideMenu = () => {
-    setIsModalActive(false);
+  const hideMenuBox = () => {
+    setIsMenuBoxOpen(false);
+  }
+
+  const openLoginFragment = () => {
+    hideMenuBox();
+    setIsLoginBoxOpen(true);
   };
 
   const showModal = () => {
-    setIsModalActive(!isModalActive);
+    setIsMenuBoxOpen(!isMenuBoxOpen);
   }
 
-  const handleLogout = () => {
-    setValidLogin(false);
-    hideMenu();
-    setCurrentUser({});
+  const onLogoutClick = async () => {
+    setIsMenuBoxOpen(false);
     ResetLocation();
-    setCartItems([]);
-    setProductQuantity(0);
-    sessionStorage.clear();
-  }
-
-  const getUser = async (id) => {
+    localStorage.removeItem('token');
+    setIsValidLogin(false);
+    setCartCount(0);
     try {
-      const response = await fetch(`${process.env.REACT_APP_USERS_URL}/${id}`);
-      const body = await response.json();
-      setCurrentUser(body.data[0]);
-      const jsonUser = JSON.stringify(body.data[0]);
-      sessionStorage.setItem('currentUser', jsonUser);
-      if (response.status === 200) {
-        return true;
-      }
+      await apiLogout();
     } catch (err) {
-      console.log(err.message);
-      return false;
+      console.log(err);
     }
   }
 
+  const validateToken = async () => {
+    try {
+      const response = await apiGetCart();
+      if (response.data.EC === 0) {
+        setIsValidLogin(true);
+        setCartCount(response.data.DT.totalFoodInCart);
+      } else {
+        console.log(response.data.EM);
+        localStorage.removeItem('token');
+        setIsValidLogin(false);
+      }
+    } catch (err) {
+      console.log(err);
+      localStorage.removeItem('token');
+      setIsValidLogin(false);
+    }
+  }
+
+  useEffect(() => {
+    if (localStorage.getItem('token') !== null) {
+      validateToken();
+    }
+  }, []);
 
   return (
     <BrowserRouter>
       <Header
         loginModal={
-          <LoginModal
-            validLogin={validLogin}
-            setValidLogin={setValidLogin}
-            setLoginModalWindow={setLoginModelWindow}
-            loginModalWindow={loginModalWindow}
-            hideMenu={hideMenu}
-            getUser={getUser}
-            setCurrentUser={setCurrentUser} />
+          <LoginFragment
+            closeLoginFragment={closeLoginFragment}
+            isLoginBoxOpen={isLoginBoxOpen}
+            hideMenuBox={hideMenuBox}
+            validateToken={validateToken} />
         }
-        activeLoginModal={activeLoginModal}
+        onLogoutClick={onLogoutClick}
         showModal={showModal}
-        isModalActive={isModalActive}
-        hideMenu={hideMenu}
-        handleLogout={handleLogout}
-        validLogin={validLogin}
-        productQuantity={productQuantity} />
+        isMenuBoxOpen={isMenuBoxOpen}
+        hideMenuBox={hideMenuBox}
+        openLoginFragment={openLoginFragment}
+        isValidLogin={isValidLogin}
+        cartCount={cartCount}
+      />
       <Routes>
         <Route path='/' element={<Home />} />
-        <Route exact path="/menu" element={<Menu />} />
+        <Route path="/menu" element={
+          <Menu isValidLogin={isValidLogin}
+            openLoginFragment={openLoginFragment}
+            validateToken={validateToken} />
+        } />
         <Route path='/blog' element={<Blog />} />
         <Route path='/contact' element={<Contact />} />
         <Route path='/about' element={<About />} />
+        <Route path='/register' element={<Register openLoginFragment={openLoginFragment} />} />
+        <Route path='/cart'
+          element={<Cart isValidLogin={isValidLogin} openLoginFragment={openLoginFragment} />}
+        />
+        <Route path='/blog/:blogId' element={<BlogPost />} />
+        <Route path='/profile' element={<Profile isValidLogin={isValidLogin}/>} />
+        <Route path="/careers" element={<Careers />} />
       </Routes>
       <Footer />
+      <ToastContainer />
     </BrowserRouter>
   );
 }

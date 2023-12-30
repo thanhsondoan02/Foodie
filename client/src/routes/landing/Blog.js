@@ -1,7 +1,7 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
 import { motion } from "framer-motion";
-import ResetLocation from '../../helpers/ResetLocation'
+import resetLocation from '../../helpers/ResetLocation'
 
 function Blog(props) {
   return (
@@ -21,7 +21,7 @@ function Blog(props) {
           >
             <img src={post.img} alt={post.name} />
             <p className="date">{post.date}</p>
-            <Link onClick={ResetLocation} to={`/blog/${post.name.toLowerCase().replaceAll(' ', '-')}`}>
+            <Link onClick={resetLocation} to={`/blog/${post.name.toLowerCase().replaceAll(' ', '-')}`}>
               <h3 className="pop-font txt-white">{post.name}</h3>
             </Link>
             <p className="intro">{post.intro}</p>
@@ -30,7 +30,7 @@ function Blog(props) {
       </section>
 
       <Link
-        onClick={ResetLocation}
+        onClick={resetLocation}
         to="/blog"
         className="active-button-style txt-white"
       >

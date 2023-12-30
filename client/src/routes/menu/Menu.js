@@ -6,78 +6,124 @@ import ResetLocation from "../../helpers/ResetLocation";
 import { motion } from "framer-motion";
 import Category from "./Category";
 import GridItem from "./GridItem";
-import axios from "axios";
+import { apiAddToCart, apiGetCategories, apiGetProducts, apiSearchProducts } from "../../services/MenuService";
+import { debounce } from 'lodash';
+import { toastSuccess } from "../../helpers/toastHelper";
 
-function Menu() {
-  const categories = [
-    {
-      name: "Menu",
-      id: 0,
-    },
-    {
-      name: "Pizza",
-      id: 1,
-    },
-    {
-      name: "Pasta",
-      id: 2,
-    },
-    {
-      name: "Sushi",
-      id: 3,
-    },
-    {
-      name: "Drinks",
-      id: 4,
-    },
-    {
-      name: "Sale",
-      id: 5,
-    },
-  ]
-  const baseUrl = "http://fall2324w20g2.int3306.freeddns.org"
-  const limit = 5;
-
+function Menu({ isValidLogin, openLoginFragment, validateToken }) {
   const [currentProducts, setCurrentProducts] = useState([]);
   const [totalPages, setTotalPages] = useState(0);
-  const [currentCategory, setCurrentCategory] = useState(0);
+  const [currentCategory, setCurrentCategory] = useState("All");
   const [currentPage, setCurrentPage] = useState(1);
+  const [categories, setCategories] = useState(["All"]);
+  const [searchKey, setSearchKey] = useState("");
+  const [isLoading, setIsLoading] = useState(true);
 
   const onPageChange = (event) => {
-    getProductsFromServer(event.selected + 1, currentCategory);
+    if (searchKey === "") {
+      getProductsFromServer(event.selected + 1, currentCategory);
+    } else {
+      searchProductsFromServer(searchKey, event.selected + 1);
+    }
     ResetLocation();
   };
 
-  const resetPagination = () => {
-  }
-
-  const onCategoryChange = (newCategoryId) => {
-    getProductsFromServer(1, newCategoryId);
+  const onCategoryChange = (newCategory) => {
+    setSearchKey("")
+    document.querySelector(".menu-search").value = "";
+    getProductsFromServer(1, newCategory);
   };
 
-  const getCategoryName = (id) => {
-    const category = categories.find(category => category.id === id);
-    return category.name;
-  }
-
-  const getProductsFromServer = (page, category) => {
+  const getProductsFromServer = async (page, category) => {
     setCurrentPage(page);
     setCurrentCategory(category);
-    axios.get(`${baseUrl}/api/v1/food/getAll?page=${page}&limit=${limit}`)
-      .then(res => {
-        setTotalPages(res.data.DT.totalPages)
-        setCurrentProducts(res.data.DT.foods)
-      })
-      .catch(err => { console.log(err) })
+    try {
+      const response = await apiGetProducts(page, category);
+      if (response.data.EC === 0) {
+        setTotalPages(response.data.DT.totalPages)
+        setCurrentProducts(response.data.DT.foods)
+      } else {
+        console.log(response.data.EM);
+      }
+    } catch (err) {
+      console.log(err);
+    }
+  }
+
+  const getCategoriesFromServer = async () => {
+    setIsLoading(true);
+    if (categories.length > 1) return;
+    try {
+      const response = await apiGetCategories();
+      if (response.data.EC === 0) {
+        let addCategories = response.data.DT.map((category, _) => category.Category)
+        setCategories(categories.concat(addCategories))
+      } else {
+        console.log(response.data.EM);
+        return;
+      }
+    } catch (err) {
+      console.log(err.message);
+    }
+    setIsLoading(false);
+  }
+
+  const searchProductsFromServer = async (searchString, page) => {
+    setCurrentPage(page)
+    setSearchKey(searchString)
+    try {
+      const response = await apiSearchProducts(searchString, page);
+      if (response.data.EC === 0) {
+        setTotalPages(response.data.DT.totalPages)
+        setCurrentProducts(response.data.DT.foods)
+      } else {
+        console.log(response.data.EM);
+      }
+    } catch (err) {
+      console.log(err);
+    }
+  }
+
+  const addProductToCart = async (product) => {
+    try {
+      const response = await apiAddToCart(product.id, product.ItemPrice, 1);
+      if (response.data.EC === 0) {
+        validateToken();
+        toastSuccess('Added to cart successfully!')
+      } else {
+        console.log(response.data.EM);
+      }
+    } catch (err) {
+      console.log(err);
+    }
+  }
+
+  // after user stop typing for 1 second => search
+  const onSearch = debounce((value) => {
+    if (value === "") return
+    setCurrentCategory("All")
+    setCurrentProducts([])
+    setTotalPages(1)
+    searchProductsFromServer(value, 1)
+  }, 1000);
+
+  const onAddCartClick = (product) => {
+    if (isValidLogin) {
+      addProductToCart(product)
+    } else {
+      openLoginFragment();
+    }
   }
 
   useEffect(() => {
-    document.title = `${getCategoryName(currentCategory)} | Pizza Time`;
+    document.title = `Menu of ${currentCategory} | Pizza Time`;
+    getCategoriesFromServer();
     getProductsFromServer(currentPage, currentCategory);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (
-    totalPages === 0 ? <p>Loading...</p>
+    isLoading ? <p>Loading...</p>
       : <motion.main
         className="menu-main"
         initial={{ opacity: 0, translateX: -300 }}
@@ -89,14 +135,14 @@ function Menu() {
           currentCategory={currentCategory}
           allCategories={categories}
           changeCategory={onCategoryChange}
-          resetPagination={resetPagination}
+          onSearch={onSearch}
         />
-
         <article className="menu-grid">
           {currentProducts.map((singleProduct) => (
             <GridItem
               key={singleProduct.id}
               singleProduct={singleProduct}
+              onAddCartClick={onAddCartClick}
             />
           ))}
           <ScrollButton />
@@ -111,7 +157,7 @@ function Menu() {
           pageCount={totalPages}
           previousLabel="&#60;"
           renderOnZeroPageCount={null}
-          forcePage={currentPage-1}
+          forcePage={currentPage - 1}
         />
       </motion.main>
   );

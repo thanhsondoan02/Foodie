@@ -1,6 +1,7 @@
 import React from "react";
 import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
+import resetLocation from "../../helpers/ResetLocation";
 
 function Hot(props) {
   return (
@@ -40,7 +41,7 @@ function Hot(props) {
           </motion.div>
         ))}
       </section>
-      <Link to="/menu" className="active-button-style txt-white">More Pizza</Link>
+      <Link to="/menu" className="active-button-style txt-white" onClick={() => {resetLocation()}}>More Pizza</Link>
     </article>
   )
 }

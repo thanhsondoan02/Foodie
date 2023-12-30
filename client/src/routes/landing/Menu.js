@@ -1,6 +1,6 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
-import ResetLocation from '../../helpers/ResetLocation'
+import resetLocation from '../../helpers/ResetLocation'
 import Tilt from 'react-parallax-tilt';
 import { motion } from "framer-motion";
 
@@ -24,7 +24,7 @@ function Menu(props) {
           {props.menu.map((item) => (
             <Tilt key={item.id}>
               <Link
-                onClick={ResetLocation}
+                onClick={resetLocation}
                 to="/menu"
                 className="pricing-grid-item flex-container flex-row"
               >

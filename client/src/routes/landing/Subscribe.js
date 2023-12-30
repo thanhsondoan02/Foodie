@@ -1,16 +1,15 @@
 import React, { useState } from "react";
 import { motion } from "framer-motion";
-import validateForm from "../../components/validateForm";
+import validateForm from "../../helpers/validateForm";
 import axios from "axios";
+import { apiSendContact } from "../../services/MenuService";
 
 function Subscribe() {
-  const baseUrl = "https://29201796-3b03-452f-abee-635c05c2d9cb.mock.pstmn.io"
-
   const [formValue, setFormValue] = useState({ email: "" })
   const [formError, setFormError] = useState({})
   const [successMsg, setSuccessMsg] = useState("")
 
-  const onSubmitClick = (e) => {
+  const onSubmitClick = async (e) => {
     e.preventDefault()
 
     const error = validateForm("newsletter")(formValue)
@@ -21,22 +20,19 @@ function Subscribe() {
     } else {
       setFormValue({ email: "" })
       
-      // send request to server
-      const url = `${baseUrl}/subscribe`
-      const bodyRequest = {
-        "email": formValue.email
+      try{
+        const response = await apiSendContact("", formValue.email, "")
+        if (response.data.EC === 0) {
+          setSuccessMsg("Your contact has been sent successfully!")
+          setFormError({})
+        } else {
+          setFormError({ email: response.data.EM })
+          setSuccessMsg("")
+        }
+      } catch (err) {
+        console.log(err)
+        setFormError({ email: err.message })
       }
-      axios.post(url, bodyRequest)
-        .then(res => {
-          if (res.data.status === 200) {
-            setSuccessMsg(res.data.message)
-            setFormError({})
-          } else {
-            setFormError({ email: res.data.message })
-            setSuccessMsg("")
-          }
-        })
-        .catch(err => console.log(err))
     }
   }
 
