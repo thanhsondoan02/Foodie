@@ -6,7 +6,8 @@ import ResetLocation from "../../helpers/ResetLocation";
 import { motion } from "framer-motion";
 import Category from "./Category";
 import GridItem from "./GridItem";
-import { apiGetCategories, apiGetProducts } from "../../services/MenuService";
+import { apiGetCategories, apiGetProducts, apiSearchProducts } from "../../services/MenuService";
+import { debounce } from 'lodash';
 
 function Menu() {
   const [currentProducts, setCurrentProducts] = useState([]);
@@ -14,13 +15,20 @@ function Menu() {
   const [currentCategory, setCurrentCategory] = useState("All");
   const [currentPage, setCurrentPage] = useState(1);
   const [categories, setCategories] = useState(["All"]);
+  const [searchKey, setSearchKey] = useState("");
 
   const onPageChange = (event) => {
-    getProductsFromServer(event.selected + 1, currentCategory);
+    if (searchKey === "") {
+      getProductsFromServer(event.selected + 1, currentCategory);
+    } else {
+      searchProductsFromServer(searchKey, event.selected + 1);
+    }
     ResetLocation();
   };
 
   const onCategoryChange = (newCategory) => {
+    setSearchKey("")
+    document.querySelector(".menu-search").value = "";
     getProductsFromServer(1, newCategory);
   };
 
@@ -56,6 +64,31 @@ function Menu() {
     }
   }
 
+  const searchProductsFromServer = async (searchString, page) => {
+    setCurrentPage(page)
+    setSearchKey(searchString)
+    try {
+      const response = await apiSearchProducts(searchString, page);
+      if (response.data.EC === 0) {
+        setTotalPages(response.data.DT.totalPages)
+        setCurrentProducts(response.data.DT.foods)
+      } else {
+        console.log(response.data.EM);
+      }
+    } catch (err) {
+      console.log(err);
+    }
+  }
+
+  // after user stop typing for 1 second => search
+  const onSearch = debounce((value) => {
+    if (value === "") return
+    setCurrentCategory("All")
+    setCurrentProducts([])
+    setTotalPages(1)
+    searchProductsFromServer(value, 1)
+  }, 1000);
+
   useEffect(() => {
     document.title = `Menu of ${currentCategory} | Pizza Time`;
     getCategoriesFromServer();
@@ -76,6 +109,7 @@ function Menu() {
           currentCategory={currentCategory}
           allCategories={categories}
           changeCategory={onCategoryChange}
+          onSearch={onSearch}
         />
 
         <article className="menu-grid">

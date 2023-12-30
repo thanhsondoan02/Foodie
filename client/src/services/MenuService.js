@@ -14,4 +14,8 @@ const apiGetProducts = (page, category) => {
   return axios.get(url)
 }
 
-export { apiGetCategories, apiGetProducts }
+const apiSearchProducts = (searchString, page) => {
+  return axios.get(`${baseUrl}/api/v1/food/search?foodName=${searchString}&page=${page}&limit=${itemPerPage}`)
+}
+
+export { apiGetCategories, apiGetProducts, apiSearchProducts }
