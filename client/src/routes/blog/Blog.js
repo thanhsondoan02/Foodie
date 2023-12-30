@@ -1,45 +1,60 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
+import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
-import ReactPaginate from "react-paginate";
-import allBlogPosts from "../../data/allBlogPosts";
-import ScrollBtn from "../../helpers/ScrollButton";
+import ReactPaginate from 'react-paginate';
+import ScrollButton from "../../helpers/ScrollButton";
 import ResetLocation from "../../helpers/ResetLocation";
 import BlogPosts from "./BlogPosts";
+import { apiGetBlogList } from "../../services/BlogService";
 
 const Blog = () => {
-  const itemsPerPage = 10;
+  const [currentPage, setCurrentPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(0);
+  const [posts, setPosts] = useState([]);
 
-  const [currentPage, setCurrentPage] = useState(0);
-  const [currentBlogPosts, setCurrentBlogPosts] = useState([]);
-
-  const pageCount = Math.ceil(allBlogPosts.length / itemsPerPage);
-
-  const handlePageClick = (selectedPage) => {
-    setCurrentPage(selectedPage.selected);
+  const onPageChange = (event) => {
     ResetLocation();
+    let newPage = event.selected + 1;
+    getPostsFromServer(newPage);
   };
 
+  const getPostsFromServer = async (page) => {
+    setCurrentPage(page);
+    setPosts([]);
+    setTotalPages(0);
+    try {
+      const response = await apiGetBlogList(page);
+      if (response.data.EC === 0) {
+        setTotalPages(response.data.DT.totalPages)
+        setPosts(response.data.DT.blogs)
+      } else {
+        console.log(response.data.EM);
+      }
+    } catch (err) {
+      console.log(err);
+    }
+  }
+
   useEffect(() => {
-    const startIndex = currentPage * itemsPerPage;
-    const endIndex = startIndex + itemsPerPage;
-    setCurrentBlogPosts(allBlogPosts.slice(startIndex, endIndex));
-  }, [currentPage]);
+    document.title = "Blog | Pizza Time";
+    getPostsFromServer(1);
+  }, []);
 
   return (
     <motion.main
       className="blog"
-      initial={{ opacity: 0, translateX: -300 }}
       whileInView={{ opacity: 1, translateX: 0 }}
-      exit={{ opacity: 0, translateX: -300 }}
       transition={{ duration: 1 }}
+      exit={{ opacity: 0, translateX: -300 }}
+      initial={{ opacity: 0, translateX: -300 }}
     >
-      <h2 style={{ marginLeft: '5%', marginRight: '5%', color: 'var(--white)', fontSize: '4rem', marginTop: '30px', marginBottom: '30px' }}>Blog</h2>
-      <p className="blog-intro" style={{ marginLeft: '5%', marginRight: '5%', color: 'var(--whitish-gray)', fontSize: '1.3rem', width: '100%', maxWidth: '1200px', marginTop: '15px', paddingBottom: '3rem', marginBottom: '30px' }}>
-        Pizza makes everything better. These are some of our favorite pizza
+      <h2>Blog</h2>
+      <p className="blog-intro">
+        Read some of your favorite pizza
         blogs that are loaded with recipes and pizza-making tips.
       </p>
-      <section className="blog-grid" style={{ marginLeft: '5%', marginRight: '5%', display: 'grid', gridTemplateColumns: '1fr', gap: '4rem', width: '100%', margin: '0 auto', maxWidth: '1440px', marginBottom: '30px' }}>
-        {currentBlogPosts.map((blogPost, index) => {
+      <section className="blog-grid">
+        {posts.map((blogPost, index) => {
           return <BlogPosts key={index} blogPost={blogPost} />;
         })}
       </section>
@@ -47,16 +62,14 @@ const Blog = () => {
         className="pagination blog-pagination"
         breakLabel="..."
         nextLabel=" &#62;"
-        onPageChange={handlePageClick}
+        onPageChange={onPageChange}
         pageRangeDisplayed={3}
-        pageCount={pageCount}
+        pageCount={totalPages}
         previousLabel="&#60;"
         renderOnZeroPageCount={null}
-        style={{ marginLeft: '5%', marginRight: '5%', position: 'initial', display: 'flex', flexDirection: 'row', marginTop: '4rem', marginBottom: '3rem' }}
       />
-      <ScrollBtn />
+      <ScrollButton />
     </motion.main>
   );
 }
-
 export default Blog;

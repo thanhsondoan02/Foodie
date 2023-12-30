@@ -12,6 +12,7 @@
   margin-bottom: 3rem;
   justify-content: center;
 }
+
 .blog h2,
 .blog-intro,
 .blog-grid {
@@ -26,6 +27,7 @@
 .blog h2 {
   font-size: 4rem;
 }
+
 .blog-intro {
   color: var(--whitish-gray);
   font-size: 1.3rem;
@@ -34,6 +36,7 @@
   margin: 0 auto;
   padding-bottom: 3rem;
 }
+
 /*** Blog grid ***/
 
 .blog-grid {
@@ -44,6 +47,7 @@
   margin: 0 auto;
   max-width: 1440px;
 }
+
 .blog-grid h3 {
   text-transform: capitalize;
   letter-spacing: 1px;
@@ -69,6 +73,7 @@
 .blog-grid-item h3 {
   transition: all ease-in-out 0.3s;
 }
+
 .blog-grid-item .credentials {
   color: var(--whitish-gray);
   display: flex;

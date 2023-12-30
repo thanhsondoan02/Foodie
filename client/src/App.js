@@ -15,6 +15,7 @@ import { apiLogout } from './services/RegisterService';
 import { apiGetCart } from './services/CartService';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import BlogPost from './routes/blog-post/BlogPost';
 
 function App() {
   const [isMenuBoxOpen, setIsMenuBoxOpen] = useState(false);
@@ -108,6 +109,7 @@ function App() {
         <Route path='/cart'
           element={<Cart isValidLogin={isValidLogin} openLoginFragment={openLoginFragment} />}
         />
+        <Route path='/blog/:blogId' element={<BlogPost />} />
       </Routes>
       <Footer />
       <ToastContainer />
