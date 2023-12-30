@@ -37,6 +37,10 @@ const sendMail = async (req, res) => {
   }
 };
 
+const contactEmail = (req, res) => {
+  const { fullName, email, message } = req.body;
+};
+
 module.exports = {
   sendMail,
 };

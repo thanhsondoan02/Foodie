@@ -234,6 +234,10 @@ const getAllOrder = async (idUser) => {
           model: db.Food,
           // required: true,
         },
+        {
+          model: db.User,
+          attributes: ["fullName", "age", "address", "gender", "phone"],
+        },
       ],
     });
 
@@ -258,6 +262,111 @@ const getAllOrder = async (idUser) => {
 };
 
 // Xóa món ăn trong giỏ hàng
+// const deleteFoodFromOrder = async (orderId, foodId) => {
+//   try {
+//     // Tìm orderFood cần xóa
+//     const orderFood = await db.Order_Food.findOne({
+//       where: {
+//         order_id: orderId,
+//         food_id: foodId,
+//       },
+//     });
+
+//     if (!orderFood) {
+//       return {
+//         EM: "Food not found in order",
+//         EC: -1,
+//         DT: "",
+//       };
+//     }
+
+//     const deletedRows = await orderFood.destroy();
+
+//     // Kiểm tra xem order còn chứa food nào hay không
+//     const remainingFoods = await db.Order_Food.count({
+//       where: { order_id: orderId },
+//     });
+
+//     // Nếu không còn food nào trong order, xóa order luôn
+//     if (remainingFoods === 0) {
+//       await db.Order.destroy({ where: { id: orderId } });
+//     }
+
+//     return {
+//       EM: "Successfully deleted food from order",
+//       EC: 0,
+//       DT: deletedRows,
+//     };
+//   } catch (err) {
+//     console.log("Error: ", err);
+//     return {
+//       EM: "Error in service",
+//       EC: -2,
+//       DT: "",
+//     };
+//   }
+// };
+
+// const deleteFoodFromOrder = async (orderId, foodId) => {
+//   try {
+//     // Tìm orderFood cần xóa
+//     const orderFood = await db.Order_Food.findOne({
+//       where: {
+//         order_id: orderId,
+//         food_id: foodId,
+//       },
+//       include: {
+//         model: db.Order,
+//         attributes: ["total_money"],
+//       },
+//     });
+
+//     if (!orderFood) {
+//       return {
+//         EM: "Food not found in order",
+//         EC: -1,
+//         DT: "",
+//       };
+//     }
+
+//     const deletedRows = await orderFood.destroy();
+
+//     // Tính lại total_money của order
+//     const order = await db.Order.findByPk(orderId);
+//     const remainingFoods = await db.Order_Food.sum("quantity", {
+//       where: { order_id: orderId },
+//     });
+
+//     const updatedOrder = await order.update({
+//       total_money:
+//         order.total_money - orderFood.Food.price * orderFood.quantity,
+//     });
+
+//     // Kiểm tra xem order còn chứa food nào hay không
+//     const remainingFoodsCount = await db.Order_Food.count({
+//       where: { order_id: orderId },
+//     });
+
+//     // Nếu không còn food nào trong order, xóa order luôn
+//     if (remainingFoodsCount === 0) {
+//       await db.Order.destroy({ where: { id: orderId } });
+//     }
+
+//     return {
+//       EM: "Successfully deleted food from order",
+//       EC: 0,
+//       DT: deletedRows,
+//     };
+//   } catch (err) {
+//     console.log("Error: ", err);
+//     return {
+//       EM: "Error in service",
+//       EC: -2,
+//       DT: "",
+//     };
+//   }
+// };
+
 const deleteFoodFromOrder = async (orderId, foodId) => {
   try {
     // Tìm orderFood cần xóa
@@ -265,6 +374,10 @@ const deleteFoodFromOrder = async (orderId, foodId) => {
       where: {
         order_id: orderId,
         food_id: foodId,
+      },
+      include: {
+        model: db.Order,
+        // attributes: ["total_money"],
       },
     });
 
@@ -278,13 +391,32 @@ const deleteFoodFromOrder = async (orderId, foodId) => {
 
     const deletedRows = await orderFood.destroy();
 
+    // Tính lại total_money của order
+    const order = await db.Order.findByPk(orderId);
+    const remainingFoods = await db.Order_Food.findAll({
+      where: { order_id: orderId },
+      include: {
+        model: db.Food,
+        attributes: ["ItemPrice"],
+      },
+    });
+
+    let updatedTotalMoney = 0;
+    remainingFoods.forEach((food) => {
+      updatedTotalMoney += food.Food.ItemPrice * food.quantity;
+    });
+
+    const updatedOrder = await order.update({
+      total_money: updatedTotalMoney,
+    });
+
     // Kiểm tra xem order còn chứa food nào hay không
-    const remainingFoods = await db.Order_Food.count({
+    const remainingFoodsCount = await db.Order_Food.count({
       where: { order_id: orderId },
     });
 
     // Nếu không còn food nào trong order, xóa order luôn
-    if (remainingFoods === 0) {
+    if (remainingFoodsCount === 0) {
       await db.Order.destroy({ where: { id: orderId } });
     }
 
@@ -559,6 +691,149 @@ const appendFoodToCart = async (listFood, idUser) => {
   }
 };
 
+const convertCartToOrder = async (idUser) => {
+  try {
+    let convertCart = await db.Order.findOne({
+      where: {
+        user_id: idUser,
+        status_payment: "Cart",
+      },
+      include: [
+        {
+          model: db.User,
+          attributes: ["fullName", "age", "address", "gender", "phone"],
+        },
+      ],
+    });
+
+    const updatedCartToOrder = await convertCart.update({
+      status_payment: "Order Verify from Client",
+    });
+
+    return {
+      EM: "Success convert cart to order by Client",
+      EC: 0,
+      DT: updatedCartToOrder,
+    };
+  } catch (err) {
+    return {
+      EM: "Error in service",
+      EC: -2,
+      DT: [],
+    };
+  }
+};
+
+const allOrder = async () => {
+  try {
+    let orders = await db.Order.findAll({
+      where: {
+        status_payment: "Order Verify from Client",
+      },
+      include: [
+        {
+          model: db.User,
+          attributes: ["id", "fullName", "age", "address", "gender", "phone"],
+        },
+      ],
+      order: [["id", "ASC"]],
+    });
+    if (orders) {
+      return {
+        EM: "Get all orders data success (no paginate)",
+        EC: 0,
+        DT: orders,
+      };
+    } else {
+      return {
+        EM: "Get orders data success (no paginate)",
+        EC: 0,
+        DT: [],
+      };
+    }
+  } catch (err) {
+    console.log("Error: ", err);
+    return {
+      EM: "Error in service",
+      EC: -2,
+      DT: [],
+    };
+  }
+};
+
+const allOrderByPagination = async (page, limit) => {
+  try {
+    let offset = (page - 1) * limit;
+    const { count, rows } = await db.Order.findAndCountAll({
+      where: {
+        status_payment: "Order Verify from Client",
+      },
+      include: [
+        {
+          model: db.User,
+          attributes: ["id", "fullName", "age", "address", "gender", "phone"],
+        },
+      ],
+      offset: offset,
+      limit: limit,
+      order: [["id", "ASC"]],
+    });
+
+    let totalPages = Math.ceil(count / limit);
+    let data = {
+      totalRows: count,
+      totalPages: totalPages,
+      orders: rows,
+    };
+    return {
+      EM: "Success with orders get by pagination",
+      EC: 0,
+      DT: data,
+    };
+  } catch (err) {
+    console.log("Error: ", err);
+    return {
+      EM: "Error in service",
+      EC: -2,
+      DT: [],
+    };
+  }
+};
+
+const verifyOrder = async (orderId) => {
+  try {
+    console.log(">>>>>> orderId in service is: ", orderId);
+    let orderVerifyByAdmin = await db.Order.findOne({
+      where: {
+        id: orderId,
+        status_payment: "Order Verify from Client",
+      },
+      include: [
+        {
+          model: db.User,
+          attributes: ["id", "fullName", "age", "address", "gender", "phone"],
+        },
+      ],
+    });
+
+    const updatedOrderVerifyByAdmin = await orderVerifyByAdmin.update({
+      status_payment: "Order Verify from Admin",
+    });
+
+    return {
+      EM: "Order Verify from Admin",
+      EC: 0,
+      DT: updatedOrderVerifyByAdmin,
+    };
+  } catch (err) {
+    return {
+      EM: "Error in service",
+      EC: -2,
+      DT: [],
+    };
+  }
+};
+
 module.exports = {
   getFoodList,
   deleteFoodById,
@@ -573,4 +848,8 @@ module.exports = {
   searchFoodByItemName,
   searchFoodByItemNameWithPagination,
   appendFoodToCart,
+  convertCartToOrder,
+  allOrder,
+  allOrderByPagination,
+  verifyOrder,
 };

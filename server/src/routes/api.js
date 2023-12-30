@@ -26,6 +26,9 @@ import {
   uniqueCategoryFood,
   searchFood,
   addFoodToCart,
+  convertToOrder,
+  allOrderInSystem,
+  verifyOrderByAdmin,
 } from "../controller/foodController";
 
 import { newOrder } from "../controller/orderController";
@@ -82,8 +85,16 @@ const initApiRoutes = (app) => {
   router.post("/sendMail", sendMail);
 
   //get all blog
-
   router.get("/blog/get", getAllBlog);
+
+  // client verify cart to order
+  router.get("/food/order/verify", convertToOrder);
+
+  // all order that client verify and only admin see
+  router.get("/order/all", allOrderInSystem);
+
+  // verify order by admin
+  router.post("/order/verify", verifyOrderByAdmin);
 
   return app.use("/api/v1/", router);
 };
