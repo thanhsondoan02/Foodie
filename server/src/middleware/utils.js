@@ -28,7 +28,6 @@ const createToken = (payload) => {
 
 const verifyToken = (token) => {
   let key = process.env.JWT_SECRET;
-  console.log(">>>> JWT key is: ", key);
   let decode = null;
   //   jwt.verify(token, key, function (err, decoded) {
   //     if (err) {
@@ -63,7 +62,6 @@ const checkUserJWT = (req, res, next) => {
 
   if ((cookies && cookies.jwt) || tokenFromHeaders) {
     let token = cookies && cookies.jwt ? cookies.jwt : tokenFromHeaders;
-    console.log("Token is: ", token);
 
     // validate toke
     let decoded = verifyToken(token);
