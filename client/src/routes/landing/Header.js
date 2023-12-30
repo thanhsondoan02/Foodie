@@ -1,14 +1,14 @@
 import React from 'react'
-import logo from '../../assets/images/logo.png'
-import openMenu from '../../assets/images/open-menu.svg'
-import closeMenu from '../../assets/images/close-menu.svg'
-import { Link, NavLink } from 'react-router-dom'
-import Cart from '../../assets/images/cart-icon.png'
+import logo from '../../assets/logo.png'
+import openMenu from '../../assets/open-menu.svg'
+import closeMenu from '../../assets/close-menu.svg'
+import { NavLink } from 'react-router-dom'
+import Cart from '../../assets/cart-icon.png'
 import SuccessMsg from '../../components/SuccessMsg'
-import ResetLocation from '../../helpers/ResetLocation'
+import resetLocation from '../../helpers/ResetLocation'
 
-const Header = ({ loginModal, onLogoutClick ,showModal, isMenuBoxOpen,
-   hideMenuBox, openLoginFragment, isValidLogin, cartCount }) => {
+const Header = ({ loginModal, onLogoutClick, showModal, isMenuBoxOpen,
+  hideMenuBox, openLoginFragment, isValidLogin, cartCount }) => {
   const location = [
     {
       path: '/',
@@ -38,7 +38,7 @@ const Header = ({ loginModal, onLogoutClick ,showModal, isMenuBoxOpen,
       <nav className="main-nav flex-container flex-row txt-center">
         <NavLink
           onClick={() => {
-            ResetLocation()
+            resetLocation()
             hideMenuBox()
           }}
           to="/"
@@ -49,10 +49,10 @@ const Header = ({ loginModal, onLogoutClick ,showModal, isMenuBoxOpen,
             height="50"
             className="logo"
             src={logo}
-            alt="Pizza Time logo"
+            alt="Foodie Restaurant logo"
           />
-          <h1>
-            Pizza <span>Time</span>
+          <h1 style={{textAlign: "start"}}>
+            Foodie <span>Restaurant</span>
           </h1>
         </NavLink>
         <ul className={`navigation-menu flex-row pop-font ${isMenuBoxOpen ? 'active' : ''}`}>
@@ -62,7 +62,7 @@ const Header = ({ loginModal, onLogoutClick ,showModal, isMenuBoxOpen,
               <li key={index}>
                 <NavLink
                   onClick={() => {
-                    ResetLocation()
+                    resetLocation()
                     hideMenuBox()
                   }}
                   style={({ isActive }) =>
@@ -79,7 +79,7 @@ const Header = ({ loginModal, onLogoutClick ,showModal, isMenuBoxOpen,
           {isValidLogin ? <li>
             <NavLink
               onClick={() => {
-                ResetLocation()
+                resetLocation()
                 hideMenuBox()
               }}
               style={({ isActive }) =>
@@ -96,7 +96,7 @@ const Header = ({ loginModal, onLogoutClick ,showModal, isMenuBoxOpen,
                 <div
                   className="passive-button-style txt-white"
                   onClick={() => {
-                    ResetLocation()
+                    resetLocation()
                     onLogoutClick()
                   }}
                 >
@@ -106,7 +106,7 @@ const Header = ({ loginModal, onLogoutClick ,showModal, isMenuBoxOpen,
                 <div
                   className="passive-button-style txt-white"
                   onClick={() => {
-                    ResetLocation()
+                    resetLocation()
                     openLoginFragment()
                   }}
                 >
@@ -117,7 +117,7 @@ const Header = ({ loginModal, onLogoutClick ,showModal, isMenuBoxOpen,
                 className="cart-btn active-button-style txt-white"
                 to="/cart"
                 onClick={() => {
-                  ResetLocation()
+                  resetLocation()
                   hideMenuBox()
                 }}
               >

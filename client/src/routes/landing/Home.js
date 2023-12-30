@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react"
-// import ResetLocation from "../../helpers/ResetLocation";
 import Welcome from "./Welcome";
 import DetailContact from "./DetailContact";
 import AdVideo from "./AdVideo";
@@ -8,73 +7,36 @@ import Hot from "./Hot";
 import Gallery from "./Gallery";
 import StatsPreview from "./StatsPreview";
 import MenuSlider from "./menu-slider/MenuSlider";
-import axios from "axios";
 import Menu from "./Menu";
 import Subscribe from "./Subscribe";
 import Blog from "./Blog";
 import SimpleContact from "./SimpleContact";
+import homeData from "./HomeData";
+import { apiGetBlogList } from "../../services/BlogService";
+import { toastError } from "../../helpers/toastHelper";
 
 function Home() {
-  const baseUrl = "https://mocki.io"
+  const [posts, setPosts] = useState([]);
 
-  const [homeData, setHomeData] = useState({
-    adVideo: {
-      span: "",
-      header: "",
-      description: "",
-      vid: ""
-    },
-    welcome: {
-      header: "",
-      spanInHeader: {
-        start: 0,
-        end: 0,
-      },
-      description: "",
-      pizzaOne: "",
-      pizzaTwo: "",
-      thumbnail: {
-        img375: "",
-        img700: "",
-        img1440: ""
+  const getBlogPostsServer = async () => {
+    try {
+      const response = await apiGetBlogList(1)
+      if (response.data.EC === 0) {
+        setPosts(response.data.DT.blogs)
+      } else {
+        console.log(response.data.EM);
+        toastError(response.data.EM);
       }
-    },
-    contact: {
-      img: "",
-      lines: []
-    },
-    service: [],
-    hot: [],
-    menu: [],
-    gallery: {
-      img375: [],
-      img700: []
-    },
-    statsPreview: [],
-    menuSlider: {
-      thumbnail: {},
-      products: [],
-      categories: []
-    },
-    blog: {
-      title: "",
-      description: "",
-      posts: []
-    },
-    detailContact: {
-      position: [],
-      zoomLevel: 1,
-      info: []
+    } catch (err) {
+      console.log(err);
+      toastError(err);
     }
-  })
+  }
 
   useEffect(() => {
-    axios.get(`${baseUrl}/v1/2a449ed7-c93e-4e22-bd93-bea0e51cbc34`)
-      .then(res => {
-        setHomeData(res.data)
-      })
-      .catch(err => console.log(err))
-  }, [])
+    document.title = "Foodie Restaurant | Home";
+    getBlogPostsServer();
+  }, []);
 
   return (
     <React.Fragment>
@@ -120,7 +82,7 @@ function Home() {
       <Blog
         title={homeData.blog.title}
         description={homeData.blog.description}
-        posts={homeData.blog.posts}
+        posts={posts}
       />
       <DetailContact
         position={homeData.detailContact.position}

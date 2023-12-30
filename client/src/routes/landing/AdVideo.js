@@ -2,6 +2,7 @@ import { Link } from 'react-router-dom';
 import React, { useEffect, useRef } from 'react';
 import { motion } from "framer-motion";
 import "react-alice-carousel/lib/alice-carousel.css";
+import resetLocation from '../../helpers/ResetLocation';
 
 function AdVideo(props) {
   const videoRef = useRef()
@@ -25,10 +26,10 @@ function AdVideo(props) {
           <p className='txt-white'>{props.description}</p>
         </motion.div>
         <div className='header-btns flex-container flex-row'>
-          <Link className='passive-button-style' to='/blog'>
+          <Link className='passive-button-style' to='/blog' onClick={() => {resetLocation()}}>
             Read Blog
           </Link>
-          <Link className='passive-button-style' to='/menu'>
+          <Link className='passive-button-style' to='/menu' onClick={() => {resetLocation()}}>
             View Menu
           </Link>
         </div>

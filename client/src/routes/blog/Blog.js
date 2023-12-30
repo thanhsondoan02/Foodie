@@ -6,6 +6,7 @@ import ScrollButton from "../../helpers/ScrollButton";
 import ResetLocation from "../../helpers/ResetLocation";
 import BlogPosts from "./BlogPosts";
 import { apiGetBlogList } from "../../services/BlogService";
+import { toastError } from "../../helpers/toastHelper";
 
 const Blog = () => {
   const [currentPage, setCurrentPage] = useState(1);
@@ -29,9 +30,11 @@ const Blog = () => {
         setPosts(response.data.DT.blogs)
       } else {
         console.log(response.data.EM);
+        toastError(response.data.EM);
       }
     } catch (err) {
       console.log(err);
+      toastError(err);
     }
   }
 

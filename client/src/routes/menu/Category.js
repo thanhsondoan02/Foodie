@@ -1,7 +1,7 @@
 import React from "react";
 import { NavLink } from "react-router-dom";
-import SearchIcon from "../../assets/images/search-icon.png";
-import ResetLocation from "../../helpers/ResetLocation";
+import SearchIcon from "../../assets/search-icon.png";
+import resetLocation from "../../helpers/ResetLocation";
 
 function Category({ currentCategory, allCategories, changeCategory, onSearch, searchKey, setSearchKey }) {
   return (
@@ -24,7 +24,7 @@ function Category({ currentCategory, allCategories, changeCategory, onSearch, se
               to="/menu"
               onClick={() => {
                 changeCategory(category);
-                ResetLocation();
+                resetLocation();
               }}
               style={{ color: currentCategory === category ? "#F8B703" : "#fff" }}
             >
