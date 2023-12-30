@@ -5,36 +5,27 @@ const CartItem = ({
   handleAddProduct,
   handleRemoveProduct,
   clearCart,
-  cartItems, cartTotals }) => {
+  foods, cartTotals }) => {
   return (
     <React.Fragment>
-      {cartItems.map((cartItem, index) => {
+      {foods.map((food) => {
         return (
-          <section className="cart-item" key={index}>
-            <img src={cartItem.ItemImg} alt={cartItem.ItemName} />
+          <section className="cart-item" key={food.id}>
+            <img src={food.ItemImg} alt={food.ItemName} />
             <section className="cart-item-content">
               <section className="cart-item-info">
-                {cartItem.userSelectedAttributes.length === 0 ? (
-                  <h3 className="cart-item-title">{cartItem.ItemName}</h3>
-                ) : (
-                  <h3 className="cart-item-title">
-                    {cartItem.ItemName},{" "}
-                    {cartItem.userSelectedAttributes.map((i, index) => {
-                      return <span key={index}>{i.attributeValue}</span>;
-                    })}
-                  </h3>
-                )}
-                <p className="cart-item-ingredients">{cartItem.ItemIngredients}</p>
+                <h3 className="cart-item-title">{food.ItemName}</h3>
+                <p className="cart-item-ingredients">{food.ItemIngredients}</p>
               </section>
 
               <section className="cart-item-interaction">
                 <ChangeItemQuantity
                   handleAddProduct={handleAddProduct}
                   handleRemoveProduct={handleRemoveProduct}
-                  cartItem={cartItem}
+                  food={food}
                 />
 
-                <p className="cart-item-price">${cartItem.ItemPrice}</p>
+                <p className="cart-item-price">${food.ItemPrice}</p>
               </section>
             </section>
           </section>

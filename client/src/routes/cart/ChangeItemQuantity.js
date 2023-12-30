@@ -1,19 +1,19 @@
 import React from "react";
 
-const ChangeItemQuantity = ({ handleAddProduct, handleRemoveProduct, cartItem }) => {
+const ChangeItemQuantity = ({ handleAddProduct, handleRemoveProduct, food }) => {
   return (
     <section className="cart-item-add-qty">
       <button
         onClick={() => {
-          handleAddProduct(cartItem, cartItem.userSelectedAttributes);
+          handleAddProduct(food, food.userSelectedAttributes);
         }}
       >
         +
       </button>
-      <p>{cartItem.quantity}</p>
+      <p>{food.Order_Food.quantity}</p>
       <button
         onClick={() => {
-          handleRemoveProduct(cartItem, cartItem.userSelectedAttributes);
+          handleRemoveProduct(food, food.userSelectedAttributes);
         }}
       >
         -

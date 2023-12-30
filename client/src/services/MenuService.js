@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const baseUrl = "http://fall2324w20g2.int3306.freeddns.org"
-const itemPerPage = 5;
+const itemPerPage = 6;
 
 const apiGetCategories = () => {
   return axios.get(`${baseUrl}/api/v1/food/category`);

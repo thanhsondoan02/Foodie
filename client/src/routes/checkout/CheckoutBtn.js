@@ -1,10 +1,8 @@
 import React from "react";
-//components
-import LinkButton from "../../components/Button";
+import LinkButton from "../../components/LinkButton";
 import ResetLocation from "../../helpers/ResetLocation";
 
-const CheckoutBtn = ({ className, openLoginFragment }) => {
-  let validLogin = true
+const CheckoutBtn = ({ validLogin, className, openLoginFragment }) => {
   return (
     <React.Fragment>
       {validLogin ?

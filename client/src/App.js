@@ -99,7 +99,7 @@ function App() {
         <Route path='/contact' element={<Contact />} />
         <Route path='/about' element={<About />} />
         <Route path='/register' element={<Register openLoginFragment={openLoginFragment} />} />
-        {/* <Route path='/cart' element={<Cart openLoginFragment={openLoginFragment} />} /> */}
+        <Route path='/cart' element={<Cart openLoginFragment={openLoginFragment} />} />
       </Routes>
       <Footer />
     </BrowserRouter>
