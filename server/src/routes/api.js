@@ -41,6 +41,7 @@ import {
 
 import { getAllBlog } from "../controller/blogController";
 
+// tong hop router
 const router = express.Router();
 
 const initApiRoutes = (app) => {
