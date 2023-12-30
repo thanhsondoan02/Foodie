@@ -45,6 +45,7 @@ const getUser = async (req, res) => {
     DT: {
       access_token: req.token,
       groupWithRoles: req.user.groupWithRoles,
+      id: req.user.id,
       email: req.user.email,
       fullName: req.user.fullName,
       age: req.user.age,

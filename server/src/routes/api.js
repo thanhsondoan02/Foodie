@@ -33,7 +33,11 @@ import {
 
 import { newOrder } from "../controller/orderController";
 
-import { sendMail } from "../controller/mailController";
+import {
+  sendMail,
+  contactEmailOfUser,
+  getAllContact,
+} from "../controller/mailController";
 
 import { getAllBlog } from "../controller/blogController";
 
@@ -95,6 +99,12 @@ const initApiRoutes = (app) => {
 
   // verify order by admin
   router.post("/order/verify", verifyOrderByAdmin);
+
+  //Admin get all contact
+  router.get("/contact/all", getAllContact);
+
+  // client send contact
+  router.post("/contact/send", contactEmailOfUser);
 
   return app.use("/api/v1/", router);
 };

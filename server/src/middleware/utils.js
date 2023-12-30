@@ -8,8 +8,8 @@ const nonSecurePaths = [
   "/food/getAll",
   "/food/category",
   "/food/search",
-  "/sendMail",
   "/blog/get",
+  "/contact/send",
 ];
 
 // Create token
