@@ -1,7 +1,7 @@
 import React from "react";
 import ChangeItemQuantity from "./ChangeItemQuantity";
 
-const CartItem = ({ foods, cartTotals, updateQuantity }) => {
+const CartItem = ({ foods, cartTotals, updateQuantity, deleteItem }) => {
   return (
     <React.Fragment>
       {foods.map((food) => {
@@ -23,6 +23,10 @@ const CartItem = ({ foods, cartTotals, updateQuantity }) => {
                 <p className="cart-item-price">${food.ItemPrice}</p>
               </section>
             </section>
+
+            <button className="cart-delete-button" onClick={() => { deleteItem(food.id) }}>
+              <p>Delete</p>
+            </button>
           </section>
         );
       })

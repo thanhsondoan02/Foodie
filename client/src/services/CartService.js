@@ -13,7 +13,6 @@ const apiGetCart = () => {
 
 const apiUpdateCart = (orderId, foodId, quantity) => {
   let token = localStorage.getItem('token');
-  // let url = `${baseUrl}/api/v1/food/updateOrder?orderId=${orderId}&foodId=${foodId}&quantity=${quantity}`
   let url = `${baseUrl}/api/v1/food/updateOrder`
   return axios.put(
     url,
@@ -31,4 +30,18 @@ const apiUpdateCart = (orderId, foodId, quantity) => {
   );
 }
 
-export { apiGetCart, apiUpdateCart }
+const apiDeleteCartItem = (orderId, foodId) => {
+  let token = localStorage.getItem('token');
+  let url = `${baseUrl}/api/v1/food/delete`
+  return axios.delete(url, {
+    params: {
+      orderId: orderId,
+      foodId: foodId,
+    },
+    headers: {
+      'Authorization': `Bearer ${token}`
+    }
+  });
+}
+
+export { apiGetCart, apiUpdateCart, apiDeleteCartItem }
