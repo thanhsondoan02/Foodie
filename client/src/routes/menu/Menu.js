@@ -6,10 +6,10 @@ import ResetLocation from "../../helpers/ResetLocation";
 import { motion } from "framer-motion";
 import Category from "./Category";
 import GridItem from "./GridItem";
-import { apiGetCategories, apiGetProducts, apiSearchProducts } from "../../services/MenuService";
+import { apiAddToCart, apiGetCategories, apiGetProducts, apiSearchProducts } from "../../services/MenuService";
 import { debounce } from 'lodash';
 
-function Menu() {
+function Menu({isValidLogin, openLoginFragment}) {
   const [currentProducts, setCurrentProducts] = useState([]);
   const [totalPages, setTotalPages] = useState(0);
   const [currentCategory, setCurrentCategory] = useState("All");
@@ -80,6 +80,19 @@ function Menu() {
     }
   }
 
+  const addProductToCart = async (product) => {
+    try {
+      const response = await apiAddToCart(product.id, product.ItemPrice, 1);
+      if (response.data.EC === 0) {
+        alert(`Add ${product.ItemName} to cart`)
+      } else {
+        console.log(response.data.EM);
+      }
+    } catch (err) {
+      console.log(err);
+    }
+  }
+
   // after user stop typing for 1 second => search
   const onSearch = debounce((value) => {
     if (value === "") return
@@ -88,6 +101,14 @@ function Menu() {
     setTotalPages(1)
     searchProductsFromServer(value, 1)
   }, 1000);
+
+  const onAddCartClick = (product) => {
+    if (isValidLogin) {
+      addProductToCart(product)
+    } else {
+      openLoginFragment();
+    }
+  }
 
   useEffect(() => {
     document.title = `Menu of ${currentCategory} | Pizza Time`;
@@ -117,6 +138,7 @@ function Menu() {
             <GridItem
               key={singleProduct.id}
               singleProduct={singleProduct}
+              onAddCartClick={onAddCartClick}
             />
           ))}
           <ScrollButton />

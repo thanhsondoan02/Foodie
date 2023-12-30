@@ -18,4 +18,21 @@ const apiSearchProducts = (searchString, page) => {
   return axios.get(`${baseUrl}/api/v1/food/search?foodName=${searchString}&page=${page}&limit=${itemPerPage}`)
 }
 
-export { apiGetCategories, apiGetProducts, apiSearchProducts }
+const apiAddToCart = (productId, price, quantity) => {
+  let token = localStorage.getItem('token');
+  return axios.post(`${baseUrl}/api/v1/food/appendOrder`,
+    [{
+      id: productId,
+      ItemPrice: price,
+      quantity: quantity
+    }],
+    {
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token}`
+      }
+    }
+  )
+}
+
+export { apiGetCategories, apiGetProducts, apiSearchProducts, apiAddToCart }

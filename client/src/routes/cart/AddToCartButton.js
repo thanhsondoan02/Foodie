@@ -1,19 +1,14 @@
 import React from "react";
 
-const AddToCartButton = ({ singleProduct,
-  selectedAttributes,
-  handleAddProduct, targetAttribute, setTargetAttribute }) => {
+const AddToCartButton = ({ product, onAddCartClick }) => {
   return (
     <button
       onClick={() => {
-        handleAddProduct(singleProduct, selectedAttributes);
-        setTargetAttribute(false);
+        onAddCartClick(product)
       }}
-      className={`passive-button-style ${targetAttribute?.length > 0 || singleProduct?.attributes?.length === 0
-        ? "active-add-to-cart"
-        : "inactive-add-to-cart"
-        }`}
-      disabled={targetAttribute?.length > 0 || singleProduct?.attributes?.length === 0 ? false : true}
+      className={`passive-button-style 
+      ${true ? "active-add-to-cart" : "inactive-add-to-cart"}`}
+    // disabled={targetAttribute?.length > 0 || singleProduct?.attributes?.length === 0 ? false : true}
     >
       Add to cart
     </button>

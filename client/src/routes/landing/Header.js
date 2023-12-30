@@ -93,8 +93,7 @@ const Header = ({ loginModal, onLogoutClick ,showModal, isMenuBoxOpen,
           <li>
             <div className="login-and-cart">
               {isValidLogin ? (
-                <Link
-                  to="/"
+                <div
                   className="passive-button-style txt-white"
                   onClick={() => {
                     ResetLocation()
@@ -102,7 +101,7 @@ const Header = ({ loginModal, onLogoutClick ,showModal, isMenuBoxOpen,
                   }}
                 >
                   Log out
-                </Link>
+                </div>
               ) : (
                 <div
                   className="passive-button-style txt-white"

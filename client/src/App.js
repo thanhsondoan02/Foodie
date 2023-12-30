@@ -94,7 +94,7 @@ function App() {
       />
       <Routes>
         <Route path='/' element={<Home />} />
-        <Route path="/menu" element={<Menu />} />
+        <Route path="/menu" element={<Menu isValidLogin={isValidLogin} openLoginFragment={openLoginFragment} />} />
         <Route path='/blog' element={<Blog />} />
         <Route path='/contact' element={<Contact />} />
         <Route path='/about' element={<About />} />
