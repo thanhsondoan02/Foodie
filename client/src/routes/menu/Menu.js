@@ -8,15 +8,16 @@ import Category from "./Category";
 import GridItem from "./GridItem";
 import { apiAddToCart, apiGetCategories, apiGetProducts, apiSearchProducts } from "../../services/MenuService";
 import { debounce } from 'lodash';
-import { toast } from 'react-toastify';
+import { toastSuccess } from "../../helpers/toastHelper";
 
-function Menu({isValidLogin, openLoginFragment, validateToken}) {
+function Menu({ isValidLogin, openLoginFragment, validateToken }) {
   const [currentProducts, setCurrentProducts] = useState([]);
   const [totalPages, setTotalPages] = useState(0);
   const [currentCategory, setCurrentCategory] = useState("All");
   const [currentPage, setCurrentPage] = useState(1);
   const [categories, setCategories] = useState(["All"]);
   const [searchKey, setSearchKey] = useState("");
+  const [isLoading, setIsLoading] = useState(true);
 
   const onPageChange = (event) => {
     if (searchKey === "") {
@@ -50,6 +51,7 @@ function Menu({isValidLogin, openLoginFragment, validateToken}) {
   }
 
   const getCategoriesFromServer = async () => {
+    setIsLoading(true);
     if (categories.length > 1) return;
     try {
       const response = await apiGetCategories();
@@ -63,6 +65,7 @@ function Menu({isValidLogin, openLoginFragment, validateToken}) {
     } catch (err) {
       console.log(err.message);
     }
+    setIsLoading(false);
   }
 
   const searchProductsFromServer = async (searchString, page) => {
@@ -86,14 +89,7 @@ function Menu({isValidLogin, openLoginFragment, validateToken}) {
       const response = await apiAddToCart(product.id, product.ItemPrice, 1);
       if (response.data.EC === 0) {
         validateToken();
-        toast('Added to cart successfully!', {
-          position: "bottom-center",
-          autoClose: 2000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true
-        })
+        toastSuccess('Added to cart successfully!')
       } else {
         console.log(response.data.EM);
       }
@@ -127,7 +123,7 @@ function Menu({isValidLogin, openLoginFragment, validateToken}) {
   }, []);
 
   return (
-    totalPages === 0 ? <p>Loading...</p>
+    isLoading ? <p>Loading...</p>
       : <motion.main
         className="menu-main"
         initial={{ opacity: 0, translateX: -300 }}
@@ -141,7 +137,6 @@ function Menu({isValidLogin, openLoginFragment, validateToken}) {
           changeCategory={onCategoryChange}
           onSearch={onSearch}
         />
-
         <article className="menu-grid">
           {currentProducts.map((singleProduct) => (
             <GridItem

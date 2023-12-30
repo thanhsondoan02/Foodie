@@ -1,11 +1,7 @@
 import React from "react";
 import ChangeItemQuantity from "./ChangeItemQuantity";
 
-const CartItem = ({
-  handleAddProduct,
-  handleRemoveProduct,
-  clearCart,
-  foods, cartTotals }) => {
+const CartItem = ({ foods, cartTotals, updateQuantity }) => {
   return (
     <React.Fragment>
       {foods.map((food) => {
@@ -20,8 +16,7 @@ const CartItem = ({
 
               <section className="cart-item-interaction">
                 <ChangeItemQuantity
-                  handleAddProduct={handleAddProduct}
-                  handleRemoveProduct={handleRemoveProduct}
+                  updateQuantity={updateQuantity}
                   food={food}
                 />
 
@@ -32,9 +27,6 @@ const CartItem = ({
         );
       })
       }
-      <button onClick={clearCart} className="cart-clear-btn">
-        remove all items from the cart
-      </button>
       {cartTotals}
     </React.Fragment>
   );

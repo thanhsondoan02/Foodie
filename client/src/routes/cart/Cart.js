@@ -3,15 +3,18 @@ import ScrollButton from "../../helpers/ScrollButton";
 import EmptyCart from "./EmptyCart";
 import CartItems from "./CartItems";
 import "./cart.css";
-import { apiGetCart } from "../../services/CartService";
+import { apiGetCart, apiUpdateCart } from "../../services/CartService";
 import CartTotals from "./CartTotals";
 import NotLoginCart from "./NotLoginCart";
+import { toastError } from "../../helpers/toastHelper";
+import { debounce } from "lodash";
 
 const Cart = ({ isValidLogin, openLoginFragment }) => {
   const [foods, setFoods] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [price, setPrice] = useState(0);
   const [quantity, setQuantity] = useState(0);
+  const [orderId, setOrderId] = useState(0);
 
   const getDataFromServer = async () => {
     setIsLoading(true);
@@ -22,6 +25,7 @@ const Cart = ({ isValidLogin, openLoginFragment }) => {
         if (response.data.DT.foods.length === 0) {
           setFoods([]);
         } else {
+          setOrderId(response.data.DT.foods[0].id)
           let foodList = response.data.DT.foods[0].Food
           setFoods(foodList);
           setPrice(response.data.DT.foods[0].total_money);
@@ -40,6 +44,36 @@ const Cart = ({ isValidLogin, openLoginFragment }) => {
     }
     setIsLoading(false);
   }
+
+  const updateQuantity = (foodId, quantity) => {
+    updateUiQuantity(foodId, quantity);
+    debounceUpdateQuantityToServer(foodId, quantity);
+  }
+
+  const updateUiQuantity = (foodId, quantity) => {
+    let foodIndex = foods.findIndex((food) => food.id === foodId);
+    foods[foodIndex].Order_Food.quantity = quantity;
+    document.querySelector(`.cart-item:nth-child(${foodIndex + 1}) .cart-item-add-qty p`).innerHTML = quantity;
+  }
+
+  const updateQuantityToServer = async (foodId, quantity) => {
+    try {
+      const response = await apiUpdateCart(orderId, foodId, quantity);
+      if (response.data.EC === 0) {
+        // update food state
+        let foodIndex = foods.findIndex((food) => food.id === foodId);
+        foods[foodIndex].Order_Food.quantity = quantity;
+      } else {
+        console.log(response.data.EM);
+        toastError(response.data.EM);
+      }
+    } catch (err) {
+      console.log(err);
+      toastError(err);
+    }
+  }
+
+  const debounceUpdateQuantityToServer = debounce(updateQuantityToServer, 1000);
 
   useEffect(() => {
     document.title = "Shopping Cart | Pizza Time";
@@ -65,6 +99,7 @@ const Cart = ({ isValidLogin, openLoginFragment }) => {
                     openLoginFragment={openLoginFragment}
                   />
                 }
+                updateQuantity={updateQuantity}
               />}
           </article>
           <ScrollButton />
@@ -72,7 +107,7 @@ const Cart = ({ isValidLogin, openLoginFragment }) => {
       :
       <main className="cart">
         <article className="cart-content">
-          <NotLoginCart openLoginFragment={openLoginFragment}/>
+          <NotLoginCart openLoginFragment={openLoginFragment} />
         </article>
       </main>
   )

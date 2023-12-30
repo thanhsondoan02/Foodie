@@ -1,11 +1,12 @@
 import React from "react";
 
-const ChangeItemQuantity = ({ handleAddProduct, handleRemoveProduct, food }) => {
+const ChangeItemQuantity = ({ updateQuantity, food }) => {
+
   return (
     <section className="cart-item-add-qty">
       <button
         onClick={() => {
-          handleAddProduct(food, food.userSelectedAttributes);
+          updateQuantity(food.id, food.Order_Food.quantity + 1)
         }}
       >
         +
@@ -13,7 +14,8 @@ const ChangeItemQuantity = ({ handleAddProduct, handleRemoveProduct, food }) => 
       <p>{food.Order_Food.quantity}</p>
       <button
         onClick={() => {
-          handleRemoveProduct(food, food.userSelectedAttributes);
+          if (food.Order_Food.quantity === 1) return;
+          updateQuantity(food.id, food.Order_Food.quantity - 1)
         }}
       >
         -
