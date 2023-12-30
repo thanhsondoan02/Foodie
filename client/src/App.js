@@ -13,6 +13,8 @@ import Register from './routes/register/Register';
 import Cart from './routes/cart/Cart';
 import { apiLogout } from './services/RegisterService';
 import { apiGetCart } from './services/CartService';
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 function App() {
   const [isMenuBoxOpen, setIsMenuBoxOpen] = useState(false);
@@ -94,14 +96,21 @@ function App() {
       />
       <Routes>
         <Route path='/' element={<Home />} />
-        <Route path="/menu" element={<Menu isValidLogin={isValidLogin} openLoginFragment={openLoginFragment} />} />
+        <Route path="/menu" element={
+          <Menu isValidLogin={isValidLogin}
+            openLoginFragment={openLoginFragment}
+            validateToken={validateToken} />
+        } />
         <Route path='/blog' element={<Blog />} />
         <Route path='/contact' element={<Contact />} />
         <Route path='/about' element={<About />} />
         <Route path='/register' element={<Register openLoginFragment={openLoginFragment} />} />
-        <Route path='/cart' element={<Cart openLoginFragment={openLoginFragment} />} />
+        <Route path='/cart'
+          element={<Cart isValidLogin={isValidLogin} openLoginFragment={openLoginFragment} />}
+        />
       </Routes>
       <Footer />
+      <ToastContainer />
     </BrowserRouter>
   );
 }

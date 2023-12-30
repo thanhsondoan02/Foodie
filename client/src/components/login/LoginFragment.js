@@ -1,17 +1,19 @@
 import React, { useState } from "react";
 import LinkButton from "../LinkButton";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { checkValueLoginError, checkPasswordError } from "../../helpers/checkInput";
 import { apiLogin } from "../../services/RegisterService";
 
 const LoginFragment = ({ closeLoginFragment, isLoginBoxOpen, hideMenuBox,
   validateToken }) => {
-  const navigate = useNavigate();
   const [formValue, setFormValue] = useState({ valueLogin: '', password: '' });
   const [isLoading, setIsLoading] = useState(false);
   const [valueLoginError, setValueLoginError] = useState('');
   const [passwordError, setPasswordError] = useState('');
   const [serverError, setServerError] = useState('');
+
+  const location = useLocation();
+  const navigate = useNavigate();
 
   const validateValueLogin = (e) => {
     let valueLogin = e.target.value;
@@ -62,6 +64,9 @@ const LoginFragment = ({ closeLoginFragment, isLoginBoxOpen, hideMenuBox,
           resetFragment();
           localStorage.setItem('token', response.data.DT.access_token);
           validateToken()
+          if (location.pathname === '/register') {
+            navigate('/');
+          }
         } else {
           console.log(response.data.EM);
           setIsLoading(false);

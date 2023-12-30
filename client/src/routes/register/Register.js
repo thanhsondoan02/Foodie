@@ -34,6 +34,10 @@ const Register = ({ openLoginFragment }) => {
     setLoading(true);
     e.preventDefault();
 
+    if (submitCheck(formValue.phone, checkPhoneError, setPhoneError, document.querySelector('.phone-section'))) {
+      alert('Suck phone')
+    }
+
     if (submitCheck(formValue.fullName, checkFullNameError, setFullNameError, document.querySelector('.name-section'))
       && submitCheck(formValue.email, checkEmailError, setEmailError, document.querySelector('.email-section'))
       && submitCheck(formValue.password, checkPasswordError, setPasswordError, document.querySelector('.password-section'))

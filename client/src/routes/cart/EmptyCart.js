@@ -1,6 +1,5 @@
 import React from "react";
 import { Link } from "react-router-dom";
-//components
 import ResetLocation from "../../helpers/ResetLocation";
 
 const EmptyCart = () => {

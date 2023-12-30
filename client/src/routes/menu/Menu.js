@@ -8,8 +8,9 @@ import Category from "./Category";
 import GridItem from "./GridItem";
 import { apiAddToCart, apiGetCategories, apiGetProducts, apiSearchProducts } from "../../services/MenuService";
 import { debounce } from 'lodash';
+import { toast } from 'react-toastify';
 
-function Menu({isValidLogin, openLoginFragment}) {
+function Menu({isValidLogin, openLoginFragment, validateToken}) {
   const [currentProducts, setCurrentProducts] = useState([]);
   const [totalPages, setTotalPages] = useState(0);
   const [currentCategory, setCurrentCategory] = useState("All");
@@ -84,7 +85,15 @@ function Menu({isValidLogin, openLoginFragment}) {
     try {
       const response = await apiAddToCart(product.id, product.ItemPrice, 1);
       if (response.data.EC === 0) {
-        alert(`Add ${product.ItemName} to cart`)
+        validateToken();
+        toast('Added to cart successfully!', {
+          position: "bottom-center",
+          autoClose: 2000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true
+        })
       } else {
         console.log(response.data.EM);
       }
