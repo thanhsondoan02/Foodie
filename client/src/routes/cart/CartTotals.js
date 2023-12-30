@@ -4,7 +4,7 @@ import LinkButton from "../../components/LinkButton";
 import ResetLocation from "../../helpers/ResetLocation";
 import { Link } from "react-router-dom";
 
-const CartTotals = ({ price, quantity, isInCartPage, openLoginFragment }) => {
+const CartTotals = ({ price, quantity, isInCartPage, openLoginFragment, onOrderClick }) => {
   return (
     <article className="cart-carttotals">
       {quantity === 0 ? null : (
@@ -25,6 +25,7 @@ const CartTotals = ({ price, quantity, isInCartPage, openLoginFragment }) => {
                 validLogin={true}
                 className="active-button-style"
                 openLoginFragment={openLoginFragment}
+                onOrderClick={onOrderClick}
               />
               <LinkButton
                 onClick={ResetLocation}

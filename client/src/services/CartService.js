@@ -44,4 +44,13 @@ const apiDeleteCartItem = (orderId, foodId) => {
   });
 }
 
+export const apiCartOrder = () => {
+  let token = localStorage.getItem('token');
+  return axios.get(`${baseUrl}/api/v1/food/order/verify`, {
+    headers: {
+      'Authorization': `Bearer ${token}`
+    }
+  });
+}
+
 export { apiGetCart, apiUpdateCart, apiDeleteCartItem }

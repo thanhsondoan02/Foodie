@@ -3,11 +3,12 @@ import ScrollButton from "../../helpers/ScrollButton";
 import EmptyCart from "./EmptyCart";
 import CartItems from "./CartItems";
 import "./cart.css";
-import { apiDeleteCartItem, apiGetCart, apiUpdateCart } from "../../services/CartService";
+import { apiCartOrder, apiDeleteCartItem, apiGetCart, apiUpdateCart } from "../../services/CartService";
 import CartTotals from "./CartTotals";
 import NotLoginCart from "./NotLoginCart";
 import { toastError, toastSuccess } from "../../helpers/toastHelper";
 import { debounce } from "lodash";
+import SuccessCart from "./SuccessCart";
 
 const Cart = ({ isValidLogin, openLoginFragment }) => {
   const [foods, setFoods] = useState([]);
@@ -15,6 +16,7 @@ const Cart = ({ isValidLogin, openLoginFragment }) => {
   const [totalPrice, setTotalPrice] = useState(0);
   const [totalQuantity, setTotalQuantity] = useState(0);
   const [orderId, setOrderId] = useState(0);
+  const [isOrderSuccess, setIsOrderSuccess] = useState(false);
 
   const getDataFromServer = async () => {
     setIsLoading(true);
@@ -104,12 +106,38 @@ const Cart = ({ isValidLogin, openLoginFragment }) => {
     }
   }
 
+  const orderNowServer = async () => {
+    try {
+      const response = await apiCartOrder();
+      if (response.data.EC === 0) {
+        setIsOrderSuccess(true);
+      } else {
+        console.log(response.data.EM);
+        toastError(response.data.EM);
+      }
+    } catch (err) {
+      console.log(err);
+      toastError(err);
+    }
+  }
+
+  const onOrderClick = () => {
+    orderNowServer()
+  }
+
   useEffect(() => {
     document.title = "Shopping Cart | Pizza Time";
     if (isValidLogin) getDataFromServer();
   }, [isValidLogin]);
 
   return (
+    isOrderSuccess ?
+      <main className="cart">
+        <article className="cart-content">
+          <SuccessCart />
+        </article>
+      </main>
+      :
     isValidLogin ?
       isLoading ? <div className="loading">Loading</div> :
         <main className="cart">
@@ -126,6 +154,7 @@ const Cart = ({ isValidLogin, openLoginFragment }) => {
                     quantity={totalQuantity}
                     isInCartPage={true}
                     openLoginFragment={openLoginFragment}
+                    onOrderClick={onOrderClick}
                   />
                 
                 }
