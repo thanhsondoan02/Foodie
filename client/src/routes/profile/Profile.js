@@ -1,10 +1,8 @@
 import React, { useEffect, useState } from "react";
-import ResetLocation from "../../helpers/ResetLocation";
-import { useNavigate } from "react-router-dom";
 import { toastError, toastSuccess } from "../../helpers/toastHelper";
 import "./profile2.css"
 import { apiGetProfile, apiUpdateProfile } from "../../services/AccountService";
-import { checkAddressError, checkAgeError, checkFullNameError, checkGenderError, checkPhoneError } from "../../helpers/checkInput";
+import { checkAddressError, checkAgeError, checkFullNameError, checkPhoneError } from "../../helpers/checkInput";
 import {ReactComponent as EmailIcon} from "../../assets/email-icon.svg";
 import {ReactComponent as PhoneIcon} from "../../assets/phone-icon.svg";
 import {ReactComponent as UserIcon} from "../../assets/user-icon.svg";

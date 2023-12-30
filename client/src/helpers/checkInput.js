@@ -91,3 +91,13 @@ export const checkValueLoginError = (valueLogin) => {
     return ('');
   }
 }
+
+export const checkContactMessageError = (message) => {
+  if (!message) {
+    return ('Please enter your message');
+  } else if (message.length < 10) {
+    return ('Message should be at least 10 characters long');
+  } else {
+    return ('');
+  }
+}

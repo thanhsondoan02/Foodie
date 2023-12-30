@@ -46,4 +46,4 @@ const apiSendContact = (fullName, email, message) => {
 
 }
 
-export { apiGetCategories, apiGetProducts, apiSearchProducts, apiAddToCart }
+export { apiGetCategories, apiGetProducts, apiSearchProducts, apiAddToCart, apiSendContact }
