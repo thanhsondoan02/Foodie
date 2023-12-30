@@ -81,9 +81,11 @@ const Cart = ({ isValidLogin, openLoginFragment }) => {
 
   const deleteItem = (foodId) => {
     let foodIndex = foods.findIndex((food) => food.id === foodId);
+    let oldPrice = foods[foodIndex].ItemPrice * foods[foodIndex].Order_Food.quantity;
     foods.splice(foodIndex, 1);
     setFoods(foods);
     setTotalQuantity(totalQuantity - 1);
+    setTotalPrice(totalPrice - oldPrice);
     deleteItemServer(foodId);
   }
 

@@ -7,7 +7,7 @@ export const checkFullNameError = (fullName) => {
   if (!fullName) {
     return "Please enter your full name"
   } else if (fullName.length < 3) {
-    return "Name should be at least 3 characters long"
+    return "Full Name should be at least 3 characters long"
   } else {
     return ''
   }

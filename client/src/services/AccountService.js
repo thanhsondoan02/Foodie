@@ -40,4 +40,33 @@ const apiLogout = () => {
   });
 }
 
-export { apiRegister, apiLogin, apiLogout }
+const apiGetProfile = () => {
+  let token = localStorage.getItem('token');
+  return axios.get(`${baseUrl}/api/v1/user/read`, {
+    headers: {
+      'Authorization': `Bearer ${token}`
+    }
+  });
+}
+
+const apiUpdateProfile = (id, fullName, age, address, gender, phone) => {
+  let token = localStorage.getItem('token');
+  return axios.put(`${baseUrl}/api/v1/user/update`,
+    new URLSearchParams({
+      'id': id,
+      'fullName': fullName,
+      'age': age,
+      'address': address,
+      'gender': gender,
+      'phone': phone
+    }),
+    {
+      headers: {
+        'Authorization': `Bearer ${token}`
+      }
+    }
+  );
+}
+
+
+export { apiRegister, apiLogin, apiLogout, apiGetProfile, apiUpdateProfile }

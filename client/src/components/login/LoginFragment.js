@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import LinkButton from "../LinkButton";
 import { useLocation, useNavigate } from "react-router-dom";
 import { checkValueLoginError, checkPasswordError } from "../../helpers/checkInput";
-import { apiLogin } from "../../services/RegisterService";
+import { apiLogin } from "../../services/AccountService";
 
 const LoginFragment = ({ closeLoginFragment, isLoginBoxOpen, hideMenuBox,
   validateToken }) => {

@@ -10,7 +10,7 @@ import {
   checkPhoneError,
   checkGenderError
 } from "../../helpers/checkInput";
-import { apiRegister } from "../../services/RegisterService";
+import { apiRegister } from "../../services/AccountService";
 
 const Register = ({ openLoginFragment }) => {
 

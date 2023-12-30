@@ -11,11 +11,12 @@ import Contact from './routes/contact/Contact';
 import About from './routes/about/About';
 import Register from './routes/register/Register';
 import Cart from './routes/cart/Cart';
-import { apiLogout } from './services/RegisterService';
+import { apiLogout } from './services/AccountService';
 import { apiGetCart } from './services/CartService';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import BlogPost from './routes/blog-post/BlogPost';
+import Profile from './routes/profile/Profile';
 
 function App() {
   const [isMenuBoxOpen, setIsMenuBoxOpen] = useState(false);
@@ -110,6 +111,7 @@ function App() {
           element={<Cart isValidLogin={isValidLogin} openLoginFragment={openLoginFragment} />}
         />
         <Route path='/blog/:blogId' element={<BlogPost />} />
+        <Route path='/profile' element={<Profile isValidLogin={isValidLogin}/>} />
       </Routes>
       <Footer />
       <ToastContainer />
