@@ -39,10 +39,10 @@ This project was bootstrapped with [Create React App](https://github.com/faceboo
 
 To get started, you need to:
 
-Clone the project
-npm install
-Install listed dependencies
-Use available scripts, like npm start
+1. Clone the project
+2. npm install
+3. Install listed dependencies
+4. Use available scripts, like npm start
 
 ## Instructions
 
