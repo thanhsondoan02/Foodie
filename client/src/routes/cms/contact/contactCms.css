@@ -75,6 +75,7 @@
   min-height: 100vh;
   font-family: var(--poppins-font);
   color: white;
+  padding-top: 2rem;
 }
 
 .not-login-cms h3 {
@@ -101,4 +102,34 @@
 .meme img {
   height: 200px;
   margin: 0 4rem;
+}
+
+.contact-cms-header {
+  font-family: var(--poppins-font);
+  margin-top: 3rem;
+  font-size: 2rem;
+}
+
+.mail-cms-container {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  width: 80%;
+}
+
+.mail-html-input {
+  width: 100%;
+  height: 20rem;
+  background-color: var(--light-black);
+  border-color: white;
+  margin-top: 2rem;
+  margin-bottom: 2rem;
+  color: white;
+  font-family: var(--poppins-font);
+  padding: 2rem;
+  font-size: 1rem;
+}
+
+.mail-html-input::placeholder {
+  color: rgba(255, 255, 255, 0.781);
 }

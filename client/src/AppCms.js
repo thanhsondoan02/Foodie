@@ -12,6 +12,7 @@ import HeaderCms from './routes/landing/HeaderCms';
 import ContactCms from './routes/cms/contact/ContactCms';
 import { apiCmsGetContact } from './services/CmsService';
 import { toastError, toastSuccess } from './helpers/toastHelper';
+import MailCms from './routes/cms/mail/MailCms';
 
 function AppCms() {
   const [isMenuBoxOpen, setIsMenuBoxOpen] = useState(false);
@@ -97,6 +98,7 @@ function AppCms() {
         <Route path="/cms" element={
           <CMS isValidAdmin={isValidAdmin} openLoginFragment={openLoginFragment} />} />
         <Route path="/cms/contact" element={<ContactCms isValidAdmin={isValidAdmin} openLoginFragment={openLoginFragment} />} />
+        <Route path="/cms/mail" element={<MailCms isValidAdmin={isValidAdmin} openLoginFragment={openLoginFragment} />} />
       </Routes>
       <Footer />
       <ToastContainer />

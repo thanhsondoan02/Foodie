@@ -14,6 +14,10 @@ const HeaderCms = ({ loginModal, onLogoutClick, showModal, isMenuBoxOpen,
       path: 'cms/contact',
       name: 'Contact',
     },
+    {
+      path: 'cms/mail',
+      name: 'Mail',
+    }
   ]
 
   return (

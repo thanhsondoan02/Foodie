@@ -13,3 +13,18 @@ export const apiCmsGetContact = (page, limit) => {
     }
   );
 }
+
+export const apiCmsSendMail = (messageBody) => {
+  let token = localStorage.getItem('admin_token');
+  return axios.post(`${baseUrl}/api/v1/sendMail`,
+    new URLSearchParams({
+      'messageBody': messageBody
+    }),
+    {
+      headers: {
+        'Authorization': `Bearer ${token}`,
+        'Content-Type': 'application/x-www-form-urlencoded',
+      }
+    }
+  );
+}
