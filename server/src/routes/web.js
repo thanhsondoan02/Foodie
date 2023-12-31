@@ -11,7 +11,7 @@ import {
 const router = express.Router();
 
 const initWebRoutes = (app) => {
-  router.get("/", handleHelloHien);
+  // router.get("/", handleHelloHien);
   router.get("/users", handleUser);
   router.post("/users/create", addUser);
   router.post("/users/delete/:id", handleDeleteUser);

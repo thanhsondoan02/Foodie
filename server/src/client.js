@@ -3,11 +3,16 @@ import express from "express";
 const router = express.Router();
 
 const initClientRoutes = (app) => {
-  // router.all("*", checkUserJWT, checkUserPermission);
-
-  router.post("/contact/send", express.static('../client/build'));
-
-  return app.use("/api/v1/", router);
+  app.use("/", express.static("./build"));
+  app.use("/menu", express.static("./build"));
+  app.use("/blog", express.static("./build"));
+  app.use("/contact", express.static("./build"));
+  app.use("/about", express.static("./build"));
+  app.use("/register", express.static("./build"));
+  app.use("/cart", express.static("./build"));
+  app.use("/blog/:blogId", express.static("./build"));
+  app.use("/profile", express.static("./build"));
+  app.use("/careers", express.static("./build"));
 };
 
 export default initClientRoutes;
