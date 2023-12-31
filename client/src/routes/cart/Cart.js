@@ -138,38 +138,38 @@ const Cart = ({ isValidLogin, openLoginFragment }) => {
         </article>
       </main>
       :
-    isValidLogin ?
-      isLoading ? <div className="loading">Loading</div> :
+      isValidLogin ?
+        isLoading ? <div className="loading">Loading</div> :
+          <main className="cart">
+            <h2>Shopping cart</h2>
+            <article className="cart-content">
+              {foods.length === 0 ?
+                <EmptyCart />
+                :
+                <CartItems
+                  foods={foods}
+                  cartTotals={
+                    <CartTotals
+                      price={totalPrice}
+                      quantity={totalQuantity}
+                      isInCartPage={true}
+                      openLoginFragment={openLoginFragment}
+                      onOrderClick={onOrderClick}
+                    />
+
+                  }
+                  updateQuantity={updateQuantity}
+                  deleteItem={deleteItem}
+                />}
+            </article>
+            <ScrollButton />
+          </main>
+        :
         <main className="cart">
-          <h2>Shopping cart</h2>
           <article className="cart-content">
-            {foods.length === 0 ?
-              <EmptyCart />
-              :
-              <CartItems
-                foods={foods}
-                cartTotals={
-                  <CartTotals
-                    price={totalPrice}
-                    quantity={totalQuantity}
-                    isInCartPage={true}
-                    openLoginFragment={openLoginFragment}
-                    onOrderClick={onOrderClick}
-                  />
-                
-                }
-                updateQuantity={updateQuantity}
-                deleteItem={deleteItem}
-              />}
+            <NotLoginCart openLoginFragment={openLoginFragment} />
           </article>
-          <ScrollButton />
         </main>
-      :
-      <main className="cart">
-        <article className="cart-content">
-          <NotLoginCart openLoginFragment={openLoginFragment} />
-        </article>
-      </main>
   )
 }
 
