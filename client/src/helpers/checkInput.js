@@ -26,8 +26,8 @@ export const checkEmailError = (email) => {
 export const checkPasswordError = (password) => {
   if (!password) {
     return ('Please enter your password');
-  } else if (password.length < 8) {
-    return ('Password should be at least 8 characters long');
+  } else if (password.length < 6) {
+    return ('Password should be at least 6 characters long');
   } else {
     return ('');
   }
@@ -83,6 +83,7 @@ export const checkGenderError = (gender) => {
 }
 
 export const checkValueLoginError = (valueLogin) => {
+  if (valueLogin === 'admin') return '';
   if (!valueLogin) {
     return ('Please enter your email address or phone number');
   } else if (!emailRegex.test(valueLogin) && !phoneRegex.test(valueLogin)) {

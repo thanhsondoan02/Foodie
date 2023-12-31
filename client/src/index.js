@@ -15,10 +15,12 @@ import './components/login/loginFragment.css'
 
 // Components
 import App from './App';
+import AppCms from './AppCms';
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
-    <App />
+    {/* <App /> */}
+    <AppCms />
   </React.StrictMode>
 );
 
