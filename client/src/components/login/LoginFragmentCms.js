@@ -4,8 +4,8 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { checkValueLoginError, checkPasswordError } from "../../helpers/checkInput";
 import { apiLogin } from "../../services/AccountService";
 
-const LoginFragmentCms = ({ closeLoginFragment, isLoginBoxOpen, hideMenuBox,
-  validateToken, setIsValidAdmin }) => {
+const LoginFragmentCms = ({ closeLoginFragment, isLoginBoxOpen,
+  hideMenuBox, setIsValidAdmin, validateToken }) => {
   const [formValue, setFormValue] = useState({ valueLogin: '', password: '' });
   const [isLoading, setIsLoading] = useState(false);
   const [valueLoginError, setValueLoginError] = useState('');
@@ -62,11 +62,12 @@ const LoginFragmentCms = ({ closeLoginFragment, isLoginBoxOpen, hideMenuBox,
         if (response.data.EC === 0 && response.data.DT.groupWithRoles.id === 1) {
           closeLoginFragment();
           resetFragment();
-          localStorage.setItem('admin-token', response.data.DT.access_token);
-          validateToken()
+          setIsValidAdmin(true);
+          localStorage.setItem('admin_token', response.data.DT.access_token);
+          validateToken();
         } else {
           let errorMessage = response.data.EM;
-          if (response.data.DT.groupWithRoles.id !== 1) {
+          if (response.data.EC === 0) {
             errorMessage = "You are not an admin";
           }
           console.log(errorMessage);

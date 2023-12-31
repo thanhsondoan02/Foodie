@@ -1,0 +1,104 @@
+.contact-cms-main {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  background-color: var(--light-black);
+  min-height: 100vh;
+  font-family: var(--poppins-font);
+  color: white;
+  align-items: center;
+}
+
+.contact-cms-main table {
+  width: 90%;
+  margin-top: 2rem;
+  table-layout: fixed;
+  border-style: solid;
+  border-width: 1px;
+  border-color: white;
+  border-collapse: collapse;
+}
+
+.contact-cms-main td,
+.contact-cms-main th {
+  padding: 1rem;
+  border: 1px solid var(--light-black);
+  text-align: left;
+  border-style: solid;
+  border-width: 1px;
+  border-color: white;
+  word-wrap: break-word
+}
+
+
+.contact-cms-pagination {
+  color: var(--white);
+  display: flex;
+  flex-direction: row;
+  gap: 1.5rem;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.5rem;
+  margin-top: 15rem;
+}
+
+.contact-cms-pagination li {
+  cursor: pointer;
+}
+
+.contact-cms-pagination li.selected {
+  color: var(--pizza-red);
+}
+
+.contact-cms-id {
+  width: 5%;
+}
+
+.contact-cms-name {
+  width: 20%;
+}
+
+.contact-cms-email {
+  width: 35%;
+}
+
+.contact-cms-message {
+  width: 40%;
+}
+
+.not-login-cms {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  background-color: var(--light-black);
+  min-height: 100vh;
+  font-family: var(--poppins-font);
+  color: white;
+}
+
+.not-login-cms h3 {
+  font-size: 2rem;
+  margin-top: 2rem;
+}
+
+.not-login-cms p {
+  font-size: 1.3rem;
+  margin-top: 1rem;
+}
+
+.not-login-cms button {
+  margin-top: 2rem;
+}
+
+.meme {
+  margin-top: 6rem;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+.meme img {
+  height: 200px;
+  margin: 0 4rem;
+}

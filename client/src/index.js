@@ -13,14 +13,11 @@ import './routes/blog/blog.css'
 import './routes/register/register.css'
 import './components/login/loginFragment.css'
 
-// Components
-import App from './App';
-import AppCms from './AppCms';
+import BigApp from './BigApp';
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
-    {/* <App /> */}
-    <AppCms />
+    <BigApp />
   </React.StrictMode>
 );
 

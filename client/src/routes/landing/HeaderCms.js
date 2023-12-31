@@ -8,10 +8,10 @@ import SuccessMsg from '../../components/SuccessMsg'
 import resetLocation from '../../helpers/ResetLocation'
 
 const HeaderCms = ({ loginModal, onLogoutClick, showModal, isMenuBoxOpen,
-  hideMenuBox, openLoginFragment, isValidLogin, cartCount }) => {
+  hideMenuBox, openLoginFragment, isValidLogin }) => {
   const location = [
     {
-      path: '/contact',
+      path: 'cms/contact',
       name: 'Contact',
     },
   ]
@@ -25,7 +25,7 @@ const HeaderCms = ({ loginModal, onLogoutClick, showModal, isMenuBoxOpen,
             resetLocation()
             hideMenuBox()
           }}
-          to="/"
+          to="/cms"
           className="logo-styling flex-container flex-row txt-center txt-white"
         >
           <img
@@ -36,7 +36,7 @@ const HeaderCms = ({ loginModal, onLogoutClick, showModal, isMenuBoxOpen,
             alt="Foodie Restaurant logo"
           />
           <h1 style={{ textAlign: "start" }}>
-            Foodie <span>Restaurant</span>
+            Foodie <span>CMS</span>
           </h1>
         </NavLink>
         <ul className={`navigation-menu flex-row pop-font ${isMenuBoxOpen ? 'active' : ''}`}>
@@ -60,20 +60,6 @@ const HeaderCms = ({ loginModal, onLogoutClick, showModal, isMenuBoxOpen,
             )
           })}
 
-          {isValidLogin ? <li>
-            <NavLink
-              onClick={() => {
-                resetLocation()
-                hideMenuBox()
-              }}
-              style={({ isActive }) =>
-                isActive ? { textDecoration: 'none', color: '#ff6240', } : {}}
-              className="txt-white"
-              to="/profile"
-            >
-              Profile
-            </NavLink>
-          </li> : null}
           <li>
             <div className="login-and-cart">
               {isValidLogin ? (
@@ -97,18 +83,6 @@ const HeaderCms = ({ loginModal, onLogoutClick, showModal, isMenuBoxOpen,
                   Log in
                 </div>
               )}
-              <NavLink
-                className="cart-btn active-button-style txt-white"
-                to="/cart"
-                onClick={() => {
-                  resetLocation()
-                  hideMenuBox()
-                }}
-              >
-                <img src={Cart} alt="" aria-hidden="true" />
-                <p>Cart</p>
-                <p>({cartCount})</p>
-              </NavLink>
             </div>
           </li>
         </ul>

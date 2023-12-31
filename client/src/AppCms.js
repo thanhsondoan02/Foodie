@@ -4,17 +4,18 @@ import Footer from './components/footer/Footer';
 import ResetLocation from './helpers/ResetLocation';
 import { apiLogout } from './services/AccountService';
 import { apiGetCart } from './services/CartService';
-import { ToastContainer } from 'react-toastify';
+import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import CMS from './routes/cms/CMS';
 import LoginFragmentCms from './components/login/LoginFragmentCms';
 import HeaderCms from './routes/landing/HeaderCms';
+import ContactCms from './routes/cms/contact/ContactCms';
+import { apiCmsGetContact } from './services/CmsService';
+import { toastError, toastSuccess } from './helpers/toastHelper';
 
 function AppCms() {
   const [isMenuBoxOpen, setIsMenuBoxOpen] = useState(false);
   const [isLoginBoxOpen, setIsLoginBoxOpen] = useState(false);
-  const [isValidLogin, setIsValidLogin] = useState(false);
-  const [cartCount, setCartCount] = useState(0);
   const [isValidAdmin, setIsValidAdmin] = useState(false);
 
   const closeLoginFragment = () => {
@@ -37,9 +38,8 @@ function AppCms() {
   const onLogoutClick = async () => {
     setIsMenuBoxOpen(false);
     ResetLocation();
-    localStorage.removeItem('token');
-    setIsValidLogin(false);
-    setCartCount(0);
+    setIsValidAdmin(false);
+    localStorage.removeItem('admin_token');
     try {
       await apiLogout();
     } catch (err) {
@@ -49,24 +49,25 @@ function AppCms() {
 
   const validateToken = async () => {
     try {
-      const response = await apiGetCart();
+      const response = await apiCmsGetContact(1,1);
       if (response.data.EC === 0) {
-        setIsValidLogin(true);
-        setCartCount(response.data.DT.totalFoodInCart);
+        setIsValidAdmin(true);
       } else {
         console.log(response.data.EM);
-        localStorage.removeItem('token');
-        setIsValidLogin(false);
+        localStorage.removeItem('admin_token');
+        setIsValidAdmin(false);
+        toastError(response.data.EM);
       }
     } catch (err) {
       console.log(err);
-      localStorage.removeItem('token');
-      setIsValidLogin(false);
+      localStorage.removeItem('admin_token');
+      setIsValidAdmin(false);
+      toastError(err);
     }
   }
 
   useEffect(() => {
-    if (localStorage.getItem('token') !== null) {
+    if (localStorage.getItem('admin_token') !== null) {
       validateToken();
     }
   }, []);
@@ -80,21 +81,22 @@ function AppCms() {
             closeLoginFragment={closeLoginFragment}
             isLoginBoxOpen={isLoginBoxOpen}
             hideMenuBox={hideMenuBox}
-            validateToken={validateToken}
-            setIsValidAdmin={setIsValidAdmin} />
+            setIsValidAdmin={setIsValidAdmin}
+            validateToken={validateToken} />
         }
         onLogoutClick={onLogoutClick}
         showModal={showModal}
         isMenuBoxOpen={isMenuBoxOpen}
         hideMenuBox={hideMenuBox}
         openLoginFragment={openLoginFragment}
-        isValidLogin={isValidLogin}
-        cartCount={cartCount}
+        isValidLogin={isValidAdmin}
       />
       <Routes>
       </Routes>
       <Routes>
-        <Route path="/cms" element={<CMS isValidAdmin={isValidAdmin} openLoginFragment={openLoginFragment} />} />
+        <Route path="/cms" element={
+          <CMS isValidAdmin={isValidAdmin} openLoginFragment={openLoginFragment} />} />
+        <Route path="/cms/contact" element={<ContactCms isValidAdmin={isValidAdmin} openLoginFragment={openLoginFragment} />} />
       </Routes>
       <Footer />
       <ToastContainer />
