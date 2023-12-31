@@ -18,6 +18,9 @@ import 'react-toastify/dist/ReactToastify.css';
 import BlogPost from './routes/blog-post/BlogPost';
 import Profile from './routes/profile/Profile';
 import Careers from './routes/careers/Careers';
+import Privacy from './routes/privacy/Privacy';
+import Terms from './routes/term/Terms';
+import Refunds from './routes/refund/Refunds';
 
 function App() {
   const [isMenuBoxOpen, setIsMenuBoxOpen] = useState(false);
@@ -114,6 +117,9 @@ function App() {
         <Route path='/blog/:blogId' element={<BlogPost />} />
         <Route path='/profile' element={<Profile isValidLogin={isValidLogin}/>} />
         <Route path="/careers" element={<Careers />} />
+        <Route path="/privacy" element={<Privacy />} />
+        <Route path="/terms" element={<Terms />} />
+        <Route path="/refunds" element={<Refunds />} />
       </Routes>
       <Footer />
       <ToastContainer />

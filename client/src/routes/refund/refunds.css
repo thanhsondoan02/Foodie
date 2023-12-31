@@ -1,0 +1,20 @@
+.terms p, .terms h2, .terms h4 {
+  color: rgba(255, 255, 255, 0.705);
+  font-family: var(--poppins-font);
+}
+
+
+.terms h2 {
+  color: white;
+  font-size: 3rem;
+  font-weight: 700;
+}
+
+.terms h4 {
+  font-size: 1.3rem;
+  font-weight: 600;
+}
+
+.terms p {
+  font-size: 1rem;
+}
