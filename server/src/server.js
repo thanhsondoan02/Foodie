@@ -7,6 +7,7 @@ require("dotenv").config({ path: "./config.env" });
 import bodyParser from "body-parser";
 import connection_DB from "./config/connectDB";
 import cookieParser from "cookie-parser";
+import initClientRoutes from "./client";
 
 const app = express();
 const PORT = process.env.PORT || 8080;
@@ -30,6 +31,7 @@ connection_DB();
 // config routes
 initWebRoutes(app);
 initApiRoutes(app);
+initClientRoutes(app);
 
 app.listen(PORT, () => {
   console.log("OKE ROI NHE PORT " + PORT);
