@@ -1,39 +1,25 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect, useState } from 'react';
-import ReactPaginate from 'react-paginate';
-import { toastError, toastSuccess } from '../../helpers/toastHelper';
-import resetLocation from '../../helpers/ResetLocation';
+import { toastError } from '../../helpers/toastHelper';
 import NotLoginCms from '../cms/NotLoginCms';
 import { Loading } from '../cms/Loading';
 import { parserTime } from '../../helpers/parseTime';
-import { apiOrderHistory } from '../../services/AccountService';
+import {  apiOrderHistoryAll } from '../../services/AccountService';
 import ScrollButton from '../../helpers/ScrollButton';
-import CartTotals from '../cart/CartTotals';
 import CartItems from './CartItems';
 import "./orderHistory.css"
 
 
 export default function OrderHistory({ isValidLogin, openLoginFragment }) {
   const [orders, setOrders] = useState([]);
-  const [currentPage, setCurrentPage] = useState(1);
-  const [totalPages, setTotalPages] = useState(0);
   const [isLoading, setIsLoading] = useState(true);
-
-  const onPageChange = (event) => {
-    getOrderFromServer(event.selected + 1);
-    resetLocation();
-  };
 
   const getOrderFromServer = async (page) => {
     setIsLoading(true);
-    let limit = 3
-    setCurrentPage(page);
-    setTotalPages(0);
     setOrders([]);
     try {
-      const response = await apiOrderHistory(page, limit);
+      const response = await apiOrderHistoryAll();
       if (response.data.EC === 0) {
-        setTotalPages(response.data.DT.totalPages)
         setOrders(response.data.DT.orders)
       } else {
         console.log(response.data.EM);
@@ -84,18 +70,6 @@ export default function OrderHistory({ isValidLogin, openLoginFragment }) {
               }
 
               <ScrollButton />
-
-              <ReactPaginate
-                className="contact-cms-pagination"
-                breakLabel="..."
-                nextLabel=" &#62;"
-                onPageChange={onPageChange}
-                pageRangeDisplayed={3}
-                pageCount={totalPages}
-                previousLabel="&#60;"
-                renderOnZeroPageCount={null}
-                forcePage={currentPage - 1}
-              />
             </main>
       }
     </>

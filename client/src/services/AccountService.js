@@ -77,5 +77,14 @@ export const apiOrderHistory = (page, limit) => {
   });
 }
 
+export const apiOrderHistoryAll = () => {
+  let token = localStorage.getItem('token');
+  return axios.get(`${baseUrl}/api/v1/order/history`, {
+    headers: {
+      'Authorization': `Bearer ${token}`
+    }
+  });
+}
+
 
 export { apiRegister, apiLogin, apiLogout, apiGetProfile, apiUpdateProfile }

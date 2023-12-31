@@ -21,7 +21,7 @@ function Blog(props) {
           >
             <img src={post.img} alt={post.name} />
             <p className="date">{post.date}</p>
-            <Link onClick={resetLocation} to={`/blog/${post.name.toLowerCase().replaceAll(' ', '-')}`}>
+            <Link onClick={resetLocation} to={`/blog/${post.id}`}>
               <h3 className="pop-font txt-white">{post.name}</h3>
             </Link>
             <p className="intro">{post.intro}</p>
