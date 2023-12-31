@@ -16,13 +16,14 @@ const initClientRoutes = (app) => {
   app.use("/refunds", express.static("./build"));
   app.use("/terms", express.static("./build"));
   app.use("/privacy", express.static("./build"));
+  app.use("/history", express.static("./build"));
 
   app.use("/cms", express.static("./build"));
   app.use("/cms/contact", express.static("./build"));
   app.use("/cms/mail", express.static("./build"));
   app.use("/cms/order", express.static("./build"));
 
-  // app.user("/shipper", express.static("./build"));
+  app.use("/shipper", express.static("./build"));
 };
 
 export default initClientRoutes;

@@ -7,7 +7,6 @@ import NotLoginCms from '../cms/NotLoginCms';
 import { Loading } from '../cms/Loading';
 import { parserTime } from '../../helpers/parseTime';
 import { apiOrderHistory } from '../../services/AccountService';
-import { response } from './orderHistoryData'; // remove this line when api is ready
 import ScrollButton from '../../helpers/ScrollButton';
 import CartTotals from '../cart/CartTotals';
 import CartItems from './CartItems';
@@ -32,7 +31,7 @@ export default function OrderHistory({ isValidLogin, openLoginFragment }) {
     setTotalPages(0);
     setOrders([]);
     try {
-      // const response = await apiOrderHistory(page, limit);
+      const response = await apiOrderHistory(page, limit);
       if (response.data.EC === 0) {
         setTotalPages(response.data.DT.totalPages)
         setOrders(response.data.DT.orders)
@@ -48,7 +47,6 @@ export default function OrderHistory({ isValidLogin, openLoginFragment }) {
   }
 
   useEffect(() => {
-    isValidLogin = true; // remove this line when api is ready
     document.title = "Foodie Restaurant | Contact CMS";
     if (isValidLogin) {
       getOrderFromServer(1);
@@ -57,7 +55,7 @@ export default function OrderHistory({ isValidLogin, openLoginFragment }) {
 
   return (
     <>
-      {isValidLogin ? <NotLoginCms openLoginFragment={openLoginFragment} />
+      {!isValidLogin ? <NotLoginCms openLoginFragment={openLoginFragment} message={"view order history"}/>
         : isLoading ? <Loading message={"Loading Order..."} />
           : orders.length === 0 ? <Loading message={"You have not ordered yet!"} />
             :
