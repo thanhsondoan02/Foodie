@@ -112,16 +112,15 @@ export default function OrderShipper({ isValidAdmin, openLoginFragment }) {
 
             <table>
               <colgroup>
-                <col class="order-cms-order-id" />
-                <col class="order-cms-order-time" />
-                <col class="order-cms-delivery-time" />
-                <col class="order-cms-status" />
-                <col class="order-cms-total-money" />
-                <col class="order-cms-shipper-id" />
-                <col class="order-cms-customer-name" />
-                <col class="order-cms-customer-address" />
-                <col class="order-cms-customer-phone" />
-                <col class="order-cms-verify" />
+                <col class="order-shipper-order-id" />
+                <col class="order-shipper-order-time" />
+                <col class="order-shipper-delivery-time" />
+                <col class="order-shipper-status" />
+                <col class="order-shipper-total-money" />
+                <col class="order-shipper-customer-name" />
+                <col class="order-shipper-customer-address" />
+                <col class="order-shipper-customer-phone" />
+                <col class="order-shipper-verify" />
               </colgroup>
               <tr>
                 <th>Id</th>

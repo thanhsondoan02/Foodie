@@ -3,7 +3,7 @@ import axios from "axios";
 const baseUrl = "http://fall2324w20g2.int3306.freeddns.org"
 
 export const apiShipperGetOrder = (page, limit) => {
-  let token = localStorage.getItem('admin_token');
+  let token = localStorage.getItem('shipper_token');
   return axios.get(
     `${baseUrl}/api/v1/order/shipper/all?page=${page}&limit=${limit}`,
     {
@@ -15,7 +15,7 @@ export const apiShipperGetOrder = (page, limit) => {
 }
 
 export const apiShipperStartDeliver = (orderId) => {
-  let token = localStorage.getItem('admin_token');
+  let token = localStorage.getItem('shipper_token');
   return axios.post(
     `${baseUrl}/api/v1/order/shipper/delivering?orderId=${orderId}`,
     '',
@@ -28,7 +28,7 @@ export const apiShipperStartDeliver = (orderId) => {
 }
 
 export const apiShipperEndDeliver = (orderId) => {
-  let token = localStorage.getItem('admin_token');
+  let token = localStorage.getItem('shipper_token');
   return axios.post(
     `${baseUrl}/api/v1/order/shipper/confirm?orderId=${orderId}`,
     '',

@@ -47,10 +47,11 @@ export default function OrderCms({ isValidAdmin, openLoginFragment }) {
     setIsLoading(false);
   }
 
-  const updateVerifiedOrder = (id, newValue) => {
+  const updateUIVerifiedOrder = (id) => {
     let newOrders = orders.map(order => {
       if (order.id === id) {
-        order.verified = newValue
+        order.verified = true
+        order.status_payment = "Order Verify from Client"
       }
       return order
     })
@@ -65,12 +66,12 @@ export default function OrderCms({ isValidAdmin, openLoginFragment }) {
       } else {
         console.log(response.data.EM);
         toastError(response.data.EM);
-        updateVerifiedOrder(id, false)
+        updateUIVerifiedOrder(id, false)
       }
     } catch (err) {
       console.log(err);
       toastError(err);
-      updateVerifiedOrder(id, false)
+      updateUIVerifiedOrder(id, false)
     }
   }
 
@@ -131,6 +132,7 @@ export default function OrderCms({ isValidAdmin, openLoginFragment }) {
                         checked={order.verified}
                         onChange={(e) => { 
                           order.verified = e.target.checked
+                          order.status_payment = "Order Verify from Admin"
                           setOrders([...orders])
                           verifyOrderServer(order.id)
                         }}
