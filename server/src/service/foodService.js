@@ -819,6 +819,9 @@ const historyOrderOfUser = async (idUser) => {
           model: db.User,
           attributes: ["id", "fullName", "age", "address", "gender", "phone"],
         },
+        {
+          model: db.Food,
+        },
       ],
       // order: [["id", "ASC"]],
       order: [["updatedAt", "DESC"]],
@@ -859,6 +862,9 @@ const historyOrderOfUserByPagination = async (idUser, page, limit) => {
         {
           model: db.User,
           attributes: ["id", "fullName", "age", "address", "gender", "phone"],
+        },
+        {
+          model: db.Food,
         },
       ],
       offset: offset,
