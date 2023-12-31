@@ -895,6 +895,12 @@ const currentOrderShipperWorking = async (idUser) => {
         // status_payment: "Order Verify from Admin",
         shipper_id: idUser,
       },
+      include: [
+        {
+          model: db.User,
+          attributes: ["id", "fullName", "age", "address", "gender", "phone"],
+        },
+      ],
     });
     if (orders) {
       return {
