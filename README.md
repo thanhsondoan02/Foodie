@@ -1,4 +1,4 @@
-# Foddie
+# Foodie
 
 (Insert a picture here)
 
