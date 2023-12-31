@@ -68,5 +68,14 @@ const apiUpdateProfile = (id, fullName, age, address, gender, phone) => {
   );
 }
 
+export const apiOrderHistory = (page, limit) => {
+  let token = localStorage.getItem('token');
+  return axios.get(`${baseUrl}/api/v1/order/history?page=${page}&limit=${limit}`, {
+    headers: {
+      'Authorization': `Bearer ${token}`
+    }
+  });
+}
+
 
 export { apiRegister, apiLogin, apiLogout, apiGetProfile, apiUpdateProfile }

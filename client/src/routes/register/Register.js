@@ -7,7 +7,7 @@ import {
   checkRepeatPasswordError,
   checkAddressError,
   checkAgeError,
-  checkPhoneError,
+  // checkPhoneError,
   checkGenderError
 } from "../../helpers/checkInput";
 import { apiRegister } from "../../services/AccountService";
@@ -28,21 +28,28 @@ const Register = ({ openLoginFragment }) => {
   const [registerSuccess, setRegisterSuccess] = useState(false);
   const [serverError, setServerError] = useState('');
 
+  const checkPhoneError = (phone) => {
+    let phoneRegex = /(0[3|5|7|8|9])+([0-9]{8})\b/g;
+    if (!phone) {
+      return ('Please enter your phone number');
+    } else if (!phoneRegex.test(phone)) {
+      return ('Please enter a valid phone number');
+    } else {
+      return ('');
+    }
+  }
+
   const onSubmitClick = async (e) => {
     window.scrollTo(0, 0);
     setRegistrationFail(false);
     setLoading(true);
     e.preventDefault();
 
-    if (submitCheck(formValue.phone, checkPhoneError, setPhoneError, document.querySelector('.phone-section'))) {
-      alert('Suck phone')
-    }
-
     if (submitCheck(formValue.fullName, checkFullNameError, setFullNameError, document.querySelector('.name-section'))
       && submitCheck(formValue.email, checkEmailError, setEmailError, document.querySelector('.email-section'))
       && submitCheck(formValue.password, checkPasswordError, setPasswordError, document.querySelector('.password-section'))
       && submitCheckRepeatPassword(formValue.password, formValue.repeatPassword, checkRepeatPasswordError, setRepeatPasswordError)
-      && submitCheck(formValue.phone, checkPhoneError, setPhoneError, document.querySelector('.phone-section'))
+      && submitCheckPhone()
       && submitCheck(formValue.age, checkAgeError, setAgeError, document.querySelector('.age-section'))
       && submitCheck(formValue.gender, checkGenderError, setGenderError, document.querySelector('.gender-section'))
       && submitCheck(formValue.address, checkAddressError, setAddressError, document.querySelector('.address-section'))) {
@@ -72,7 +79,7 @@ const Register = ({ openLoginFragment }) => {
   }
 
   const submitCheck = (value, check, setError, element) => {
-    let error = check(value);
+    let error = check(value.toString());
     if (error !== '') {
       setError(error);
       setLoading(false);
@@ -80,6 +87,20 @@ const Register = ({ openLoginFragment }) => {
       return false;
     }
     return true;
+  }
+
+  const submitCheckPhone = () => {
+    let error = checkPhoneError(formValue.phone)
+    console.log(formValue.phone, checkPhoneError(formValue.phone))
+    setPhoneError(error);
+    if (error === '') {
+      return true;
+    } else {
+      setLoading(false);
+      document.querySelector('.phone-section')
+        .scrollIntoView({ behavior: "smooth", block: "center" });
+      return false;
+    }
   }
 
   const submitCheckRepeatPassword = (oldPass, newPass, check, setError) => {
@@ -140,6 +161,7 @@ const Register = ({ openLoginFragment }) => {
     let phone = e.target.value.toString();
     setFormValue({ ...formValue, phone: phone })
     setPhoneError(checkPhoneError(phone));
+    console.log(phone, checkPhoneError(phone))
   }
 
   useEffect(() => {

@@ -21,6 +21,7 @@ import Careers from './routes/careers/Careers';
 import Privacy from './routes/privacy/Privacy';
 import Terms from './routes/term/Terms';
 import Refunds from './routes/refund/Refunds';
+import OrderHistory from './routes/history/OrderHistory';
 
 function App() {
   const [isMenuBoxOpen, setIsMenuBoxOpen] = useState(false);
@@ -120,6 +121,7 @@ function App() {
         <Route path="/privacy" element={<Privacy />} />
         <Route path="/terms" element={<Terms />} />
         <Route path="/refunds" element={<Refunds />} />
+        <Route path="/history" element={<OrderHistory isValidLogin={isValidLogin} openLoginFragment={openLoginFragment}/>} />
       </Routes>
       <Footer />
       <ToastContainer />

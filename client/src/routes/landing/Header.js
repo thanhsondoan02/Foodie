@@ -85,11 +85,27 @@ const Header = ({ loginModal, onLogoutClick, showModal, isMenuBoxOpen,
               style={({ isActive }) =>
                 isActive ? { textDecoration: 'none', color: '#ff6240', } : {}}
               className="txt-white"
+              to="/history"
+            >
+              History
+            </NavLink>
+          </li> : null}
+
+          {isValidLogin ? <li>
+            <NavLink
+              onClick={() => {
+                resetLocation()
+                hideMenuBox()
+              }}
+              style={({ isActive }) =>
+                isActive ? { textDecoration: 'none', color: '#ff6240', } : {}}
+              className="txt-white"
               to="/profile"
             >
               Profile
             </NavLink>
           </li> : null}
+
           <li>
             <div className="login-and-cart">
               {isValidLogin ? (

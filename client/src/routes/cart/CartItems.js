@@ -1,7 +1,7 @@
 import React from "react";
 import ChangeItemQuantity from "./ChangeItemQuantity";
 
-const CartItem = ({ foods, cartTotals, updateQuantity, deleteItem }) => {
+const CartItems = ({ foods, cartTotals, updateQuantity, deleteItem }) => {
   return (
     <React.Fragment>
       {foods.map((food) => {
@@ -38,4 +38,4 @@ const CartItem = ({ foods, cartTotals, updateQuantity, deleteItem }) => {
 
 
 
-export default CartItem;
+export default CartItems;
