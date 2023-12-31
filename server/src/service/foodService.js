@@ -262,111 +262,6 @@ const getAllOrder = async (idUser) => {
 };
 
 // Xóa món ăn trong giỏ hàng
-// const deleteFoodFromOrder = async (orderId, foodId) => {
-//   try {
-//     // Tìm orderFood cần xóa
-//     const orderFood = await db.Order_Food.findOne({
-//       where: {
-//         order_id: orderId,
-//         food_id: foodId,
-//       },
-//     });
-
-//     if (!orderFood) {
-//       return {
-//         EM: "Food not found in order",
-//         EC: -1,
-//         DT: "",
-//       };
-//     }
-
-//     const deletedRows = await orderFood.destroy();
-
-//     // Kiểm tra xem order còn chứa food nào hay không
-//     const remainingFoods = await db.Order_Food.count({
-//       where: { order_id: orderId },
-//     });
-
-//     // Nếu không còn food nào trong order, xóa order luôn
-//     if (remainingFoods === 0) {
-//       await db.Order.destroy({ where: { id: orderId } });
-//     }
-
-//     return {
-//       EM: "Successfully deleted food from order",
-//       EC: 0,
-//       DT: deletedRows,
-//     };
-//   } catch (err) {
-//     console.log("Error: ", err);
-//     return {
-//       EM: "Error in service",
-//       EC: -2,
-//       DT: "",
-//     };
-//   }
-// };
-
-// const deleteFoodFromOrder = async (orderId, foodId) => {
-//   try {
-//     // Tìm orderFood cần xóa
-//     const orderFood = await db.Order_Food.findOne({
-//       where: {
-//         order_id: orderId,
-//         food_id: foodId,
-//       },
-//       include: {
-//         model: db.Order,
-//         attributes: ["total_money"],
-//       },
-//     });
-
-//     if (!orderFood) {
-//       return {
-//         EM: "Food not found in order",
-//         EC: -1,
-//         DT: "",
-//       };
-//     }
-
-//     const deletedRows = await orderFood.destroy();
-
-//     // Tính lại total_money của order
-//     const order = await db.Order.findByPk(orderId);
-//     const remainingFoods = await db.Order_Food.sum("quantity", {
-//       where: { order_id: orderId },
-//     });
-
-//     const updatedOrder = await order.update({
-//       total_money:
-//         order.total_money - orderFood.Food.price * orderFood.quantity,
-//     });
-
-//     // Kiểm tra xem order còn chứa food nào hay không
-//     const remainingFoodsCount = await db.Order_Food.count({
-//       where: { order_id: orderId },
-//     });
-
-//     // Nếu không còn food nào trong order, xóa order luôn
-//     if (remainingFoodsCount === 0) {
-//       await db.Order.destroy({ where: { id: orderId } });
-//     }
-
-//     return {
-//       EM: "Successfully deleted food from order",
-//       EC: 0,
-//       DT: deletedRows,
-//     };
-//   } catch (err) {
-//     console.log("Error: ", err);
-//     return {
-//       EM: "Error in service",
-//       EC: -2,
-//       DT: "",
-//     };
-//   }
-// };
-
 const deleteFoodFromOrder = async (orderId, foodId) => {
   try {
     // Tìm orderFood cần xóa
@@ -616,7 +511,7 @@ const appendFoodToCart = async (listFood, idUser) => {
         total_money: 0, // Sẽ được tính toán sau
         user_id: idUser,
         status_payment: "Cart",
-        shipper_id: 5, // ID của shipper
+        // shipper_id: 5, // ID của shipper
       });
 
       let total_money = 0;
@@ -728,7 +623,9 @@ const allOrder = async () => {
   try {
     let orders = await db.Order.findAll({
       where: {
-        status_payment: "Order Verify from Client",
+        status_payment: {
+          [Op.ne]: "Cart",
+        },
       },
       include: [
         {
@@ -766,7 +663,9 @@ const allOrderByPagination = async (page, limit) => {
     let offset = (page - 1) * limit;
     const { count, rows } = await db.Order.findAndCountAll({
       where: {
-        status_payment: "Order Verify from Client",
+        status_payment: {
+          [Op.ne]: "Cart",
+        },
       },
       include: [
         {
@@ -816,8 +715,77 @@ const verifyOrder = async (orderId) => {
       ],
     });
 
+    const adminVerifiedShippers = await db.Order.findAll({
+      attributes: ["shipper_id"],
+      where: {
+        status_payment: "Order Verify from Admin",
+      },
+    });
+
+    const shipperIds = adminVerifiedShippers.map((order) => order.shipper_id);
+
+    console.log(">>>>>>>>.. shipperIds: ", shipperIds);
+
+    const availableShippers = await db.User.findAll({
+      where: {
+        groupId: 3, // Chỉ tìm các user có groupId = 3 (shipper)
+        id: {
+          [Op.notIn]: shipperIds,
+        },
+      },
+    });
+
+    console.log(
+      ">>>>> Availableshippers: ",
+      JSON.stringify(availableShippers, null, 2)
+    );
+
+    console.log(
+      ">>>>>>>>>> order_time current is: ",
+      `${orderVerifyByAdmin.order_time}`
+    );
+
+    let selectedShipperId;
+
+    if (availableShippers.length === 0) {
+      const nearestDeliveryOrder = await db.Order.findOne({
+        where: {
+          status_payment: "Order Verify from Admin",
+        },
+        order: [
+          [
+            db.sequelize.literal(
+              `ABS(TIMESTAMPDIFF(SECOND, "${orderVerifyByAdmin.order_time}", delivery_time))`
+            ),
+            "ASC",
+          ],
+        ],
+      });
+
+      console.log(
+        ">>>>> nearestDeliveryOrder: ",
+        JSON.stringify(nearestDeliveryOrder, null, 2)
+      );
+
+      if (nearestDeliveryOrder) {
+        selectedShipperId = nearestDeliveryOrder.shipper_id;
+        console.log(
+          ">>>>>>>> Print selected Shipper Id in if: ",
+          selectedShipperId
+        );
+      }
+    } else {
+      selectedShipperId =
+        availableShippers[Math.floor(Math.random() * availableShippers.length)];
+      console.log(
+        ">>>>>>>> Print selected Shipper Id in else: ",
+        selectedShipperId
+      );
+    }
+
     const updatedOrderVerifyByAdmin = await orderVerifyByAdmin.update({
       status_payment: "Order Verify from Admin",
+      shipper_id: selectedShipperId,
     });
 
     return {
@@ -826,6 +794,222 @@ const verifyOrder = async (orderId) => {
       DT: updatedOrderVerifyByAdmin,
     };
   } catch (err) {
+    return {
+      EM: "Error in service",
+      EC: -2,
+      DT: [],
+    };
+  }
+};
+
+const historyOrderOfUser = async (idUser) => {
+  try {
+    let orders = await db.Order.findAll({
+      where: {
+        status_payment: {
+          [Op.ne]: "Cart",
+        },
+        user_id: idUser,
+      },
+      include: [
+        {
+          model: db.User,
+          attributes: ["id", "fullName", "age", "address", "gender", "phone"],
+        },
+      ],
+      order: [["id", "ASC"]],
+    });
+    if (orders) {
+      return {
+        EM: "Get all orders data success (no paginate)",
+        EC: 0,
+        DT: orders,
+      };
+    } else {
+      return {
+        EM: "Get orders data success (no paginate)",
+        EC: 0,
+        DT: [],
+      };
+    }
+  } catch (err) {
+    console.log("Error: ", err);
+    return {
+      EM: "Error in service",
+      EC: -2,
+      DT: [],
+    };
+  }
+};
+const historyOrderOfUserByPagination = async (idUser, page, limit) => {
+  try {
+    let offset = (page - 1) * limit;
+    const { count, rows } = await db.Order.findAndCountAll({
+      where: {
+        status_payment: {
+          [Op.ne]: "Cart",
+        },
+        user_id: idUser,
+      },
+      include: [
+        {
+          model: db.User,
+          attributes: ["id", "fullName", "age", "address", "gender", "phone"],
+        },
+      ],
+      offset: offset,
+      limit: limit,
+      order: [["id", "ASC"]],
+    });
+
+    let totalPages = Math.ceil(count / limit);
+    let data = {
+      totalRows: count,
+      totalPages: totalPages,
+      orders: rows,
+    };
+    return {
+      EM: "Success with orders get by pagination",
+      EC: 0,
+      DT: data,
+    };
+  } catch (err) {
+    console.log("Error: ", err);
+    return {
+      EM: "Error in service",
+      EC: -2,
+      DT: [],
+    };
+  }
+};
+
+const currentOrderShipperWorking = async (idUser) => {
+  try {
+    let orders = await db.Order.findAll({
+      where: {
+        // status_payment: "Order Verify from Admin",
+        shipper_id: idUser,
+      },
+    });
+    if (orders) {
+      return {
+        EM: "Get all orders shipper must delivery",
+        EC: 0,
+        DT: orders,
+      };
+    } else {
+      return {
+        EM: "Get all orders shipper must delivery ===> ERROR",
+        EC: 0,
+        DT: [],
+      };
+    }
+  } catch (err) {
+    console.log("Error: ", err);
+    return {
+      EM: "Error in service",
+      EC: -2,
+      DT: [],
+    };
+  }
+};
+
+const currentOrderShipperWorkingByPagination = async (idUser, page, limit) => {
+  try {
+    let offset = (page - 1) * limit;
+    const { count, rows } = await db.Order.findAndCountAll({
+      where: {
+        // status_payment: "Order Verify from Admin",
+        shipper_id: idUser,
+      },
+      offset: offset,
+      limit: limit,
+      order: [["id", "ASC"]],
+    });
+
+    let totalPages = Math.ceil(count / limit);
+    let data = {
+      totalRows: count,
+      totalPages: totalPages,
+      orders: rows,
+    };
+    return {
+      EM: "Success with orders get by pagination",
+      EC: 0,
+      DT: data,
+    };
+  } catch (err) {
+    console.log("Error: ", err);
+    return {
+      EM: "Error in service",
+      EC: -2,
+      DT: [],
+    };
+  }
+};
+
+const shipperConfirmDeliveryFromUser = async (orderId, idShipper) => {
+  try {
+    let order = await db.Order.findOne({
+      where: {
+        // status_payment: "Order Verify from Admin",
+        id: orderId,
+        shipper_id: idShipper,
+      },
+    });
+    if (order) {
+      await order.update({
+        status_payment: "Shipper Delivering",
+      });
+      return {
+        EM: "Get orders data success",
+        EC: 0,
+        DT: order,
+      };
+    } else {
+      return {
+        EM: "No order find in service with shipper id",
+        EC: 0,
+        DT: [],
+      };
+    }
+  } catch (err) {
+    console.log("Error: ", err);
+    return {
+      EM: "Error in service",
+      EC: -2,
+      DT: [],
+    };
+  }
+};
+
+const shipperConfirmPaidFromUser = async (orderId, idShipper) => {
+  try {
+    let order = await db.Order.findOne({
+      where: {
+        // status_payment: "Order Verify from Admin",
+        id: orderId,
+        shipper_id: idShipper,
+      },
+    });
+    if (order) {
+      await order.update({
+        status_payment: "Paid",
+      });
+      return {
+        EM: "Get orders data success",
+        EC: 0,
+        DT: order,
+      };
+    } else {
+      return {
+        EM: "No order find in service with shipper id",
+        EC: 0,
+        DT: [],
+      };
+    }
+  } catch (err) {
+    console.log("Error: ", err);
     return {
       EM: "Error in service",
       EC: -2,
@@ -852,4 +1036,10 @@ module.exports = {
   allOrder,
   allOrderByPagination,
   verifyOrder,
+  historyOrderOfUser,
+  historyOrderOfUserByPagination,
+  currentOrderShipperWorking,
+  currentOrderShipperWorkingByPagination,
+  shipperConfirmDeliveryFromUser,
+  shipperConfirmPaidFromUser,
 };
