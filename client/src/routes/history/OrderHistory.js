@@ -20,7 +20,7 @@ export default function OrderHistory({ isValidLogin, openLoginFragment }) {
     try {
       const response = await apiOrderHistoryAll();
       if (response.data.EC === 0) {
-        setOrders(response.data.DT.orders)
+        setOrders(response.data.DT)
       } else {
         console.log(response.data.EM);
         toastError(response.data.EM);
