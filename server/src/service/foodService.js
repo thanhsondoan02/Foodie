@@ -900,6 +900,9 @@ const currentOrderShipperWorking = async (idUser) => {
           model: db.User,
           attributes: ["id", "fullName", "age", "address", "gender", "phone"],
         },
+        {
+          model: db.Food,
+        },
       ],
     });
     if (orders) {
