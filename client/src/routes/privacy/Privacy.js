@@ -4,12 +4,12 @@ import "../refund/refunds.css"
 
 const Privacy = () => {
     useEffect(() => {
-        document.title = "Privacy | Pizza Time";
+        document.title = "Privacy | Foodie";
     }, []);
     return (
         <main className="terms">
             <h2>Privacy</h2>
-            <p>This Privacy Policy ("Policy") outlines how Pizza Time ("Pizza Time," "we," "our," or "us") collects, uses, and protects your personal information when you use our Instagram growth services. By using our services, you ("you," "your," or "user") consent to the practices described in this Policy.</p>
+            <p>This Privacy Policy ("Policy") outlines how Foodie ("Foodie," "we," "our," or "us") collects, uses, and protects your personal information when you use our Instagram growth services. By using our services, you ("you," "your," or "user") consent to the practices described in this Policy.</p>
             {privacyContent.map((content) =>
                 <section key={content.title}>
                     <h4>{content.id}. {content.title}:</h4>

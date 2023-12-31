@@ -39,7 +39,7 @@ const Blog = () => {
   }
 
   useEffect(() => {
-    document.title = "Blog | Pizza Time";
+    document.title = "Blog | Foodie";
     getPostsFromServer(1);
   }, []);
 

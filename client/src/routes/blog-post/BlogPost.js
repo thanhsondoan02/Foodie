@@ -24,7 +24,7 @@ const BlogPost = () => {
     }
 
     useEffect(() => {
-        document.title = `${blogPost.name} | Pizza Time`;
+        document.title = `${blogPost.name} | Foodie`;
     }, [blogPost.name]);
 
     useEffect(() => {

@@ -143,7 +143,7 @@ const Register = ({ openLoginFragment }) => {
   }
 
   useEffect(() => {
-    document.title = "Registration | Pizza Time";
+    document.title = "Registration | Foodie";
   }, []);
 
   return (

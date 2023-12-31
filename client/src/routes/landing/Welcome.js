@@ -61,7 +61,7 @@ function Welcome(props) {
         srcSet={`${props.thumbnail.img1440} 1440w,
          ${props.thumbnail.img700} 700w, ${props.thumbnail.img375} 375w`}
         sizes="(min-width: 1440px) 1440px, (min-width: 700px) 700px, 375px"
-        alt="Pizza Time restaurant interior with people at the table and the staff serving the customers"
+        alt="Foodie restaurant interior with people at the table and the staff serving the customers"
       />
     </article>
   )

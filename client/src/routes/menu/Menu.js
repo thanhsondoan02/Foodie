@@ -116,7 +116,7 @@ function Menu({ isValidLogin, openLoginFragment, validateToken }) {
   }
 
   useEffect(() => {
-    document.title = `Menu of ${currentCategory} | Pizza Time`;
+    document.title = `Menu of ${currentCategory} | Foodie`;
     getCategoriesFromServer();
     getProductsFromServer(currentPage, currentCategory);
     // eslint-disable-next-line react-hooks/exhaustive-deps

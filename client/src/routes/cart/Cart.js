@@ -126,7 +126,7 @@ const Cart = ({ isValidLogin, openLoginFragment }) => {
   }
 
   useEffect(() => {
-    document.title = "Shopping Cart | Pizza Time";
+    document.title = "Shopping Cart | Foodie";
     if (isValidLogin) getDataFromServer();
   }, [isValidLogin]);
 

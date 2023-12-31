@@ -69,7 +69,7 @@ const careers = [
 
 const Careers = () => {
     useEffect(() => {
-        document.title = "Careers | Pizza Time";
+        document.title = "Careers | Foodie";
     }, []);
     return (
         <main className="careers">
