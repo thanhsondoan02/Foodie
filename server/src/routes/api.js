@@ -29,6 +29,10 @@ import {
   convertToOrder,
   allOrderInSystem,
   verifyOrderByAdmin,
+  historyOrder,
+  currentOrderShipper,
+  shipperConfirmDelivery,
+  shipperConfirmPaid,
 } from "../controller/foodController";
 
 import { newOrder } from "../controller/orderController";
@@ -106,6 +110,18 @@ const initApiRoutes = (app) => {
 
   // client send contact
   router.post("/contact/send", contactEmailOfUser);
+
+  // history order of user
+  router.get("/order/history", historyOrder);
+
+  // shipper working with orders
+  router.get("/order/shipper/all", currentOrderShipper);
+
+  // shipper confirm delivering
+  router.post("/order/shipper/delivering", shipperConfirmDelivery);
+
+  // shipper confirm paid from user (customer)
+  router.post("/order/shipper/confirm", shipperConfirmPaid);
 
   return app.use("/api/v1/", router);
 };

@@ -16,6 +16,12 @@ import {
   allOrder,
   allOrderByPagination,
   verifyOrder,
+  historyOrderOfUser,
+  historyOrderOfUserByPagination,
+  currentOrderShipperWorking,
+  currentOrderShipperWorkingByPagination,
+  shipperConfirmDeliveryFromUser,
+  shipperConfirmPaidFromUser,
 } from "../service/foodService";
 
 const getAllFood = async (req, res) => {
@@ -271,6 +277,109 @@ const verifyOrderByAdmin = async (req, res) => {
   }
 };
 
+const historyOrder = async (req, res) => {
+  try {
+    if (req.query.page && req.query.limit) {
+      let page = req.query.page;
+      let limit = req.query.limit;
+      let idUser = req.user.id;
+
+      let data = await historyOrderOfUserByPagination(idUser, +page, +limit);
+      return res.status(200).json({
+        EM: data.EM,
+        EC: data.EC, // -1 -> error, 0 -> success,
+        DT: data.DT,
+      });
+    } else {
+      let data = await historyOrderOfUser(idUser);
+      return res.status(200).json({
+        EM: data.EM,
+        EC: data.EC, // -1 -> error, 0 -> success,
+        DT: data.DT,
+      });
+    }
+  } catch (e) {
+    return res.status(500).json({
+      EM: "Error From Server",
+      EC: "-1", // -1 -> error, 0 -> success,
+      DT: "",
+    });
+  }
+};
+
+const currentOrderShipper = async (req, res) => {
+  try {
+    if (req.query.page && req.query.limit) {
+      let page = req.query.page;
+      let limit = req.query.limit;
+      let idUser = req.user.id;
+      let data = await currentOrderShipperWorkingByPagination(
+        idUser,
+        +page,
+        +limit
+      );
+      return res.status(200).json({
+        EM: data.EM,
+        EC: data.EC, // -1 -> error, 0 -> success,
+        DT: data.DT,
+      });
+    } else {
+      let idUser = req.user.id;
+      let data = await currentOrderShipperWorking(idUser);
+      return res.status(200).json({
+        EM: data.EM,
+        EC: data.EC, // -1 -> error, 0 -> success,
+        DT: data.DT,
+      });
+    }
+  } catch (e) {
+    return res.status(500).json({
+      EM: "Error From Server",
+      EC: "-1", // -1 -> error, 0 -> success,
+      DT: "",
+    });
+  }
+};
+
+const shipperConfirmDelivery = async (req, res) => {
+  try {
+    let orderId = req.query.orderId;
+    let idShipper = req.user.id;
+    let data = await shipperConfirmDeliveryFromUser(orderId, idShipper);
+    return res.status(200).json({
+      EM: data.EM,
+      EC: data.EC, // -1 -> error, 0 -> success,
+      DT: data.DT,
+    });
+  } catch (e) {
+    return res.status(500).json({
+      EM: "Error From Server",
+      EC: "-1", // -1 -> error, 0 -> success,
+      DT: "",
+    });
+  }
+};
+
+const shipperConfirmPaid = async (req, res) => {
+  try {
+    let orderId = req.query.orderId;
+    let idShipper = req.user.id;
+
+    let data = await shipperConfirmPaidFromUser(orderId, idShipper);
+    return res.status(200).json({
+      EM: data.EM,
+      EC: data.EC, // -1 -> error, 0 -> success,
+      DT: data.DT,
+    });
+  } catch (e) {
+    return res.status(500).json({
+      EM: "Error From Server",
+      EC: "-1", // -1 -> error, 0 -> success,
+      DT: "",
+    });
+  }
+};
+
 module.exports = {
   getAllFood,
   getOrderFromUser,
@@ -282,4 +391,8 @@ module.exports = {
   convertToOrder,
   allOrderInSystem,
   verifyOrderByAdmin,
+  historyOrder,
+  currentOrderShipper,
+  shipperConfirmDelivery,
+  shipperConfirmPaid,
 };
