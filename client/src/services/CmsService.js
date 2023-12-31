@@ -28,3 +28,28 @@ export const apiCmsSendMail = (messageBody) => {
     }
   );
 }
+
+export const apiCmsGetOrder = (page, limit) => {
+  let token = localStorage.getItem('admin_token');
+  return axios.get(
+    `${baseUrl}/api/v1/order/all?page=${page}&limit=${limit}`,
+    {
+      headers: {
+        'Authorization': `Bearer ${token}`
+      }
+    }
+  );
+}
+
+export const apiCmsVerifyOrder = (orderId) => {
+  let token = localStorage.getItem('admin_token');
+  return axios.post(
+    `${baseUrl}/api/v1/order/verify?orderId=${orderId}`,
+    '',
+    {
+      headers: {
+        'Authorization': `Bearer ${token}`
+      }
+    }
+  );
+}

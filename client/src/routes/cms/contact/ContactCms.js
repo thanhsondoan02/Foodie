@@ -6,11 +6,14 @@ import { apiCmsGetContact } from '../../../services/CmsService';
 import { toastError } from '../../../helpers/toastHelper';
 import "./contactCms.css"
 import NotLoginCms from '../NotLoginCms';
+import { set } from 'lodash';
+import { Loading } from '../Loading';
 
 export default function ContactCms({ isValidAdmin, openLoginFragment }) {
   const [contacts, setContacts] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(0);
+  const [isLoading, setIsLoading] = useState(true);
 
   const onPageChange = (event) => {
     getContactFromServer(event.selected + 1);
@@ -18,6 +21,7 @@ export default function ContactCms({ isValidAdmin, openLoginFragment }) {
   };
 
   const getContactFromServer = async (page) => {
+    setIsLoading(true);
     let limit = 5
     setCurrentPage(page);
     setTotalPages(0);
@@ -35,6 +39,7 @@ export default function ContactCms({ isValidAdmin, openLoginFragment }) {
       console.log(err);
       toastError(err);
     }
+    setIsLoading(false);
   }
 
   useEffect(() => {
@@ -47,47 +52,47 @@ export default function ContactCms({ isValidAdmin, openLoginFragment }) {
   return (
     <>
       {!isValidAdmin ? <NotLoginCms openLoginFragment={openLoginFragment} />
-        :
-        <main className='contact-cms-main'>
-          <h1>Contact of your customers</h1>
+        : isLoading ? <Loading message={"Loading contacts..."} /> :
+          <main className='contact-cms-main'>
+            <h1>Contact of your customers</h1>
 
-          <table>
-            <colgroup>
-              <col class="contact-cms-id" />
-              <col class="contact-cms-name" />
-              <col class="contact-cms-email" />
-              <col class="contact-cms-message" />
-            </colgroup>
-            <tr>
-              <th>Id</th>
-              <th>Full Name</th>
-              <th>Email</th>
-              <th>Message</th>
-            </tr>
-            {
-              contacts.map((contact, _) => (
-                <tr key={contact.id}>
-                  <td>{contact.id}</td>
-                  <td>{contact.fullName}</td>
-                  <td>{contact.email}</td>
-                  <td>{contact.message}</td>
-                </tr>
-              ))
-            }
-          </table>
+            <table>
+              <colgroup>
+                <col class="contact-cms-id" />
+                <col class="contact-cms-name" />
+                <col class="contact-cms-email" />
+                <col class="contact-cms-message" />
+              </colgroup>
+              <tr>
+                <th>Id</th>
+                <th>Full Name</th>
+                <th>Email</th>
+                <th>Message</th>
+              </tr>
+              {
+                contacts.map((contact, _) => (
+                  <tr key={contact.id}>
+                    <td>{contact.id}</td>
+                    <td>{contact.fullName}</td>
+                    <td>{contact.email}</td>
+                    <td>{contact.message}</td>
+                  </tr>
+                ))
+              }
+            </table>
 
-          <ReactPaginate
-            className="contact-cms-pagination"
-            breakLabel="..."
-            nextLabel=" &#62;"
-            onPageChange={onPageChange}
-            pageRangeDisplayed={3}
-            pageCount={totalPages}
-            previousLabel="&#60;"
-            renderOnZeroPageCount={null}
-            forcePage={currentPage - 1}
-          />
-        </main>
+            <ReactPaginate
+              className="contact-cms-pagination"
+              breakLabel="..."
+              nextLabel=" &#62;"
+              onPageChange={onPageChange}
+              pageRangeDisplayed={3}
+              pageCount={totalPages}
+              previousLabel="&#60;"
+              renderOnZeroPageCount={null}
+              forcePage={currentPage - 1}
+            />
+          </main>
       }
     </>
   );

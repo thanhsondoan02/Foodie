@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import NotLoginCms from "../NotLoginCms";
 import { apiCmsSendMail } from "../../../services/CmsService";
 import { toastError, toastSuccess } from "../../../helpers/toastHelper";
+import { Loading } from "../Loading";
 
 export default function MailCms({ isValidAdmin, openLoginFragment }) {
   const [isLoading, setIsLoading] = useState(false);
@@ -35,14 +36,7 @@ export default function MailCms({ isValidAdmin, openLoginFragment }) {
       {!isValidAdmin ? <NotLoginCms openLoginFragment={openLoginFragment} />
         :
         isLoading ?
-          <main className='not-login-cms'>
-            <p>Your mail is sending...</p>
-
-            <div className="meme">
-              <img src="https://i.kym-cdn.com/photos/images/original/001/082/426/6ff.gif"
-                alt="Welcome gif" />
-            </div>
-          </main>
+          <Loading message={"Your mail is sending..."} />
           :
           <main className='contact-cms-main'>
             <h2 className="contact-cms-header">Send email to all contacts</h2>

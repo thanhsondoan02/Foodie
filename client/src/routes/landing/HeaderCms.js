@@ -17,7 +17,11 @@ const HeaderCms = ({ loginModal, onLogoutClick, showModal, isMenuBoxOpen,
     {
       path: 'cms/mail',
       name: 'Mail',
-    }
+    },
+    {
+      path: 'cms/order',
+      name: 'Order',
+    },
   ]
 
   return (
