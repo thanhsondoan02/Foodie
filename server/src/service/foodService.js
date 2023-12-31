@@ -900,9 +900,6 @@ const currentOrderShipperWorking = async (idUser) => {
           model: db.User,
           attributes: ["id", "fullName", "age", "address", "gender", "phone"],
         },
-        {
-          model: db.Food,
-        },
       ],
     });
     if (orders) {
@@ -936,6 +933,12 @@ const currentOrderShipperWorkingByPagination = async (idUser, page, limit) => {
         // status_payment: "Order Verify from Admin",
         shipper_id: idUser,
       },
+      include: [
+        {
+          model: db.User,
+          attributes: ["id", "fullName", "age", "address", "gender", "phone"],
+        },
+      ],
       offset: offset,
       limit: limit,
       order: [["id", "ASC"]],
@@ -970,6 +973,12 @@ const shipperConfirmDeliveryFromUser = async (orderId, idShipper) => {
         id: orderId,
         shipper_id: idShipper,
       },
+      include: [
+        {
+          model: db.User,
+          attributes: ["id", "fullName", "age", "address", "gender", "phone"],
+        },
+      ],
     });
     if (order) {
       await order.update({
@@ -1005,6 +1014,12 @@ const shipperConfirmPaidFromUser = async (orderId, idShipper) => {
         id: orderId,
         shipper_id: idShipper,
       },
+      include: [
+        {
+          model: db.User,
+          attributes: ["id", "fullName", "age", "address", "gender", "phone"],
+        },
+      ],
     });
     if (order) {
       await order.update({
