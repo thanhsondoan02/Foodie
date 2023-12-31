@@ -60,7 +60,7 @@ const Profile = ({ isValidLogin }) => {
       }
     } catch (err) {
       console.log(err);
-      toastError(err);
+      toastError(err.message);
     }
   }
 
@@ -77,7 +77,7 @@ const Profile = ({ isValidLogin }) => {
       }
     } catch (err) {
       console.log(err);
-      toastError(err);
+      toastError(err.message);
     }
   }
 

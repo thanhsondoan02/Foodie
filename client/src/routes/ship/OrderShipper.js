@@ -18,6 +18,10 @@ export default function OrderShipper({ isValidAdmin, openLoginFragment }) {
   const [totalPages, setTotalPages] = useState(0);
   const [isLoading, setIsLoading] = useState(true);
 
+  const status1 = "Order Verify from Admin"
+  const status2 = "Shipper Delivering"
+  const status3 = "Paid"
+
   const onPageChange = (event) => {
     getOrderFromServer(event.selected + 1);
     resetLocation();
@@ -46,15 +50,15 @@ export default function OrderShipper({ isValidAdmin, openLoginFragment }) {
       }
     } catch (err) {
       console.log(err);
-      toastError(err);
+      toastError(err.message);
     }
     setIsLoading(false);
   }
 
-  const updateVerifiedOrder = (id, newValue) => {
+  const updateUiFalse = (id, newValue) => {
     let newOrders = orders.map(order => {
       if (order.id === id) {
-        order.verified = newValue
+        order.status_payment = newValue
       }
       return order
     })
@@ -69,12 +73,12 @@ export default function OrderShipper({ isValidAdmin, openLoginFragment }) {
       } else {
         console.log(response.data.EM);
         toastError(response.data.EM);
-        updateVerifiedOrder(id, false)
+        updateUiFalse(id, status1)
       }
     } catch (err) {
       console.log(err);
-      toastError(err);
-      updateVerifiedOrder(id, false)
+      toastError("Error: " + err.message);
+      updateUiFalse(id, status1)
     }
   }
 
@@ -86,18 +90,25 @@ export default function OrderShipper({ isValidAdmin, openLoginFragment }) {
       } else {
         console.log(response.data.EM);
         toastError(response.data.EM);
-        updateVerifiedOrder(id, false)
+        updateUiFalse(id, status2)
       }
     } catch (err) {
       console.log(err);
-      toastError(err);
-      updateVerifiedOrder(id, false)
+      toastError(err.message);
+      updateUiFalse(id, status2)
     }
   }
 
+  const statusCode = (value) => {
+    if (value === status1) {
+      return 1
+    } else if (value === status2) {
+      return 2
+    } else return 3
+  }
 
   useEffect(() => {
-    document.title = "Foodie Restaurant | Contact CMS";
+    document.title = "Foodie Restaurant | Shipper Order";
     if (isValidAdmin) {
       getOrderFromServer(1);
     }
@@ -106,21 +117,22 @@ export default function OrderShipper({ isValidAdmin, openLoginFragment }) {
   return (
     <>
       {!isValidAdmin ? <NotLoginCms openLoginFragment={openLoginFragment} />
-        : isLoading ? <Loading message={"Loading Order..."} /> :
+        : isLoading ? <Loading message={"Loading Order..."} /> 
+        : orders.length === 0 ? <Loading message={"No order to deliver!"} /> :
           <main className='contact-cms-main'>
             <h1>Order from your customer</h1>
 
             <table>
               <colgroup>
-                <col class="order-shipper-order-id" />
-                <col class="order-shipper-order-time" />
-                <col class="order-shipper-delivery-time" />
-                <col class="order-shipper-status" />
-                <col class="order-shipper-total-money" />
-                <col class="order-shipper-customer-name" />
-                <col class="order-shipper-customer-address" />
-                <col class="order-shipper-customer-phone" />
-                <col class="order-shipper-verify" />
+                <col class="order-cms-order-id" />
+                <col class="order-cms-order-time" />
+                <col class="order-cms-delivery-time" />
+                <col class="order-cms-status" />
+                <col class="order-cms-total-money" />
+                <col class="order-cms-customer-name" />
+                <col class="order-cms-customer-address" />
+                <col class="order-cms-customer-phone" />
+                <col class="order-cms-verify" />
               </colgroup>
               <tr>
                 <th>Id</th>
@@ -128,11 +140,10 @@ export default function OrderShipper({ isValidAdmin, openLoginFragment }) {
                 <th>Delivery Time</th>
                 <th>Status</th>
                 <th>Total Money</th>
-                <th>Shipper Id</th>
                 <th>Customer Name</th>
                 <th>Customer Address</th>
                 <th>Customer Phone</th>
-                <th>Verified</th>
+                <th>Action</th>
               </tr>
               {
                 orders.map((order, _) => (
@@ -142,20 +153,31 @@ export default function OrderShipper({ isValidAdmin, openLoginFragment }) {
                     <td>{parserTime(order.delivery_time)}</td>
                     <td>{order.status_payment}</td>
                     <td>{order.total_money}</td>
-                    <td>{order.shipper_id}</td>
                     <td>{order.User.fullName}</td>
                     <td>{order.User.address}</td>
                     <td>{order.User.phone}</td>
                     <td>
-                      <input type='checkbox' id="verify-checkbox"
-                        disabled={(order.status_payment === "Order Verify from Client") ? false : true}
-                        checked={order.verified}
-                        onChange={(e) => {
-                          order.verified = e.target.checked
-                          setOrders([...orders])
-                          startDeliverServer(order.id)
-                        }}
-                      ></input>
+                      {
+                        statusCode(order.status_payment) === 1 || statusCode(order.status_payment) === 2
+                          ?
+                          <button className="active-button-style"
+                            onClick={() => {
+                              if (statusCode(order.status_payment) === 1) {
+                                startDeliverServer(order.id)
+                                order.status_payment = status2
+                              } else {
+                                endDeliverServer(order.id)
+                                order.status_payment = status3
+                              }
+                              setOrders([...orders])
+                            }}
+                          >
+                            {statusCode(order.status_payment) === 1 ? "Start" : "Done"}
+                          </button>
+                          :
+                          null
+                      }
+
                     </td>
                   </tr>
                 ))

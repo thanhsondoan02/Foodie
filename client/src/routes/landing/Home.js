@@ -29,7 +29,7 @@ function Home() {
       }
     } catch (err) {
       console.log(err);
-      toastError(err);
+      toastError(err.message);
     }
   }
 

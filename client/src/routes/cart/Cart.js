@@ -75,7 +75,7 @@ const Cart = ({ isValidLogin, openLoginFragment }) => {
       }
     } catch (err) {
       console.log(err);
-      toastError(err);
+      toastError(err.message);
     }
   }
 
@@ -102,7 +102,7 @@ const Cart = ({ isValidLogin, openLoginFragment }) => {
       }
     } catch (err) {
       console.log(err);
-      toastError(err);
+      toastError(err.message);
     }
   }
 
@@ -117,7 +117,7 @@ const Cart = ({ isValidLogin, openLoginFragment }) => {
       }
     } catch (err) {
       console.log(err);
-      toastError(err);
+      toastError(err.message);
     }
   }
 

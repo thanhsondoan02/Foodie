@@ -34,7 +34,7 @@ const Blog = () => {
       }
     } catch (err) {
       console.log(err);
-      toastError(err);
+      toastError(err.message);
     }
   }
 

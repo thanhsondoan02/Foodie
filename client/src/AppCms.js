@@ -64,7 +64,7 @@ function AppCms() {
       console.log(err);
       localStorage.removeItem('admin_token');
       setIsValidAdmin(false);
-      toastError(err);
+      toastError(err.message);
     }
   }
 

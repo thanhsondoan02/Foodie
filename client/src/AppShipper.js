@@ -66,7 +66,7 @@ function AppShipper() {
       console.log(err);
       localStorage.removeItem('shipper_token');
       setIsValidAdmin(false);
-      toastError(err);
+      toastError(err.message);
     }
   }
 

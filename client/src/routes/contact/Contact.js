@@ -32,7 +32,7 @@ const Contact = () => {
       } catch (err) {
         setLoading(false);
         console.log(err);
-        toastError(err);
+        toastError(err.message);
       }
     }
   }

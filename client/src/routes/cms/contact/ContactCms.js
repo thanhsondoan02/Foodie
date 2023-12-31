@@ -37,7 +37,7 @@ export default function ContactCms({ isValidAdmin, openLoginFragment }) {
       }
     } catch (err) {
       console.log(err);
-      toastError(err);
+      toastError(err.message);
     }
     setIsLoading(false);
   }

@@ -42,7 +42,7 @@ export default function OrderCms({ isValidAdmin, openLoginFragment }) {
       }
     } catch (err) {
       console.log(err);
-      toastError(err);
+      toastError(err.message);
     }
     setIsLoading(false);
   }
@@ -70,7 +70,7 @@ export default function OrderCms({ isValidAdmin, openLoginFragment }) {
       }
     } catch (err) {
       console.log(err);
-      toastError(err);
+      toastError(err.message);
       updateUIVerifiedOrder(id, false)
     }
   }

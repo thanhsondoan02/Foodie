@@ -26,7 +26,7 @@ export default function MailCms({ isValidAdmin, openLoginFragment }) {
       }
     } catch (err) {
       console.log(err);
-      toastError(err);
+      toastError(err.message);
     }
     setIsLoading(false);
   }
