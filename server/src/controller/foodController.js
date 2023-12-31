@@ -291,6 +291,7 @@ const historyOrder = async (req, res) => {
         DT: data.DT,
       });
     } else {
+      let idUser = req.user.id;
       let data = await historyOrderOfUser(idUser);
       return res.status(200).json({
         EM: data.EM,
