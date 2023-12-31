@@ -1,10 +1,6 @@
 const express = require('express')
 const app = express()
 
-// const apiRouter = require('./api.js')
+app.use('/', express.static('./build'))
 
-// app.use('/api', apiRouter)
-app.use('/', express.static('../client/build'))
-app.use('/new', express.static('../client/build'))
-
-app.listen(3001, () => console.log('App started'))
+app.listen(1410, () => console.log('Client started at 3001'))
