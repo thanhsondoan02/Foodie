@@ -605,6 +605,8 @@ const convertCartToOrder = async (idUser) => {
       status_payment: "Order Verify from Client",
     });
 
+    io.emit("Order Verify from Client", updatedCartToOrder);
+
     return {
       EM: "Success convert cart to order by Client",
       EC: 0,

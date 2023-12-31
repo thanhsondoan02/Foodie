@@ -7,8 +7,12 @@ require("dotenv").config({ path: "./config.env" });
 import bodyParser from "body-parser";
 import connection_DB from "./config/connectDB";
 import cookieParser from "cookie-parser";
+const http = require("http");
+const socketIO = require("socket.io");
 
 const app = express();
+const server = http.createServer(app);
+const io = socketIO(server);
 const PORT = process.env.PORT || 8080;
 
 // config cors
@@ -30,6 +34,16 @@ connection_DB();
 // config routes
 initWebRoutes(app);
 initApiRoutes(app);
+
+// Khi có kết nối socket.io từ client
+io.on("connection", (socket) => {
+  console.log("Client connected");
+
+  // Khi client ngắt kết nối socket.io
+  socket.on("disconnect", () => {
+    console.log("Client disconnected");
+  });
+});
 
 app.listen(PORT, () => {
   console.log("OKE ROI NHE PORT " + PORT);
