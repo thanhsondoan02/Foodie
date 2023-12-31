@@ -633,7 +633,7 @@ const allOrder = async () => {
           attributes: ["id", "fullName", "age", "address", "gender", "phone"],
         },
       ],
-      order: [["id", "ASC"]],
+      order: [["updatedAt", "DESC"]],
     });
     if (orders) {
       return {
@@ -675,7 +675,8 @@ const allOrderByPagination = async (page, limit) => {
       ],
       offset: offset,
       limit: limit,
-      order: [["id", "ASC"]],
+      // order: [["order_time", "DESC"]],
+      order: [["updatedAt", "DESC"]],
     });
 
     let totalPages = Math.ceil(count / limit);
@@ -779,13 +780,13 @@ const verifyOrder = async (orderId) => {
         availableShippers[Math.floor(Math.random() * availableShippers.length)];
       console.log(
         ">>>>>>>> Print selected Shipper Id in else: ",
-        selectedShipperId
+        selectedShipperId.id
       );
     }
 
     const updatedOrderVerifyByAdmin = await orderVerifyByAdmin.update({
       status_payment: "Order Verify from Admin",
-      shipper_id: selectedShipperId,
+      shipper_id: selectedShipperId.id,
     });
 
     return {
@@ -817,7 +818,8 @@ const historyOrderOfUser = async (idUser) => {
           attributes: ["id", "fullName", "age", "address", "gender", "phone"],
         },
       ],
-      order: [["id", "ASC"]],
+      // order: [["id", "ASC"]],
+      order: [["updatedAt", "DESC"]],
     });
     if (orders) {
       return {
@@ -859,7 +861,8 @@ const historyOrderOfUserByPagination = async (idUser, page, limit) => {
       ],
       offset: offset,
       limit: limit,
-      order: [["id", "ASC"]],
+      // order: [["id", "ASC"]],
+      order: [["updatedAt", "DESC"]],
     });
 
     let totalPages = Math.ceil(count / limit);
