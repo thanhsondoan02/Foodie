@@ -126,6 +126,10 @@
   font-size: 2rem;
 }
 
+.mail-cms-container {
+  width: 80%;
+}
+
 .mail-cms-contact-cms-main {
   display: flex;
   flex-direction: column;

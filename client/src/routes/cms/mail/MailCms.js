@@ -45,7 +45,7 @@ export default function MailCms({ isValidAdmin, openLoginFragment }) {
                 value={messageBody}
                 onChange={(e) => setMessageBody(e.target.value)}
                 className="mail-html-input"
-                placeholder="Enter HTML content here..."
+                placeholder="Enter your email body (can be HTML) here..."
               />
               <button className="active-button-style"
                 onClick={() => { sendMailServer() }}

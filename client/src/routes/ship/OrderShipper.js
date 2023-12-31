@@ -1,14 +1,18 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect, useState } from 'react';
 import ReactPaginate from 'react-paginate';
-import resetLocation from '../../../helpers/ResetLocation';
-import {  apiCmsGetOrder, apiCmsVerifyOrder } from '../../../services/CmsService';
-import { toastError, toastSuccess } from '../../../helpers/toastHelper';
-import NotLoginCms from '../NotLoginCms';
-import { Loading } from '../Loading';
-import { parserTime } from '../../../helpers/parseTime';
+import { toastError, toastSuccess } from '../../helpers/toastHelper';
+import resetLocation from '../../helpers/ResetLocation';
+import NotLoginCms from '../cms/NotLoginCms';
+import { Loading } from '../cms/Loading';
+import { parserTime } from '../../helpers/parseTime';
+import {
+  apiShipperGetOrder,
+  apiShipperStartDeliver,
+  apiShipperEndDeliver
+} from '../../services/ShipperService';
 
-export default function OrderCms({ isValidAdmin, openLoginFragment }) {
+export default function OrderShipper({ isValidAdmin, openLoginFragment }) {
   const [orders, setOrders] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(0);
@@ -26,7 +30,7 @@ export default function OrderCms({ isValidAdmin, openLoginFragment }) {
     setTotalPages(0);
     setOrders([]);
     try {
-      const response = await apiCmsGetOrder(page, limit);
+      const response = await apiShipperGetOrder(page, limit);
       if (response.data.EC === 0) {
         setTotalPages(response.data.DT.totalPages)
         let newOrders = response.data.DT.orders;
@@ -35,7 +39,7 @@ export default function OrderCms({ isValidAdmin, openLoginFragment }) {
             order.verified = order.status_payment === "Order Verify from Client" ? false : true
             return order
           }
-        ))
+          ))
       } else {
         console.log(response.data.EM);
         toastError(response.data.EM);
@@ -57,11 +61,11 @@ export default function OrderCms({ isValidAdmin, openLoginFragment }) {
     setOrders(newOrders)
   }
 
-  const verifyOrderServer = async (id) => {
+  const startDeliverServer = async (id) => {
     try {
-      const response = await apiCmsVerifyOrder(id);
+      const response = await apiShipperStartDeliver(id);
       if (response.data.EC === 0) {
-        toastSuccess("Verify order successfully")
+        toastSuccess("Start delivering!")
       } else {
         console.log(response.data.EM);
         toastError(response.data.EM);
@@ -73,6 +77,24 @@ export default function OrderCms({ isValidAdmin, openLoginFragment }) {
       updateVerifiedOrder(id, false)
     }
   }
+
+  const endDeliverServer = async (id) => {
+    try {
+      const response = await apiShipperEndDeliver(id);
+      if (response.data.EC === 0) {
+        toastSuccess("Delivered to customer!")
+      } else {
+        console.log(response.data.EM);
+        toastError(response.data.EM);
+        updateVerifiedOrder(id, false)
+      }
+    } catch (err) {
+      console.log(err);
+      toastError(err);
+      updateVerifiedOrder(id, false)
+    }
+  }
+
 
   useEffect(() => {
     document.title = "Foodie Restaurant | Contact CMS";
@@ -129,10 +151,10 @@ export default function OrderCms({ isValidAdmin, openLoginFragment }) {
                       <input type='checkbox' id="verify-checkbox"
                         disabled={(order.status_payment === "Order Verify from Client") ? false : true}
                         checked={order.verified}
-                        onChange={(e) => { 
+                        onChange={(e) => {
                           order.verified = e.target.checked
                           setOrders([...orders])
-                          verifyOrderServer(order.id)
+                          startDeliverServer(order.id)
                         }}
                       ></input>
                     </td>

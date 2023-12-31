@@ -1,19 +1,20 @@
 import { useEffect, useState } from "react";
 import AppCms from "./AppCms";
 import App from "./App";
+import AppShipper from "./AppShipper";
 
 function BigApp() {
   const [isCms, setIsCms] = useState(false);
+  const [isShipper, setIsShipper] = useState(false);
 
   useEffect(() => {
-    if (window.location.pathname.includes('/cms')) {
-      setIsCms(true);
-    }
+    setIsCms(window.location.pathname.includes('/cms'));
+    setIsShipper(window.location.pathname.includes('/shipper'));
   }, []);
 
   return (
     <>
-      {isCms ? <AppCms /> : <App />}
+      {isCms ? <AppCms /> : isShipper ? <AppShipper /> : <App />}
     </>
   )
 }
