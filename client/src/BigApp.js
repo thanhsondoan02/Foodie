@@ -11,7 +11,7 @@ function BigApp() {
   useEffect(() => {
     setIsCms(window.location.pathname.includes('/cms'));
     setIsShipper(window.location.pathname.includes('/shipper'));
-    axios.defaults.withCredentials = true
+    axios.defaults.withCredentials = false
   }, []);
 
   return (
