@@ -217,7 +217,7 @@ const convertToOrder = async (req, res) => {
     let convertCart = await convertCartToOrder(idUser);
     return res.status(200).json({
       EM: convertCart.EM,
-      EC: 0, // -1 -> error, 0 -> success,
+      EC: convertCart.EC, // -1 -> error, 0 -> success,
       DT: convertCart.DT,
     });
   } catch (e) {

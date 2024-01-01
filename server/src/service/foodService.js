@@ -738,15 +738,15 @@ const verifyOrder = async (orderId) => {
       },
     });
 
-    console.log(
-      ">>>>> Availableshippers: ",
-      JSON.stringify(availableShippers, null, 2)
-    );
+    // console.log(
+    //   ">>>>> Availableshippers: ",
+    //   JSON.stringify(availableShippers, null, 2)
+    // );
 
-    console.log(
-      ">>>>>>>>>> order_time current is: ",
-      `${orderVerifyByAdmin.order_time}`
-    );
+    // console.log(
+    //   ">>>>>>>>>> order_time current is: ",
+    //   `${orderVerifyByAdmin.order_time}`
+    // );
 
     let selectedShipperId;
 
@@ -772,23 +772,26 @@ const verifyOrder = async (orderId) => {
 
       if (nearestDeliveryOrder) {
         selectedShipperId = nearestDeliveryOrder.shipper_id;
-        console.log(
-          ">>>>>>>> Print selected Shipper Id in if: ",
-          selectedShipperId
-        );
+        // console.log(
+        //   ">>>>>>>> Print selected Shipper Id in if: ",
+        //   selectedShipperId
+        // );
       }
     } else {
-      selectedShipperId =
-        availableShippers[Math.floor(Math.random() * availableShippers.length)];
-      console.log(
-        ">>>>>>>> Print selected Shipper Id in else: ",
-        selectedShipperId.id
-      );
+      const idArray = availableShippers.map((user) => user.id);
+      const randomIndex = Math.floor(Math.random() * idArray.length);
+      selectedShipperId = idArray[randomIndex];
+
+      // availableShippers[Math.floor(Math.random() * availableShippers.length)];
+      // console.log(
+      //   ">>>>>>>> Print selected Shipper Id in else: ",
+      //   selectedShipperId.id
+      // );
     }
 
     const updatedOrderVerifyByAdmin = await orderVerifyByAdmin.update({
       status_payment: "Order Verify from Admin",
-      shipper_id: selectedShipperId.id,
+      shipper_id: selectedShipperId,
     });
 
     return {
