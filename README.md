@@ -1,6 +1,7 @@
 # Foodie
 
-(Insert a picture here)
+![Foodie preview](https://firebasestorage.googleapis.com/v0/b/foodie-68790.appspot.com/o/Screenshot%202024-01-01%20082823.png?alt=media&token=0b2ce2e9-f709-4bb5-b0bc-b1c3040ee1a8)
+
 
 Welcome to Foodie - an e-commerce website tailored for a pizzeria. This digital haven boasts an engaging menu replete with diverse choices ranging from pizzas and sushi to pasta. Streamlining the intricacies of online ordering stood as the paramount objective, ensuring a flawlessly smooth user expedition throughout this venture. Foodie is created utilizing technologies like React Icons, React Router DOM, React Alice Carousel, Leaflet Maps, React Paginate, UUID, React Lazy Load, and Framer Motion.
 
@@ -25,111 +26,55 @@ Incorporated Google reCAPTCHA to authenticate users submitting contact forms, ef
 At Foodie, the fusion of delectable cuisine and cutting-edge technology gives rise to a user-friendly digital encounter. This is the intersection of exceptional food and programming, allowing users to embark on a convenient and gratifying culinary journey.
 
 
-## Contents
+## Instructions for hosting
+This section is for hosting website in [https://int3306.freeddns.org/](https://int3306.freeddns.org/) only. We have cloned the repo, installed required packet and update config. So that we can go straight to the following steps.
 
-- [Getting Started](#gettingStarted)
-- [Instruction](#instructions)
-- [Available Scripts](#availableScripts)
-- [Learn More](#learnMore)
-- [Contribution](#contribution)
+First shut down all current terminals then open new terminal and expose port 8080.
 
-## Getting Started 
+```
+/etc/jupyter/bin/expose 8080
+```
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+From `root` folder to  `Foodie/server`:
 
-To get started, you need to:
+```
+cd Foodie/server
+```
 
-1. Clone the project
-2. npm install
-3. Install listed dependencies
-4. Use available scripts, like npm start
+Now run the code and wait for success message.
 
-## Instructions
+```
+npm start
+```
 
-- When you fork or download the project install node modules using npm install and then any additonal dependencies you don't have from <a id="dependencies">Dependencies</a> list
+When you host successfully, open [Foodie Client](http://fall2324w20g2.int3306.freeddns.org) / [Foodie CMS](http://fall2324w20g2.int3306.freeddns.org/cms) / [Foodie Shipper](http://fall2324w20g2.int3306.freeddns.org/shipper).
 
-- Next, you need to create the file name .env located outside src file
+## Instructions for local use
 
-- In the .env file I am using several variables:
-1. REACT_APP_DATABASE_URL & MYSQL_ATTR_SSL_CA - these variables contain information that will connect you to the PlanetScale database. You can use the following documentation https://planetscale.com/docs/tutorials/connect-nodejs-app. If you use any other database you need to use the accoridng information to connect to that database. 
-Note that the table for users in my case is named "users" and contains columns with the following data: id | email | password | fullname | address | number.
-2. REACT_APP_USERS_URL - these is a url for Node.js server. First, it's better to run it locally and only then switch to whatever you want. If you want to run the server locally the value of this variable should be http://localhost:3000/users. In this project I set up backend using Vercel. You can google "How to Deploy Your Node.js Backend Project to Vercel" and set up your own backend.
-3. REACT_APP_CAPTCHA_URL - the same logic works for this backedn url which this time is used for captcha verification. Locally, the url value should be http://localhost:3000/verify-recaptcha.
-4. REACT_APP_CAPTCHA_KEY & REACT_APP_CAPTCHA_SECRET - both values can be found once you create an account for reCaptcha at https://www.google.com/recaptcha/about/. Please use their documentation for better understanding.
+Before using, please clone this repo from Github.
 
-- Once you set up the variables, you can run the server on one port, if you use local server and the website on another port. 
+```
+git clone https://github.com/thanhsondoan02/Foodie.git
+```
 
-## Available Scripts
+After that, install the requirements with npm.
 
-In the project directory, you can run:
+```
+# Run the client only
+cd Foodie/client
+npm install
+npm start
 
-### `npm start`
-
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
-
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
-
-### `npm test`
-
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
-
-### `npm run build`
-
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
-
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
-
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
-
-### `npm run eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
-
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
-
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+# Run the server and client (build version)
+cd Foodie/server
+npm install
+npm start
+```
 
 ## Contribution
 
 Foodie was created by the group 2 as a project for the Web Development course. Contributors include:
-- Đoàn Thanh Sơn_20020153
-- Bùi Đắc Hiên_20021346
-- Phùng Sỹ Ngọc_19021342
-- Trần Quốc Hưng_19021292
+- Đoàn Thanh Sơn 20020153
+- Bùi Đắc Hiên 20021346
+- Phùng Sỹ Ngọc 19021342
+- Trần Quốc Hưng 19021292
