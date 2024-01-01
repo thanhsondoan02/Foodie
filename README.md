@@ -41,13 +41,35 @@ From `root` folder to  `Foodie/server`:
 cd Foodie/server
 ```
 
-Now run the code and wait for success message.
+Now run the code and wait for success message `OKE ROI NHE PORT 8080`.
 
 ```
 npm start
 ```
 
-When you host successfully, open [Foodie Client](http://fall2324w20g2.int3306.freeddns.org) / [Foodie CMS](http://fall2324w20g2.int3306.freeddns.org/cms) / [Foodie Shipper](http://fall2324w20g2.int3306.freeddns.org/shipper).
+When you host successfully, open [Foodie Client](http://fall2324w20g2.int3306.freeddns.org) / [Foodie CMS](http://fall2324w20g2.int3306.freeddns.org/cms) / [Foodie Shipper](http://fall2324w20g2.int3306.freeddns.org/shipper). These following table show path for every screen in our Foodie app.
+
+| Path | Screen |                                                          
+|--------------|---------|
+| `/` | Home |
+| `/menu` | Menu |
+| `/blog` | Blog |
+| `/blog:blogId` | Blog Post |
+| `/contact` | Contact |
+| `/about` | About |
+| `/register` | Register |
+| `/cart` | Cart |
+| `/profile` | Profile |
+| `/careers` | Careers |
+| `/refunds` | Refunds |
+| `/terms` | Terms |
+| `/privacy` | Privacy |
+| `/history` | History |
+| `/cms` | CMS Home |
+| `/cms/contact` | CMS Contact |
+| `/cms/mail` | CMS Mail |
+| `/cms/order` | CMS Order |
+| `/shipper` | Shipper Order |
 
 ## Instructions for local use
 
@@ -57,7 +79,7 @@ Before using, please clone this repo from Github.
 git clone https://github.com/thanhsondoan02/Foodie.git
 ```
 
-After that, install the requirements with npm.
+After that, install the requirements and run with npm.
 
 ```
 # Run the client only
