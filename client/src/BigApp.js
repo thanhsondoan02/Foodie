@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import AppCms from "./AppCms";
 import App from "./App";
 import AppShipper from "./AppShipper";
+import axios from "axios";
 
 function BigApp() {
   const [isCms, setIsCms] = useState(false);
@@ -10,6 +11,7 @@ function BigApp() {
   useEffect(() => {
     setIsCms(window.location.pathname.includes('/cms'));
     setIsShipper(window.location.pathname.includes('/shipper'));
+    axios.defaults.withCredentials = true
   }, []);
 
   return (

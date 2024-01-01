@@ -179,7 +179,7 @@ const Register = ({ openLoginFragment }) => {
         : registerSuccess ?
           <div className="registration-success">
             <div>
-              <i class="check-mark">✓</i>
+              <i className="check-mark">✓</i>
             </div>
             <h2 className="success-header">Success</h2>
             <p className="form-submit-msg">You can now log in and make an order!</p>

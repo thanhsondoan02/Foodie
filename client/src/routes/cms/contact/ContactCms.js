@@ -58,10 +58,10 @@ export default function ContactCms({ isValidAdmin, openLoginFragment }) {
 
             <table>
               <colgroup>
-                <col class="contact-cms-id" />
-                <col class="contact-cms-name" />
-                <col class="contact-cms-email" />
-                <col class="contact-cms-message" />
+                <col className="contact-cms-id" />
+                <col className="contact-cms-name" />
+                <col className="contact-cms-email" />
+                <col className="contact-cms-message" />
               </colgroup>
               <tr>
                 <th>Id</th>
