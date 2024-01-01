@@ -29,13 +29,13 @@ At Foodie, the fusion of delectable cuisine and cutting-edge technology gives ri
 ## Instructions for hosting
 This section is for hosting website in [https://int3306.freeddns.org/](https://int3306.freeddns.org/) only. We have cloned the repo, installed required packet and update config. So that we can go straight to the following steps.
 
-First shut down all current terminals then open new terminal and expose port 8080.
+First shut down all current terminals then open a new terminal and expose port 8080.
 
 ```
 /etc/jupyter/bin/expose 8080
 ```
 
-From `root` folder to  `Foodie/server`:
+From `root` folder to  `Foodie/server` folder:
 
 ```
 cd Foodie/server
